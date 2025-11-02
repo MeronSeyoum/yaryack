@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background: #1a1a1a;
+  color: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
