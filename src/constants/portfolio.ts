@@ -29,3 +29,4 @@ export const PORTFOLIO_IMAGES: Record<PortfolioCategory, string[]> = {
   Maternity: [portfolio4, portfolio6, portfolio3, portfolio13, portfolio2, portfolio1, portfolio5, heroThumb2],
   Portrait: [heroThumb1,portfolio1 , portfolio12, portfolio7, portfolio11, portfolio1, portfolio10, heroThumb2],
 };
+

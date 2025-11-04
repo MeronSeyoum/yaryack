@@ -88,7 +88,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
           alt="Photography background"
           className="w-full h-full object-cover filter grayscale"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/70 to-black/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
       </div>
 

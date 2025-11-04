@@ -25,7 +25,7 @@ A modern, professional photography portfolio website built with React and TypeSc
 yaryack-photography/
 ├── src/
 │   ├── config/
-│   │   └── designSystem.ts          # 🎨 Central design configuration
+│   │   └── designSystem.ts          
 │   ├── components/
 │   │   ├── layout/
 │   │   │   ├── Navigation.tsx

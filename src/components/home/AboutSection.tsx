@@ -38,11 +38,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ themeClasses }) => {
         </div>
       </div>
 
-      <div className="mx-auto px-4 sm:px-6 lg:px-16 min-h-[calc(100vh-80px)]">
+      <div className="mx-auto px-4 sm:px-6 lg:px-16 min-h-[calc(100vh-200px)]">
         {/* Main Content Grid */}
-        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_300px] h-full gap-6">
+        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_23%] h-full gap-6">
           {/* Left Content - Portrait & Main Content */}
-          <div className="relative h-full min-h-[500px] lg:min-h-auto rounded-2xl overflow-hidden group">
+          <div className="relative h-full lg:min-h-auto rounded-2xl overflow-hidden group">
             {/* Background Image */}
             <div className="absolute inset-0">
               <img
