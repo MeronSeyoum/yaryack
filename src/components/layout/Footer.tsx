@@ -42,7 +42,7 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
         ? 'bg-gradient-to-b from-gray-900 to-black border-white/10' 
         : 'bg-gradient-to-b from-gray-50 to-white border-gray-200'
     }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className=" px-4 sm:px-6 lg:px-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8 lg:mb-12">
           {/* Left Column - Brand & Description */}

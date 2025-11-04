@@ -35,7 +35,7 @@ const HomePage: React.FC = () => {
     <div className={`min-h-screen transition-colors duration-300 ${themeClasses.bg.primary} ${themeClasses.text.primary}`}>
       <Navigation isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       
-      <HeroSection themeClasses={themeClasses} />
+      <HeroSection themeClasses={themeClasses}  />
       <AboutSection themeClasses={themeClasses} />
       <PortfolioSection themeClasses={themeClasses} />
       <ServicesSection themeClasses={themeClasses} />

@@ -1,7 +1,6 @@
 // src/components/layout/Navigation.tsx
 import React, { useState, useEffect } from "react";
 import { Menu, X, Sun, Moon, Camera } from "lucide-react";
-import { DESIGN_SYSTEM } from "../../config/designSystem";
 
 interface NavigationProps {
   isDarkMode: boolean;
@@ -56,15 +55,34 @@ export const Navigation: React.FC<NavigationProps> = ({
     }
   };
 
+  // Theme-based styles
+  const navBackground = isScrolled
+    ? isDarkMode
+      ? "bg-black/95 backdrop-blur-md border-b border-gray-600"
+      : "bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-lg"
+    : isDarkMode
+    ? "bg-transparent border-b border-gray-600"
+    : "bg-transparent border-b border-gray-200";
+
+  const textColor = isDarkMode ? "text-white" : "text-gray-900";
+  const subtitleColor = isDarkMode ? "text-gray-400" : "text-gray-600";
+  const navItemColor = isDarkMode ? "text-gray-300" : "text-gray-700";
+  const navItemHoverColor = "hover:text-orange-500";
+  const mobileMenuBackground = isDarkMode 
+    ? "bg-black/95 backdrop-blur-md" 
+    : "bg-white/95 backdrop-blur-md";
+  const mobileBorderColor = isDarkMode ? "border-gray-800" : "border-gray-200";
+  const buttonBackground = isDarkMode ? "bg-white/10" : "bg-black/10";
+  const buttonHoverBackground = isDarkMode ? "hover:bg-white/20" : "hover:bg-black/20";
+  const buttonIconColor = isDarkMode ? "text-white" : "text-gray-900";
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-black/95 backdrop-blur-md border-b border-gray-500 py-2 sm:py-5"
-          : "bg-transparent py-4  border-b border-gray-400"
+      className={`fixed top-0 left-0 right-0 z-50  transition-all duration-300 ${navBackground} ${
+        isScrolled ? "py-2 sm:py-3" : "py-4 "
       }`}
     >
-      <div className=" mx-auto px-4 sm:px-6 lg:px-16 ">
+      <div className="mx-auto px-4 sm:px-6 lg:px-16">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <a
@@ -72,14 +90,12 @@ export const Navigation: React.FC<NavigationProps> = ({
             onClick={(e) => handleNavClick(e, "#home")}
             className="flex items-center gap-2 sm:gap-3 group"
           >
-            <div
-              className={`w-8 h-8 sm:w-10 sm:h-10 bg-[${DESIGN_SYSTEM.colors.primary}] rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110`}
-            >
-              <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-black" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg">
+              <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
-            <div className="text-white">
-              <div className="font-semibold text-base sm:text-lg">Yaryack</div>
-              <div className="text-xs text-gray-400 -mt-1">Photography</div>
+            <div className={textColor}>
+              <div className="font-semibold text-base sm:text-lg leading-tight">Yaryack</div>
+              <div className={`text-xs ${subtitleColor} -mt-0.5 leading-tight`}>Photography</div>
             </div>
           </a>
 
@@ -90,7 +106,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 key={item.name}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="text-sm text-gray-300 hover:text-[#ff8533] transition-colors duration-200"
+                className={`text-sm font-medium ${navItemColor} ${navItemHoverColor} transition-colors duration-200`}
               >
                 {item.name}
               </a>
@@ -99,13 +115,15 @@ export const Navigation: React.FC<NavigationProps> = ({
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200"
+              className={`p-2 rounded-lg ${buttonBackground} ${buttonHoverBackground} transition-all duration-200 border ${
+                isDarkMode ? "border-white/20" : "border-gray-300"
+              }`}
               aria-label="Toggle theme"
             >
               {isDarkMode ? (
-                <Sun className="w-4 h-4 text-white" />
+                <Sun className={`w-4 h-4 ${buttonIconColor}`} />
               ) : (
-                <Moon className="w-4 h-4 text-white" />
+                <Moon className={`w-4 h-4 ${buttonIconColor}`} />
               )}
             </button>
           </div>
@@ -114,25 +132,29 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="flex lg:hidden items-center gap-3">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200"
+              className={`p-2 rounded-lg ${buttonBackground} ${buttonHoverBackground} transition-all duration-200 border ${
+                isDarkMode ? "border-white/20" : "border-gray-300"
+              }`}
               aria-label="Toggle theme"
             >
               {isDarkMode ? (
-                <Sun className="w-4 h-4 text-white" />
+                <Sun className={`w-4 h-4 ${buttonIconColor}`} />
               ) : (
-                <Moon className="w-4 h-4 text-white" />
+                <Moon className={`w-4 h-4 ${buttonIconColor}`} />
               )}
             </button>
 
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200"
+              className={`p-2 rounded-lg ${buttonBackground} ${buttonHoverBackground} transition-all duration-200 border ${
+                isDarkMode ? "border-white/20" : "border-gray-300"
+              }`}
               aria-label="Toggle menu"
             >
               {isMobileMenuOpen ? (
-                <X className="w-5 h-5 text-white" />
+                <X className={`w-5 h-5 ${buttonIconColor}`} />
               ) : (
-                <Menu className="w-5 h-5 text-white" />
+                <Menu className={`w-5 h-5 ${buttonIconColor}`} />
               )}
             </button>
           </div>
@@ -140,14 +162,16 @@ export const Navigation: React.FC<NavigationProps> = ({
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden mt-4 pt-4 border-t border-gray-800">
-            <div className="flex flex-col gap-3">
+          <div className={`lg:hidden mt-4 pt-4 border-t ${mobileBorderColor} ${mobileMenuBackground} rounded-lg -mx-4 px-4 pb-4 shadow-xl`}>
+            <div className="flex flex-col gap-1">
               {navItems.map((item) => (
                 <a
                   key={item.name}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className="text-sm text-gray-300 hover:text-[#ff8533] transition-colors duration-200 py-2"
+                  className={`text-sm font-medium py-3 px-4 rounded-lg transition-all duration-200 ${navItemColor} ${navItemHoverColor} ${
+                    isDarkMode ? "hover:bg-white/10" : "hover:bg-black/10"
+                  }`}
                 >
                   {item.name}
                 </a>

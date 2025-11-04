@@ -1,6 +1,6 @@
 // src/components/home/ContactSection.tsx
 import React, { useState } from 'react';
-import { ChevronRight, Mail, Phone, MapPin, Send, Instagram, Facebook, Twitter } from 'lucide-react';
+import { ChevronRight, Mail, Phone, MapPin, Send, Instagram, Facebook, Twitter, Clock } from 'lucide-react';
 import type { FormData } from '../../types';
 import { Button } from '../ui/Button';
 import { Card } from '../ui/Card';
@@ -19,6 +19,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
     message: "",
     agree: false,
   });
+
+  // Determine if we're in dark mode
+  const isDarkMode = themeClasses.bg.primary.includes('black') || 
+                    themeClasses.bg.primary.includes('gray-900') ||
+                    themeClasses.bg.primary.includes('gray-800') ||
+                    themeClasses.text.primary.includes('white');
 
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
     const { name, value, type } = e.target;
@@ -88,22 +94,38 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
           alt="Photography background"
           className="w-full h-full object-cover filter grayscale"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
+        <div className={`absolute inset-0 ${
+          isDarkMode 
+            ? 'bg-gradient-to-b from-black/50 via-black/40 to-black/60' 
+            : 'bg-gradient-to-b from-white/50 via-white/40 to-white/60'
+        }`}></div>
+        <div className={`absolute inset-0 ${
+          isDarkMode 
+            ? 'bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]' 
+            : 'bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(255,255,255,0.8)_100%)]'
+        }`}></div>
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="w-2 h-8 bg-orange-500 rounded-full"></div>
-            <p className="text-sm text-gray-400 uppercase tracking-wider">Get In Touch</p>
+            <p className={`text-sm uppercase tracking-wider ${
+              isDarkMode ? 'text-gray-400' : 'text-gray-600'
+            }`}>
+              Get In Touch
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light text-white mb-4">
+          <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-4 ${
+            themeClasses.text.primary
+          }`}>
             Let's Create
             <span className="font-medium bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent"> Together </span>
           </h2>
-          <p className="text-gray-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className={`text-sm sm:text-base max-w-2xl mx-auto leading-relaxed ${
+            isDarkMode ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             Ready to capture your special moments? Contact me to discuss your photography needs and book your session. 
             I'm here to bring your vision to life.
           </p>
@@ -111,18 +133,30 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
 
         <div className="max-w-6xl mx-auto">
           {/* Contact Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8 sm:mb-12 lg:mb-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8 lg:mb-12">
             {contactInfo.map((item, index) => (
               <Card 
                 key={index}
-                className="bg-gradient-to-b from-gray-900/50 to-black/30 backdrop-blur-sm border border-white/10 p-6 sm:p-8 text-center hover:border-orange-500/30 transition-all duration-500 group"
+                className={`backdrop-blur-sm border p-6 sm:p-8 text-center transition-all duration-500 group ${
+                  isDarkMode
+                    ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10 hover:border-orange-500/30'
+                    : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200 hover:border-orange-500/50'
+                }`}
               >
                 <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
                   <item.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2 text-white">{item.title}</h3>
+                <h3 className={`text-lg font-semibold mb-2 ${
+                  themeClasses.text.primary
+                }`}>
+                  {item.title}
+                </h3>
                 <p className="text-orange-500 text-sm sm:text-base font-medium mb-2">{item.content}</p>
-                <p className="text-gray-400 text-xs">{item.subtitle}</p>
+                <p className={`text-xs ${
+                  isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                }`}>
+                  {item.subtitle}
+                </p>
               </Card>
             ))}
           </div>
@@ -130,37 +164,61 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
             {/* Contact Form */}
             <div className="lg:col-span-3">
-              <Card className="bg-gradient-to-b from-gray-900/50 to-black/30 backdrop-blur-sm border border-white/10 p-6 sm:p-8 lg:p-10 shadow-2xl">
-                <div className="flex items-center gap-3 mb-6 sm:mb-8">
+              <Card className={`backdrop-blur-sm border p-6 sm:p-8 lg:p-10 shadow-xl ${
+                isDarkMode
+                  ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
+                  : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
+              }`}>
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
                     <Send className="w-4 h-4 text-white" />
                   </div>
-                  <h3 className="text-xl font-semibold text-white">Send a Message</h3>
+                  <h3 className={`text-xl font-semibold ${
+                    themeClasses.text.primary
+                  }`}>
+                    Send a Message
+                  </h3>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm text-gray-300 mb-2 font-medium">Name *</label>
+                      <label className={`block text-sm mb-2 font-medium ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        Name *
+                      </label>
                       <input
                         type="text"
                         name="name"
                         value={formData.name}
                         onChange={handleFormChange}
                         required
-                        className="w-full bg-black/30 border border-white/10 text-white placeholder-gray-500 p-3 sm:p-4 text-sm focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 focus:bg-black/50"
+                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 placeholder-gray-500 ${
+                          isDarkMode
+                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
+                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
+                        }`}
                         placeholder="Your full name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-300 mb-2 font-medium">Email *</label>
+                      <label className={`block text-sm mb-2 font-medium ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        Email *
+                      </label>
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleFormChange}
                         required
-                        className="w-full bg-black/30 border border-white/10 text-white placeholder-gray-500 p-3 sm:p-4 text-sm focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 focus:bg-black/50"
+                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 placeholder-gray-500 ${
+                          isDarkMode
+                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
+                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
+                        }`}
                         placeholder="your.email@example.com"
                       />
                     </div>
@@ -168,23 +226,39 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                     <div>
-                      <label className="block text-sm text-gray-300 mb-2 font-medium">Phone</label>
+                      <label className={`block text-sm mb-2 font-medium ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        Phone
+                      </label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleFormChange}
-                        className="w-full bg-black/30 border border-white/10 text-white placeholder-gray-500 p-3 sm:p-4 text-sm focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 focus:bg-black/50"
+                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 placeholder-gray-500 ${
+                          isDarkMode
+                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
+                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
+                        }`}
                         placeholder="Your phone number"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-300 mb-2 font-medium">Service Interest</label>
+                      <label className={`block text-sm mb-2 font-medium ${
+                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                      }`}>
+                        Service Interest
+                      </label>
                       <select
                         name="service"
                         value={formData.service}
                         onChange={handleFormChange}
-                        className="w-full bg-black/30 border border-white/10 text-white p-3 sm:p-4 text-sm focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 focus:bg-black/50"
+                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 ${
+                          isDarkMode
+                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
+                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
+                        }`}
                       >
                         <option value="">Select a service</option>
                         <option value="portrait">Portrait Session</option>
@@ -198,27 +272,45 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-300 mb-2 font-medium">Message *</label>
+                    <label className={`block text-sm mb-2 font-medium ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
+                      Message *
+                    </label>
                     <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleFormChange}
                       required
                       rows={5}
-                      className="w-full bg-black/30 border border-white/10 text-white placeholder-gray-500 p-3 sm:p-4 text-sm focus:border-orange-500 focus:outline-none rounded-xl resize-none transition-all duration-300 focus:bg-black/50"
+                      className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl resize-none transition-all duration-300 placeholder-gray-500 ${
+                        isDarkMode
+                          ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
+                          : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
+                      }`}
                       placeholder="Tell me about your project, preferred dates, and any specific requirements..."
                     ></textarea>
                   </div>
 
-                  <div className="flex items-start gap-3 p-3 bg-black/20 rounded-xl border border-white/5">
+                  <div className={`flex items-start gap-3 p-3 rounded-xl border ${
+                    isDarkMode 
+                      ? 'bg-black/20 border-white/5' 
+                      : 'bg-gray-100/50 border-gray-200'
+                  }`}>
                     <input
                       type="checkbox"
                       name="agree"
                       checked={formData.agree}
                       onChange={handleFormChange}
-                      className="w-4 h-4 text-orange-500 focus:ring-orange-500 border-gray-600 rounded bg-black/50 mt-1 flex-shrink-0"
+                      className={`w-4 h-4 text-orange-500 focus:ring-orange-500 rounded mt-1 flex-shrink-0 ${
+                        isDarkMode 
+                          ? 'bg-black/50 border-gray-600' 
+                          : 'bg-white border-gray-300'
+                      }`}
                     />
-                    <span className="text-gray-300 text-sm leading-relaxed">
+                    <span className={`text-sm leading-relaxed ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
                       I agree to the privacy policy and terms of service. Your information is secure and will never be shared with third parties.
                     </span>
                   </div>
@@ -247,15 +339,25 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
             </div>
 
             {/* Sidebar - Additional Info */}
-            <div className="lg:col-span-2 space-y-6 sm:space-y-8">
+            <div className="lg:col-span-2 space-y-6">
               {/* Response Time Card */}
-              <Card className="bg-gradient-to-br from-orange-500/10 to-amber-600/5 backdrop-blur-sm border border-orange-500/20 p-6 sm:p-8">
+              <Card className={`backdrop-blur-sm border p-6 sm:p-8 ${
+                isDarkMode
+                  ? 'bg-gradient-to-br from-orange-500/10 to-amber-600/5 border-orange-500/20'
+                  : 'bg-gradient-to-br from-orange-100 to-amber-50 border-orange-200'
+              }`}>
                 <div className="text-center">
                   <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                     <Clock className="w-6 h-6 text-white" />
                   </div>
-                  <h4 className="text-lg font-semibold text-white mb-2">Quick Response</h4>
-                  <p className="text-gray-300 text-sm leading-relaxed mb-3">
+                  <h4 className={`text-lg font-semibold mb-2 ${
+                    themeClasses.text.primary
+                  }`}>
+                    Quick Response
+                  </h4>
+                  <p className={`text-sm leading-relaxed mb-3 ${
+                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                  }`}>
                     I typically respond to all inquiries within 2-4 hours during business days.
                   </p>
                   <div className="text-orange-500 text-sm font-medium">
@@ -265,19 +367,35 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
               </Card>
 
               {/* Social Media */}
-              <Card className="bg-gradient-to-b from-gray-900/50 to-black/30 backdrop-blur-sm border border-white/10 p-6 sm:p-8">
+              <Card className={`backdrop-blur-sm border p-6 sm:p-8 ${
+                isDarkMode
+                  ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
+                  : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
+              }`}>
                 <div className="text-center">
-                  <h4 className="text-lg font-semibold text-white mb-4">Follow My Work</h4>
-                  <p className="text-gray-400 text-sm mb-6">
+                  <h4 className={`text-lg font-semibold mb-4 ${
+                    themeClasses.text.primary
+                  }`}>
+                    Follow My Work
+                  </h4>
+                  <p className={`text-sm mb-6 ${
+                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                  }`}>
                     Stay updated with my latest projects and behind-the-scenes content
                   </p>
                   <div className="flex justify-center gap-3">
                     {socialMedia.map((social, index) => (
                       <button
                         key={index}
-                        className="w-12 h-12 bg-black/50 backdrop-blur-md border border-white/10 rounded-xl flex items-center justify-center hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 group"
+                        className={`w-12 h-12 backdrop-blur-md border rounded-xl flex items-center justify-center hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 group ${
+                          isDarkMode
+                            ? 'bg-black/50 border-white/10'
+                            : 'bg-white/50 border-gray-300'
+                        }`}
                       >
-                        <social.icon className={`w-5 h-5 text-gray-400 ${social.color} transition-colors duration-300`} />
+                        <social.icon className={`w-5 h-5 transition-colors duration-300 ${
+                          isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                        } ${social.color}`} />
                       </button>
                     ))}
                   </div>
@@ -285,19 +403,33 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
               </Card>
 
               {/* Business Hours */}
-              <Card className="bg-gradient-to-b from-gray-900/50 to-black/30 backdrop-blur-sm border border-white/10 p-6 sm:p-8">
+              <Card className={`backdrop-blur-sm border p-6 sm:p-8 ${
+                isDarkMode
+                  ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
+                  : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
+              }`}>
                 <div className="text-center">
-                  <h4 className="text-lg font-semibold text-white mb-4">Business Hours</h4>
+                  <h4 className={`text-lg font-semibold mb-4 ${
+                    themeClasses.text.primary
+                  }`}>
+                    Business Hours
+                  </h4>
                   <div className="space-y-2 text-sm">
-                    <div className="flex justify-between text-gray-300">
+                    <div className={`flex justify-between ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
                       <span>Monday - Friday</span>
                       <span className="text-orange-500">9:00 AM - 6:00 PM</span>
                     </div>
-                    <div className="flex justify-between text-gray-300">
+                    <div className={`flex justify-between ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
                       <span>Saturday</span>
                       <span className="text-orange-500">10:00 AM - 4:00 PM</span>
                     </div>
-                    <div className="flex justify-between text-gray-300">
+                    <div className={`flex justify-between ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}>
                       <span>Sunday</span>
                       <span className="text-orange-500">By Appointment</span>
                     </div>
@@ -311,10 +443,3 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
     </section>
   );
 };
-
-// Add the Clock icon component
-const Clock = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-  </svg>
-);

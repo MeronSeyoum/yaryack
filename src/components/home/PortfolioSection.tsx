@@ -26,7 +26,7 @@ const PORTFOLIO_VIDEOS = [
     thumbnail: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=500&h=500&fit=crop",
     videoUrl: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
     duration: "2:45",
-    category: "Photos" as PortfolioCategory
+    category: "Event" as PortfolioCategory
   },
   {
     id: 2,
@@ -44,13 +44,7 @@ const PORTFOLIO_VIDEOS = [
     duration: "3:15",
     category: "Commercial" as PortfolioCategory
   },
- 
 ];
-
-// Update categories to replace 'Event' with 'Photos'
-const UPDATED_CATEGORIES = PORTFOLIO_CATEGORIES.map(cat => 
-  cat === 'Event' ? 'Event' : cat
-) as PortfolioCategory[];
 
 export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses }) => {
   const [activeCategory, setActiveCategory] = useState<PortfolioCategory | 'All' | 'Video'>('Event');
@@ -67,6 +61,12 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+
+  // Determine if we're in dark mode
+  const isDarkMode = themeClasses.bg.primary.includes('black') || 
+                    themeClasses.bg.primary.includes('gray-900') ||
+                    themeClasses.bg.primary.includes('gray-800') ||
+                    themeClasses.text.primary.includes('white');
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 1024);
@@ -256,14 +256,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modalState.isOpen]);
 
-  const stats = [
-    { icon: Award, value: '5+', label: 'Years Experience' },
-    { icon: Users, value: '500+', label: 'Happy Clients' },
-    { icon: Camera, value: '1000+', label: 'Photos Captured' },
-    { icon: Video, value: '100+', label: 'Videos Produced' },
-    { icon: Star, value: '50+', label: 'Events Covered' }
-  ];
-
   const mobileLayouts = [
     "row-span-2 col-span-2",
     "row-span-1 col-span-1",
@@ -301,42 +293,56 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
     <>
       <section id="portfolio" className={`border-t ${themeClasses.border} min-h-screen`}>
         <div className="mx-auto">
-          {/* Section Header */}
-          <div className={`p-4 sm:p-8 lg:px-16 border-b ${themeClasses.border}`}>
+          {/* Section Header - Reduced spacing */}
+          <div className={`p-4 sm:p-6 lg:px-16 border-b ${themeClasses.border}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-8 bg-orange-500 rounded-full"></div>
-                <p className="text-sm text-gray-400 uppercase tracking-wider">Featured Work</p>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} uppercase tracking-wider`}>
+                  Featured Work
+                </p>
               </div>
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-light">Portfolio</h2>
+              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light ${themeClasses.text.primary}`}>
+                Portfolio
+              </h2>
             </div>
           </div>
         </div>
 
         <div className="mx-auto px-4 sm:px-6 lg:px-16 min-h-[calc(100vh-80px)]">
-          {/* Main Content Grid */}
-          <div className="flex flex-col lg:grid lg:grid-cols-[300px_1fr] h-full gap-6 lg:gap-8 py-">
+          {/* Main Content Grid - Reduced gap */}
+          <div className="flex flex-col lg:grid lg:grid-cols-[20%_1fr] h-full gap-4 lg:gap-6">
             
             {/* Left Sidebar - Categories & Info */}
-            <div className={`flex flex-col gap-6 lg:gap-8 border-r ${themeClasses.border} `}>
+            <div className={`flex flex-col gap-4 lg:gap-6 border-r lg:pt-5 pr-4 ${themeClasses.border}`}>
               {/* Categories Card */}
-              <div className="bg-gradient-to-b from-gray-900/50 to-black/30 backdrop-blur-sm  py-6 pr-6 mt-0 lg:mt-20">
-                <div className="flex items-center gap-3 mb-6">
+              <div className={`backdrop-blur-lg rounded-xl border py-4 p-4 ${
+                isDarkMode 
+                  ? 'bg-gradient-to-r from-orange-900/50 to-orange-800/50 border-orange-900/30' 
+                  : 'bg-gradient-to-r from-orange-100 to-orange-50 border-orange-200'
+              }`}>
+                <div className="flex items-center gap-3 mb-4">
                   <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
                     <div className="w-4 h-4 bg-white rounded-full"></div>
                   </div>
-                  <h3 className="text-lg font-semibold text-white">Categories</h3>
+                  <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                    Categories
+                  </h3>
                 </div>
                 
                 <div className="space-y-2">
-                  {[...UPDATED_CATEGORIES, 'Video'].map((category) => (
+                  {[...PORTFOLIO_CATEGORIES, 'Video'].map((category) => (
                     <button
                       key={category}
                       onClick={() => setActiveCategory(category as any)}
                       className={`w-full text-left p-3 rounded-xl transition-all duration-300 flex items-center gap-3 group ${
                         activeCategory === category
                           ? 'bg-orange-500/20 border border-orange-500/30 text-orange-500'
-                          : 'bg-black/20 border border-white/5 hover:bg-white/5 text-gray-300 hover:text-white'
+                          : `${
+                              isDarkMode 
+                                ? 'bg-black/60 border border-white/20 hover:bg-white/5 text-gray-300 hover:text-white'
+                                : 'bg-white/60 border border-gray-300 hover:bg-gray-100 text-gray-700 hover:text-gray-900'
+                            }`
                       }`}
                     >
                       <div className={`w-2 h-2 rounded-full transition-colors ${
@@ -346,7 +352,9 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                         {category}
                         {category === 'Video' && <Video className="w-3 h-3" />}
                       </span>
-                      <div className="ml-auto text-xs opacity-60">
+                      <div className={`ml-auto text-xs ${
+                        activeCategory === category ? 'text-orange-400' : 'opacity-60'
+                      }`}>
                         {category === 'Video' 
                           ? PORTFOLIO_VIDEOS.length 
                           : category === 'All'
@@ -360,14 +368,22 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
               </div>
 
               {/* CTA Card */}
-              <div className="hidden lg:block bg-gradient-to-br from-orange-500/10 to-amber-600/5 backdrop-blur-sm rounded-2xl my-6 mr-6 p-6 border border-orange-500/20">
+              <div className={`hidden lg:block backdrop-blur-sm rounded-2xl p-4 border ${
+                isDarkMode 
+                  ? 'bg-gradient-to-br from-orange-500/10 to-amber-600/5 border-orange-500/20' 
+                  : 'bg-gradient-to-br from-orange-100 to-amber-50 border-orange-200'
+              }`}>
                 <div className="text-center space-y-4">
                   <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center mx-auto shadow-lg">
                     <Calendar className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h4 className="text-white font-semibold mb-2">Ready to Begin?</h4>
-                    <p className="text-gray-300 text-sm leading-relaxed">
+                    <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                      Ready to Begin?
+                    </h4>
+                    <p className={`text-sm leading-relaxed ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                    }`}>
                       Let's create something beautiful together. Book your session today.
                     </p>
                   </div>
@@ -386,23 +402,29 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
 
             {/* Right Content - Portfolio Grid */}
             <div className="flex-1 min-h-[600px]">
-              {/* Portfolio Header */}
-              <div className="mb-6 lg:mt-8">
+              {/* Portfolio Header - Reduced margin */}
+              <div className="mb-4 lg:mt-4">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-semibold text-white mb-2">
+                    <h3 className={`text-xl sm:text-2xl font-semibold mb-2 ${themeClasses.text.primary}`}>
                       {isVideoCategory ? 'Video Productions' : `${activeCategory} Photography`}
                     </h3>
-                    <p className="text-gray-400 text-sm max-w-2xl">
+                    <p className={`text-sm max-w-2xl ${
+                      isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                    }`}>
                       {isVideoCategory 
                         ? 'Explore my video productions across different categories. Each video tells a unique story through motion and sound.'
                         : 'Explore my work across different photography categories. Each image tells a unique story of authentic moments captured with passion and precision.'
                       }
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 bg-black/40 rounded-full px-4 py-2 border border-white/10">
+                  <div className={`flex items-center gap-2 rounded-full px-4 py-2 border ${
+                    isDarkMode 
+                      ? 'bg-black/40 border-white/10 text-white/80' 
+                      : 'bg-gray-100 border-gray-300 text-gray-700'
+                  }`}>
                     <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm text-white/80">
+                    <span className="text-sm">
                       {isVideoCategory 
                         ? `${displayVideos.length} ${displayVideos.length === 1 ? 'Video' : 'Videos'}`
                         : `${displayImages.length} ${displayImages.length === 1 ? 'Image' : 'Images'}`
@@ -415,7 +437,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
               {/* Portfolio Grid */}
               <div 
                 ref={scrollContainerRef}
-                className="h-[calc(100vh-280px)] lg:h-[calc(100vh-0px)] overflow-y-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-gray-800 hover:scrollbar-thumb-orange-600"
+                className="h-[calc(100vh-280px)] lg:h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-gray-800 hover:scrollbar-thumb-orange-600"
               >
                 {/* Video Grid - Only show for Video category */}
                 {isVideoCategory && (
@@ -482,7 +504,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
 
                 {/* Image Grid - Show for all categories except Video */}
                 {!isVideoCategory && (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4 auto-rows-[120px] sm:auto-rows-[140px] lg:auto-rows-[180px]">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4  sm:auto-rows-[140px] ">
                     {displayImages.map((img, idx) => {
                       const layout = isMobile 
                         ? mobileLayouts[idx % mobileLayouts.length] 
@@ -497,7 +519,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                           <img
                             src={img}
                             alt={`${activeCategory} photography ${idx + 1}`}
-                            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+                            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-100"
                           />
                           
                           {/* Overlay Effects */}
@@ -531,13 +553,18 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                 {/* Empty State */}
                 {(displayImages.length === 0 && !isVideoCategory) || (displayVideos.length === 0 && isVideoCategory) && (
                   <div className="text-center py-12">
-                    <div className="w-16 h-16 bg-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
-                      {isVideoCategory ? <Video className="w-8 h-8 text-gray-600" /> : <Camera className="w-8 h-8 text-gray-600" />}
+                    <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                      isDarkMode ? 'bg-gray-800' : 'bg-gray-200'
+                    }`}>
+                      {isVideoCategory ? 
+                        <Video className={`w-8 h-8 ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`} /> : 
+                        <Camera className={`w-8 h-8 ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`} />
+                      }
                     </div>
-                    <h4 className="text-white text-lg font-semibold mb-2">
+                    <h4 className={`text-lg font-semibold mb-2 ${themeClasses.text.primary}`}>
                       No {isVideoCategory ? 'Videos' : 'Images'} Found
                     </h4>
-                    <p className="text-gray-400 text-sm">
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                       No {isVideoCategory ? 'videos' : 'images'} available for {activeCategory} category.
                     </p>
                   </div>

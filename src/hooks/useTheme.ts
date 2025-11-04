@@ -46,7 +46,7 @@ export const useTheme = () => {
           muted: "text-gray-500",
           accent: "text-orange-500",
         },
-        border: "border-gray-200",
+        border: "border-gray-300",
       };
 
   return {
