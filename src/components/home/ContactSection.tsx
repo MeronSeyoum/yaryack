@@ -63,7 +63,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
       icon: Mail,
       title: "Email",
       content: "hello@yaryackphotography.ca",
-      subtitle: "I'll respond within 24 hours"
+      subtitle: "Response within 24h"
     },
     {
       icon: Phone,
@@ -86,7 +86,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
   ];
 
   return (
-    <section id="contact" className={`relative border-t ${themeClasses.border} py-12 sm:py-16 lg:py-20 overflow-hidden`}>
+    <section id="contact" className={`relative border-t ${themeClasses.border} py-8 sm:py-12 overflow-hidden`}>
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -106,52 +106,51 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
         }`}></div>
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-2 h-8 bg-orange-500 rounded-full"></div>
-            <p className={`text-sm uppercase tracking-wider ${
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
+        {/* Section Header - Compact */}
+        <div className="text-center mb-6 sm:mb-8">
+          <div className="flex items-center justify-center gap-2 mb-3">
+            <div className="w-1.5 h-8 bg-orange-500 rounded-full"></div>
+            <p className={`text-xl uppercase tracking-wider ${
               isDarkMode ? 'text-gray-400' : 'text-gray-600'
             }`}>
               Get In Touch
             </p>
           </div>
-          <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-light mb-4 ${
+          <h2 className={`text-xl sm:text-2xl font-light mb-3 ${
             themeClasses.text.primary
           }`}>
             Let's Create
             <span className="font-medium bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent"> Together </span>
           </h2>
-          <p className={`text-sm sm:text-base max-w-2xl mx-auto leading-relaxed ${
+          <p className={`text-xs max-w-2xl mx-auto leading-relaxed ${
             isDarkMode ? 'text-gray-400' : 'text-gray-600'
           }`}>
-            Ready to capture your special moments? Contact me to discuss your photography needs and book your session. 
-            I'm here to bring your vision to life.
+            Ready to capture your special moments? Contact me to discuss your photography needs.
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto">
-          {/* Contact Info Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8 lg:mb-12">
+        <div className="max-w-5xl mx-auto">
+          {/* Contact Info Cards - Compact */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
             {contactInfo.map((item, index) => (
               <Card 
                 key={index}
-                className={`backdrop-blur-sm border p-6 sm:p-8 text-center transition-all duration-500 group ${
+                className={`backdrop-blur-sm border p-4 text-center transition-all duration-500 group ${
                   isDarkMode
                     ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10 hover:border-orange-500/30'
                     : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200 hover:border-orange-500/50'
                 }`}
               >
-                <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-orange-500 to-amber-600 rounded-2xl mx-auto mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
-                  <item.icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
+                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-md">
+                  <item.icon className="w-4 h-4 text-white" />
                 </div>
-                <h3 className={`text-lg font-semibold mb-2 ${
+                <h3 className={`text-sm font-semibold mb-1 ${
                   themeClasses.text.primary
                 }`}>
                   {item.title}
                 </h3>
-                <p className="text-orange-500 text-sm sm:text-base font-medium mb-2">{item.content}</p>
+                <p className="text-orange-500 text-xs font-medium mb-1">{item.content}</p>
                 <p className={`text-xs ${
                   isDarkMode ? 'text-gray-400' : 'text-gray-600'
                 }`}>
@@ -161,29 +160,29 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
-            {/* Contact Form */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
+            {/* Contact Form - Compact */}
             <div className="lg:col-span-3">
-              <Card className={`backdrop-blur-sm border p-6 sm:p-8 lg:p-10 shadow-xl ${
+              <Card className={`backdrop-blur-sm border p-4 sm:p-6 shadow-lg ${
                 isDarkMode
                   ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
                   : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
               }`}>
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-                    <Send className="w-4 h-4 text-white" />
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                    <Send className="w-3 h-3 text-white" />
                   </div>
-                  <h3 className={`text-xl font-semibold ${
+                  <h3 className={`text-lg font-semibold ${
                     themeClasses.text.primary
                   }`}>
                     Send a Message
                   </h3>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className={`block text-sm mb-2 font-medium ${
+                      <label className={`block text-xs mb-1 font-medium ${
                         isDarkMode ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         Name *
@@ -194,7 +193,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                         value={formData.name}
                         onChange={handleFormChange}
                         required
-                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 placeholder-gray-500 ${
+                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 placeholder-gray-500 ${
                           isDarkMode
                             ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
                             : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
@@ -203,7 +202,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                       />
                     </div>
                     <div>
-                      <label className={`block text-sm mb-2 font-medium ${
+                      <label className={`block text-xs mb-1 font-medium ${
                         isDarkMode ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         Email *
@@ -214,7 +213,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                         value={formData.email}
                         onChange={handleFormChange}
                         required
-                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 placeholder-gray-500 ${
+                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 placeholder-gray-500 ${
                           isDarkMode
                             ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
                             : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
@@ -224,9 +223,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className={`block text-sm mb-2 font-medium ${
+                      <label className={`block text-xs mb-1 font-medium ${
                         isDarkMode ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         Phone
@@ -236,7 +235,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                         name="phone"
                         value={formData.phone}
                         onChange={handleFormChange}
-                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 placeholder-gray-500 ${
+                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 placeholder-gray-500 ${
                           isDarkMode
                             ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
                             : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
@@ -245,7 +244,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                       />
                     </div>
                     <div>
-                      <label className={`block text-sm mb-2 font-medium ${
+                      <label className={`block text-xs mb-1 font-medium ${
                         isDarkMode ? 'text-gray-300' : 'text-gray-700'
                       }`}>
                         Service Interest
@@ -254,7 +253,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                         name="service"
                         value={formData.service}
                         onChange={handleFormChange}
-                        className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl transition-all duration-300 ${
+                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 ${
                           isDarkMode
                             ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
                             : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
@@ -272,7 +271,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                   </div>
 
                   <div>
-                    <label className={`block text-sm mb-2 font-medium ${
+                    <label className={`block text-xs mb-1 font-medium ${
                       isDarkMode ? 'text-gray-300' : 'text-gray-700'
                     }`}>
                       Message *
@@ -282,17 +281,17 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                       value={formData.message}
                       onChange={handleFormChange}
                       required
-                      rows={5}
-                      className={`w-full border text-sm p-3 sm:p-4 focus:border-orange-500 focus:outline-none rounded-xl resize-none transition-all duration-300 placeholder-gray-500 ${
+                      rows={4}
+                      className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg resize-none transition-all duration-300 placeholder-gray-500 ${
                         isDarkMode
                           ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
                           : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
                       }`}
-                      placeholder="Tell me about your project, preferred dates, and any specific requirements..."
+                      placeholder="Tell me about your project..."
                     ></textarea>
                   </div>
 
-                  <div className={`flex items-start gap-3 p-3 rounded-xl border ${
+                  <div className={`flex items-start gap-2 p-2 rounded-lg border ${
                     isDarkMode 
                       ? 'bg-black/20 border-white/5' 
                       : 'bg-gray-100/50 border-gray-200'
@@ -302,35 +301,34 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                       name="agree"
                       checked={formData.agree}
                       onChange={handleFormChange}
-                      className={`w-4 h-4 text-orange-500 focus:ring-orange-500 rounded mt-1 flex-shrink-0 ${
+                      className={`w-3.5 h-3.5 text-orange-500 focus:ring-orange-500 rounded mt-0.5 flex-shrink-0 ${
                         isDarkMode 
                           ? 'bg-black/50 border-gray-600' 
                           : 'bg-white border-gray-300'
                       }`}
                     />
-                    <span className={`text-sm leading-relaxed ${
+                    <span className={`text-xs leading-relaxed ${
                       isDarkMode ? 'text-gray-300' : 'text-gray-700'
                     }`}>
-                      I agree to the privacy policy and terms of service. Your information is secure and will never be shared with third parties.
+                      I agree to the privacy policy and terms of service.
                     </span>
                   </div>
 
                   <Button
                     type="submit"
                     disabled={isSubmitting || !formData.agree}
-                    size="lg"
-                    className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 border-0 shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed py-4"
+                    className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 border-0 shadow-md hover:shadow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed py-2.5 text-sm"
                   >
                     {isSubmitting ? (
-                      <div className="flex items-center gap-3">
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Sending Message...</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        <span>Sending...</span>
                       </div>
                     ) : (
-                      <div className="flex items-center gap-3">
-                        <Send className="w-5 h-5" />
-                        <span className="text-base font-semibold">Send Message</span>
-                        <ChevronRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                      <div className="flex items-center gap-2">
+                        <Send className="w-4 h-4" />
+                        <span className="font-semibold">Send Message</span>
+                        <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                       </div>
                     )}
                   </Button>
@@ -338,62 +336,62 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
               </Card>
             </div>
 
-            {/* Sidebar - Additional Info */}
-            <div className="lg:col-span-2 space-y-6">
+            {/* Sidebar - Additional Info - Compact */}
+            <div className="lg:col-span-2 space-y-4">
               {/* Response Time Card */}
-              <Card className={`backdrop-blur-sm border p-6 sm:p-8 ${
+              <Card className={`backdrop-blur-sm border p-4 ${
                 isDarkMode
                   ? 'bg-gradient-to-br from-orange-500/10 to-amber-600/5 border-orange-500/20'
                   : 'bg-gradient-to-br from-orange-100 to-amber-50 border-orange-200'
               }`}>
                 <div className="text-center">
-                  <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                    <Clock className="w-6 h-6 text-white" />
+                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-md">
+                    <Clock className="w-4 h-4 text-white" />
                   </div>
-                  <h4 className={`text-lg font-semibold mb-2 ${
+                  <h4 className={`text-sm font-semibold mb-1 ${
                     themeClasses.text.primary
                   }`}>
                     Quick Response
                   </h4>
-                  <p className={`text-sm leading-relaxed mb-3 ${
+                  <p className={`text-xs leading-relaxed mb-2 ${
                     isDarkMode ? 'text-gray-300' : 'text-gray-600'
                   }`}>
-                    I typically respond to all inquiries within 2-4 hours during business days.
+                    I respond within 2-4 hours on business days.
                   </p>
-                  <div className="text-orange-500 text-sm font-medium">
-                    Response Time: 2-4 hours
+                  <div className="text-orange-500 text-xs font-medium">
+                    Response: 2-4 hours
                   </div>
                 </div>
               </Card>
 
               {/* Social Media */}
-              <Card className={`backdrop-blur-sm border p-6 sm:p-8 ${
+              <Card className={`backdrop-blur-sm border p-4 ${
                 isDarkMode
                   ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
                   : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
               }`}>
                 <div className="text-center">
-                  <h4 className={`text-lg font-semibold mb-4 ${
+                  <h4 className={`text-sm font-semibold mb-2 ${
                     themeClasses.text.primary
                   }`}>
                     Follow My Work
                   </h4>
-                  <p className={`text-sm mb-6 ${
+                  <p className={`text-xs mb-3 ${
                     isDarkMode ? 'text-gray-400' : 'text-gray-600'
                   }`}>
-                    Stay updated with my latest projects and behind-the-scenes content
+                    Latest projects & behind-the-scenes
                   </p>
-                  <div className="flex justify-center gap-3">
+                  <div className="flex justify-center gap-2">
                     {socialMedia.map((social, index) => (
                       <button
                         key={index}
-                        className={`w-12 h-12 backdrop-blur-md border rounded-xl flex items-center justify-center hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 group ${
+                        className={`w-8 h-8 backdrop-blur-md border rounded-lg flex items-center justify-center hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 group ${
                           isDarkMode
                             ? 'bg-black/50 border-white/10'
                             : 'bg-white/50 border-gray-300'
                         }`}
                       >
-                        <social.icon className={`w-5 h-5 transition-colors duration-300 ${
+                        <social.icon className={`w-3.5 h-3.5 transition-colors duration-300 ${
                           isDarkMode ? 'text-gray-400' : 'text-gray-600'
                         } ${social.color}`} />
                       </button>
@@ -403,35 +401,35 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
               </Card>
 
               {/* Business Hours */}
-              <Card className={`backdrop-blur-sm border p-6 sm:p-8 ${
+              <Card className={`backdrop-blur-sm border p-4 ${
                 isDarkMode
                   ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
                   : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
               }`}>
                 <div className="text-center">
-                  <h4 className={`text-lg font-semibold mb-4 ${
+                  <h4 className={`text-sm font-semibold mb-2 ${
                     themeClasses.text.primary
                   }`}>
                     Business Hours
                   </h4>
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-1 text-xs">
                     <div className={`flex justify-between ${
                       isDarkMode ? 'text-gray-300' : 'text-gray-700'
                     }`}>
-                      <span>Monday - Friday</span>
-                      <span className="text-orange-500">9:00 AM - 6:00 PM</span>
+                      <span>Mon - Fri</span>
+                      <span className="text-orange-500">9AM - 6PM</span>
                     </div>
                     <div className={`flex justify-between ${
                       isDarkMode ? 'text-gray-300' : 'text-gray-700'
                     }`}>
                       <span>Saturday</span>
-                      <span className="text-orange-500">10:00 AM - 4:00 PM</span>
+                      <span className="text-orange-500">10AM - 4PM</span>
                     </div>
                     <div className={`flex justify-between ${
                       isDarkMode ? 'text-gray-300' : 'text-gray-700'
                     }`}>
                       <span>Sunday</span>
-                      <span className="text-orange-500">By Appointment</span>
+                      <span className="text-orange-500">Appointment</span>
                     </div>
                   </div>
                 </div>
