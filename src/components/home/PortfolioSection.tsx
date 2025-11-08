@@ -261,7 +261,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
       <section  id="portfolio" className={`min-h-screen  ${themeClasses.bg.primary}`}>
         <div className="mx-auto">
           {/* Section Header */}
-          <div className={`p-4 lg:px-16 border-b border-t ${themeClasses.border}`}>
+          <div className={`p-2 lg:px-16 border-b border-t ${themeClasses.border}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-8 bg-orange-500 rounded-full"></div>
@@ -276,7 +276,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
           </div>
         </div>
 
-        <div className="mx-auto px-6 lg:px-16 py-8">
+        <div className="mx-auto px-3 lg:px-16 py-8">
           {/* Main Content Grid */}
           <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-8">
             

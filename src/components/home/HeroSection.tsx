@@ -85,21 +85,31 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
           alt="Professional photography by Yaryack"
           className="lg:hidden w-full h-full object-cover filter grayscale"
         />
-        {/* Dynamic gradient based on theme */}
-        <div 
-          className="absolute inset-0"
-          style={{
+      {/* Desktop Gradient - Only shows on lg screens and above */}
+<div 
+  className="hidden lg:block absolute inset-0"
+  style={{
+    background: isDarkMode 
+      ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.8) 100%)'
+      : 'radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.9) 100%)'
+  }}
+/>
+
+{/* Mobile Gradient - Shows on all screens below lg */}
+<div 
+  className="lg:hidde absolute inset-0"
+   style={{
             background: isDarkMode 
-              ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.8) 100%)'
-              : 'radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.9) 100%)'
+              ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.6) 100%)'
+              : 'radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0.9) 90%)'
           }}
-        />
+/>
       </div>
 
-      <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-16">
+      <div className="relative z-10 mx-auto px-3 sm:px-3 lg:px-16">
         <div className="flex flex-col lg:grid lg:grid-cols-[1fr_20%] min-h-screen gap-6 lg:gap-8">
           {/* Main Content Area - Centered vertically */}
-          <div className="flex flex-col justify-end lg:justify-center py-6  sm:py-8 lg:py-12 min-h-[80vh] lg:min-h-auto ">
+          <div className="flex flex-col justify-end lg:justify-center py-6  sm:py-8 lg:py-12 min-h-[70vh] lg:min-h-auto ">
             {/* Header Section */}
             <div className="space-y-6 sm:space-y-8 lg:space-y-28 ">
               {/* Location Badge */}
@@ -186,7 +196,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
 
               {/* Trust Indicator */}
               <div 
-                className={`lg:relative absolute flex gap-4 items-center backdrop-blur-sm rounded-2xl  p-4 border ${
+                className={`lg:relative absolute flex gap-4 items-center backdrop-blur-sm rounded-2xl mr-3  p-4 border ${
                   themeClasses.border
                 }`}
                 style={{
@@ -248,7 +258,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
 
         {/* Mobile Enhanced Slideshow */}
         <div className="lg:hidden pb-8 pt-6">
-          <div className="max-w-2xl mx-auto px-2">
+          <div className="max-w-2xl mx-auto ">
             {/* Slideshow Header */}
             <div className="flex items-center justify-between mb-4 px-2">
               <h3 className={`text-lg font-medium ${themeClasses.text.primary}`}>
