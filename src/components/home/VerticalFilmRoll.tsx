@@ -131,7 +131,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
 
         {/* Main Film Roll Container */}
         <div 
-          className={`relative p-4 rounded-lg border-2 mx-8 mb-20 ${
+          className={`relative p-4 rounded-lg border-2 mr-8 mb-20 ${
             isDarkMode 
               ? 'border-gray-700 bg-gradient-to-b from-gray-900 to-black' 
               : 'border-gray-300 bg-gradient-to-b from-gray-100 to-white'
@@ -149,7 +149,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
           } opacity-60`} />
 
           {/* Film Roll Body */}
-          <div className="relative">
+          <div className="relative ">
             {/* Left Edge Perforations */}
             <div className="absolute left-2 top-0 bottom-0 flex flex-col justify-around py-4 z-10">
               {[...Array(8)].map((_, i) => (
@@ -406,7 +406,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
 
         {/* High-Tech Film Canister - Centered and Aligned */}
         <motion.div 
-          className="absolute -bottom-24 left-1 -translate-x-1/2 z-30 w-full max-w-sm"
+          className="absolute -bottom-[120px] -left-3 -translate-x-1/ z-30 w-full  max-w-sm"
           animate={{
             y: canisterEngaged ? [0, -2, 0] : 0,
           }}
@@ -420,7 +420,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
           <div className="relative flex justify-center">
             {/* Main Canister Body */}
             <div 
-              className="w-64 h-20 rounded-2xl relative overflow-hidden shadow-2xl"
+              className="w-64 h-28 rounded-2xl relative overflow-hidden shadow-2xl"
               style={{
                 background: 'linear-gradient(145deg, #fde68a 0%, #fcd34d 15%, #fbbf24 35%, #f59e0b 55%, #d97706 75%, #b45309 95%)',
                 boxShadow: `

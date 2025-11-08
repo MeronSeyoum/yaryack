@@ -90,8 +90,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
   className="hidden lg:block absolute inset-0"
   style={{
     background: isDarkMode 
-      ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.8) 100%)'
-      : 'radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.9) 100%)'
+      ? 'linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, transparent 100%)'
+      : 'linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.5) 33%, rgba(255,255,255,0.2) 66%, transparent 100%)'
   }}
 />
 
@@ -109,7 +109,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
       <div className="relative z-10 mx-auto px-3 sm:px-3 lg:px-16">
         <div className="flex flex-col lg:grid lg:grid-cols-[1fr_20%] min-h-screen gap-6 lg:gap-8">
           {/* Main Content Area - Centered vertically */}
-          <div className="flex flex-col justify-end lg:justify-center py-6  sm:py-8 lg:py-12 min-h-[70vh] lg:min-h-auto ">
+          <div className="flex flex-col justify-end lg:justify-center py-6  sm:py-8 lg:py-12 min-h-[75vh] lg:min-h-auto ">
             {/* Header Section */}
             <div className="space-y-6 sm:space-y-8 lg:space-y-28 ">
               {/* Location Badge */}
@@ -206,11 +206,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
                 }}
               >
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center shadow-lg">
-                    <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                  <div className="lg:w-12 lg:h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center shadow-lg">
+                    <div className={`lg:w-8 lg:h-8 rounded-full flex items-center justify-center ${
                       themeClasses.bg.primary
                     }`}>
-                      <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
+                      <div className="lg:w-4 lg:h-4 bg-orange-500 rounded-full"></div>
                     </div>
                   </div>
                 </div>
@@ -230,13 +230,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
               themeClasses.border
             }`}
           >
-            <div className="py-4 rounded-lg">
+            <div className=" rounded-lg">
               <div className="mb-4">
-                <h3 className={`text-sm font-medium uppercase tracking-wider mb-2 ${
+                {/* <h3 className={`text-sm font-medium uppercase tracking-wider  ${
                   themeClasses.text.secondary
                 }`}>
                   Featured Gallery
-                </h3>
+                </h3> */}
                 <div className={`flex items-center gap-2 ${
                   themeClasses.bg.secondary
                 } rounded-full px-3 py-1 w-fit`}>
