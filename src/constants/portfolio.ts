@@ -24,8 +24,8 @@ import engagement8 from "../assets/images/engagement-8.jpg";
 import wedding1 from "../assets/images/wedding-1.jpg";
 import wedding2 from "../assets/images/wedding-2.jpg";
 import wedding3 from "../assets/images/wedding-3.jpg";
-import wedding4 from "../assets/images/wedding-4.jpg";
-import wedding5 from "../assets/images/wedding-5.jpg";
+import wedding4 from "../assets/images/wedding-5.jpg";
+import wedding5 from "../assets/images/wedding-8.jpg";
 import wedding6 from "../assets/images/wedding-6.jpg";
 import wedding7 from "../assets/images/wedding-7.jpg";
 import wedding8 from "../assets/images/wedding-8.jpg";
@@ -82,11 +82,11 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
 export const PORTFOLIO_TABS = ["All Work", "Featured", "Recent"];
 
 export const PORTFOLIO_IMAGES: Record<PortfolioCategory, string[]> = {
-  Event: [event1, event2, event3, event4, event5, event6, event7, event8],
-  Engagement: [engagement1, engagement2, engagement3, engagement4, engagement5, engagement6, engagement7, engagement8],
-  Wedding: [wedding1, wedding2, wedding3, wedding4, wedding5, wedding6, wedding7, wedding8],
+  Event: [event1, event8, event3, event5, event6, event7],
+  Engagement: [engagement1, engagement2, engagement3, engagement4, engagement5, engagement6],
+  Wedding: [wedding1, wedding2, wedding3, wedding4, wedding5, wedding6],
   Maternity: [maternity1, maternity2, maternity3, maternity4, maternity5, maternity6, maternity7, maternity8],
-  Portrait: [portrait1, portrait2, portrait3, portrait4, portrait5, portrait6, portrait7, portrait8],
+  Portrait: [portrait1, portrait2, portrait3, portrait4, portrait5, portrait6],
 };
 
 // Alternative implementation if you want to keep using portfolio images as fallbacks

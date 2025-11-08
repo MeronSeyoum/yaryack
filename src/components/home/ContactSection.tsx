@@ -20,12 +20,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
     agree: false,
   });
 
-  // Determine if we're in dark mode
-  const isDarkMode = themeClasses.bg.primary.includes('black') || 
-                    themeClasses.bg.primary.includes('gray-900') ||
-                    themeClasses.bg.primary.includes('gray-800') ||
-                    themeClasses.text.primary.includes('white');
-
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
     const { name, value, type } = e.target;
     const checked = (e.target as HTMLInputElement).checked;
@@ -86,7 +80,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
   ];
 
   return (
-    <section id="contact" className={`relative border-t ${themeClasses.border} py-8 sm:py-12 overflow-hidden`}>
+    <section id="contact" className="relative border-t border-emerald-500/20 py-8 sm:py-12 overflow-hidden" style={{
+      background: 'linear-gradient(to bottom, rgba(6, 78, 59, 0.95) 10%, rgba(4, 47, 46, 0.98) 100%)'
+    }}>
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -94,87 +90,62 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
           alt="Photography background"
           className="w-full h-full object-cover filter grayscale"
         />
-        <div className={`absolute inset-0 ${
-          isDarkMode 
-            ? 'bg-gradient-to-b from-black/60 via-black/90 to-black/60' 
-            : 'bg-gradient-to-b from-white/50 via-white/40 to-white/60'
-        }`}></div>
-        <div className={`absolute inset-0 ${
-          isDarkMode 
-            ? 'bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]' 
-            : 'bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(255,255,255,0.8)_100%)]'
-        }`}></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-emerald-900/0 via-emerald-900/30 to-emerald-900/70"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(6,78,59,0.8)_100%)]"></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Header - Compact */}
         <div className="text-center mb-6 sm:mb-8">
           <div className="flex items-center justify-center gap-2 mb-3">
-            <div className="w-1.5 h-8 bg-orange-500 rounded-full"></div>
-            <p className={`text-xl uppercase tracking-wider ${
-              isDarkMode ? 'text-gray-400' : 'text-gray-600'
-            }`}>
+            <div className="w-1.5 h-8 bg-emerald-400 rounded-full"></div>
+            <p className="text-xl uppercase tracking-wider text-white/80">
               Get In Touch
             </p>
           </div>
-          <h2 className={`text-xl sm:text-2xl font-light mb-3 ${
-            themeClasses.text.primary
-          }`}>
+          <h2 className="text-xl sm:text-2xl font-light mb-3 text-white">
             Let's Create
-            <span className="font-medium bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent"> Together </span>
+            <span className="font-medium bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent"> Together </span>
           </h2>
-          <p className={`text-xs max-w-2xl mx-auto leading-relaxed ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-600'
-          }`}>
+          <p className="text-xs max-w-2xl mx-auto leading-relaxed text-white/80">
             Ready to capture your special moments? Contact me to discuss your photography needs.
           </p>
         </div>
 
         <div className="max-w-5xl mx-auto">
-          {/* Contact Info Cards - Compact */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+          {/* Contact Info Cards - Compact with email and phone in same row on mobile */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
             {contactInfo.map((item, index) => (
               <Card 
                 key={index}
-                className={`backdrop-blur-sm border p-4 text-center transition-all duration-500 group ${
-                  isDarkMode
-                    ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10 hover:border-orange-500/30'
-                    : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200 hover:border-orange-500/50'
+                className={`backdrop-blur-sm border border-emerald-500/20 p-4 text-center transition-all duration-500 group bg-emerald-900/70 hover:border-emerald-400/50 ${
+                  // Hide location on mobile, show on desktop
+                  item.title === "Location" ? "hidden lg:block" : ""
                 }`}
               >
-                <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-amber-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-md">
+                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-md">
                   <item.icon className="w-4 h-4 text-white" />
                 </div>
-                <h3 className={`text-sm font-semibold mb-1 ${
-                  themeClasses.text.primary
-                }`}>
+                <h3 className="text-sm font-semibold mb-1 text-white">
                   {item.title}
                 </h3>
-                <p className="text-orange-500 text-xs font-medium mb-1">{item.content}</p>
-                <p className={`text-xs ${
-                  isDarkMode ? 'text-gray-400' : 'text-gray-600'
-                }`}>
+                <p className="text-emerald-400 text-xs font-medium mb-1">{item.content}</p>
+                <p className="text-xs text-white/80">
                   {item.subtitle}
                 </p>
               </Card>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 sm:gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* Contact Form - Compact */}
             <div className="lg:col-span-3">
-              <Card className={`backdrop-blur-sm border p-4 sm:p-6 shadow-lg ${
-                isDarkMode
-                  ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
-                  : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
-              }`}>
+              <Card className="backdrop-blur-sm border border-emerald-500/40 p-4 sm:p-6 shadow-lg bg-emerald-900/80">
                 <div className="flex items-center gap-2 mb-4">
-                  <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
                     <Send className="w-3 h-3 text-white" />
                   </div>
-                  <h3 className={`text-lg font-semibold ${
-                    themeClasses.text.primary
-                  }`}>
+                  <h3 className="text-lg font-semibold text-white">
                     Send a Message
                   </h3>
                 </div>
@@ -182,9 +153,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                 <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className={`block text-xs mb-1 font-medium ${
-                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                      }`}>
+                      <label className="block text-xs mb-1 font-medium text-white/90">
                         Name *
                       </label>
                       <input
@@ -193,18 +162,12 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                         value={formData.name}
                         onChange={handleFormChange}
                         required
-                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 placeholder-gray-500 ${
-                          isDarkMode
-                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
-                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
-                        }`}
+                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
                         placeholder="Your full name"
                       />
                     </div>
                     <div>
-                      <label className={`block text-xs mb-1 font-medium ${
-                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                      }`}>
+                      <label className="block text-xs mb-1 font-medium text-white/90">
                         Email *
                       </label>
                       <input
@@ -213,11 +176,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                         value={formData.email}
                         onChange={handleFormChange}
                         required
-                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 placeholder-gray-500 ${
-                          isDarkMode
-                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
-                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
-                        }`}
+                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
                         placeholder="your.email@example.com"
                       />
                     </div>
@@ -225,9 +184,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div>
-                      <label className={`block text-xs mb-1 font-medium ${
-                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                      }`}>
+                      <label className="block text-xs mb-1 font-medium text-white/90">
                         Phone
                       </label>
                       <input
@@ -235,45 +192,33 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                         name="phone"
                         value={formData.phone}
                         onChange={handleFormChange}
-                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 placeholder-gray-500 ${
-                          isDarkMode
-                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
-                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
-                        }`}
+                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
                         placeholder="Your phone number"
                       />
                     </div>
                     <div>
-                      <label className={`block text-xs mb-1 font-medium ${
-                        isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                      }`}>
+                      <label className="block text-xs mb-1 font-medium text-white/90">
                         Service Interest
                       </label>
                       <select
                         name="service"
                         value={formData.service}
                         onChange={handleFormChange}
-                        className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg transition-all duration-300 ${
-                          isDarkMode
-                            ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
-                            : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
-                        }`}
+                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
                       >
-                        <option value="">Select a service</option>
-                        <option value="portrait">Portrait Session</option>
-                        <option value="event">Event Photography</option>
-                        <option value="wedding">Wedding Photography</option>
-                        <option value="maternity">Maternity Shoot</option>
-                        <option value="engagement">Engagement Session</option>
-                        <option value="other">Other</option>
+                        <option value="" className="bg-emerald-900">Select a service</option>
+                        <option value="portrait" className="bg-emerald-900">Portrait Session</option>
+                        <option value="event" className="bg-emerald-900">Event Photography</option>
+                        <option value="wedding" className="bg-emerald-900">Wedding Photography</option>
+                        <option value="maternity" className="bg-emerald-900">Maternity Shoot</option>
+                        <option value="engagement" className="bg-emerald-900">Engagement Session</option>
+                        <option value="other" className="bg-emerald-900">Other</option>
                       </select>
                     </div>
                   </div>
 
                   <div>
-                    <label className={`block text-xs mb-1 font-medium ${
-                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
+                    <label className="block text-xs mb-1 font-medium text-white/90">
                       Message *
                     </label>
                     <textarea
@@ -282,34 +227,20 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                       onChange={handleFormChange}
                       required
                       rows={4}
-                      className={`w-full border text-xs p-2.5 focus:border-orange-500 focus:outline-none rounded-lg resize-none transition-all duration-300 placeholder-gray-500 ${
-                        isDarkMode
-                          ? 'bg-black/30 border-white/10 text-white focus:bg-black/50'
-                          : 'bg-white/50 border-gray-300 text-gray-900 focus:bg-white'
-                      }`}
+                      className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg resize-none transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
                       placeholder="Tell me about your project..."
                     ></textarea>
                   </div>
 
-                  <div className={`flex items-start gap-2 p-2 rounded-lg border ${
-                    isDarkMode 
-                      ? 'bg-black/20 border-white/5' 
-                      : 'bg-gray-100/50 border-gray-200'
-                  }`}>
+                  <div className="flex items-start gap-2 p-2 rounded-lg border border-emerald-500/20 bg-emerald-900/30">
                     <input
                       type="checkbox"
                       name="agree"
                       checked={formData.agree}
                       onChange={handleFormChange}
-                      className={`w-3.5 h-3.5 text-orange-500 focus:ring-orange-500 rounded mt-0.5 flex-shrink-0 ${
-                        isDarkMode 
-                          ? 'bg-black/50 border-gray-600' 
-                          : 'bg-white border-gray-300'
-                      }`}
+                      className="w-3.5 h-3.5 text-emerald-500 focus:ring-emerald-500 rounded mt-0.5 flex-shrink-0 bg-emerald-900/50 border-emerald-500/30"
                     />
-                    <span className={`text-xs leading-relaxed ${
-                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
+                    <span className="text-xs leading-relaxed text-white/90">
                       I agree to the privacy policy and terms of service.
                     </span>
                   </div>
@@ -317,7 +248,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
                   <Button
                     type="submit"
                     disabled={isSubmitting || !formData.agree}
-                    className="w-full bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 border-0 shadow-md hover:shadow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed py-2.5 text-sm"
+                    className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 border-0 shadow-md hover:shadow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed py-2.5 text-sm"
                   >
                     {isSubmitting ? (
                       <div className="flex items-center gap-2">
@@ -336,105 +267,30 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
               </Card>
             </div>
 
-            {/* Sidebar - Additional Info - Compact */}
-            <div className="lg:col-span-2 space-y-4">
-              {/* Response Time Card */}
-              <Card className={`backdrop-blur-sm border p-4 ${
-                isDarkMode
-                  ? 'bg-gradient-to-br from-orange-500/10 to-amber-600/5 border-orange-500/20'
-                  : 'bg-gradient-to-br from-orange-100 to-amber-50 border-orange-200'
-              }`}>
-                <div className="text-center">
-                  <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-md">
-                    <Clock className="w-4 h-4 text-white" />
-                  </div>
-                  <h4 className={`text-sm font-semibold mb-1 ${
-                    themeClasses.text.primary
-                  }`}>
-                    Quick Response
-                  </h4>
-                  <p className={`text-xs leading-relaxed mb-2 ${
-                    isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                  }`}>
-                    I respond within 2-4 hours on business days.
-                  </p>
-                  <div className="text-orange-500 text-xs font-medium">
-                    Response: 2-4 hours
-                  </div>
-                </div>
-              </Card>
-
+            {/* Sidebar - Additional Info - Hidden on mobile */}
+            {/* <div className="lg:col-span-2 space-y-4 hidden lg:block"> */}
               {/* Social Media */}
-              <Card className={`backdrop-blur-sm border p-4 ${
-                isDarkMode
-                  ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
-                  : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
-              }`}>
+              {/* <Card className="backdrop-blur-sm border border-emerald-500/20 p-4 bg-emerald-900/40">
                 <div className="text-center">
-                  <h4 className={`text-sm font-semibold mb-2 ${
-                    themeClasses.text.primary
-                  }`}>
+                  <h4 className="text-sm font-semibold mb-2 text-white">
                     Follow My Work
                   </h4>
-                  <p className={`text-xs mb-3 ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-600'
-                  }`}>
+                  <p className="text-xs mb-3 text-white/80">
                     Latest projects & behind-the-scenes
                   </p>
                   <div className="flex justify-center gap-2">
                     {socialMedia.map((social, index) => (
                       <button
                         key={index}
-                        className={`w-8 h-8 backdrop-blur-md border rounded-lg flex items-center justify-center hover:border-orange-500 hover:bg-orange-500/10 transition-all duration-300 group ${
-                          isDarkMode
-                            ? 'bg-black/50 border-white/10'
-                            : 'bg-white/50 border-gray-300'
-                        }`}
+                        className="w-8 h-8 backdrop-blur-md border border-emerald-500/20 rounded-lg flex items-center justify-center hover:border-emerald-400 hover:bg-emerald-500/10 transition-all duration-300 group bg-emerald-900/30"
                       >
-                        <social.icon className={`w-3.5 h-3.5 transition-colors duration-300 ${
-                          isDarkMode ? 'text-gray-400' : 'text-gray-600'
-                        } ${social.color}`} />
+                        <social.icon className={`w-3.5 h-3.5 transition-colors duration-300 text-white/80 ${social.color}`} />
                       </button>
                     ))}
                   </div>
                 </div>
-              </Card>
-
-              {/* Business Hours */}
-              <Card className={`backdrop-blur-sm border p-4 ${
-                isDarkMode
-                  ? 'bg-gradient-to-b from-gray-900/50 to-black/30 border-white/10'
-                  : 'bg-gradient-to-b from-white/80 to-gray-100/80 border-gray-200'
-              }`}>
-                <div className="text-center">
-                  <h4 className={`text-sm font-semibold mb-2 ${
-                    themeClasses.text.primary
-                  }`}>
-                    Business Hours
-                  </h4>
-                  <div className="space-y-1 text-xs">
-                    <div className={`flex justify-between ${
-                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      <span>Mon - Fri</span>
-                      <span className="text-orange-500">9AM - 6PM</span>
-                    </div>
-                    <div className={`flex justify-between ${
-                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      <span>Saturday</span>
-                      <span className="text-orange-500">10AM - 4PM</span>
-                    </div>
-                    <div className={`flex justify-between ${
-                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
-                    }`}>
-                      <span>Sunday</span>
-                      <span className="text-orange-500">Appointment</span>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </div>
+              </Card> */}
+            {/* </div> */}
           </div>
         </div>
       </div>

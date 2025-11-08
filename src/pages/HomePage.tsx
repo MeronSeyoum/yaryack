@@ -1,5 +1,5 @@
 // src/pages/HomePage.tsx
-import React from 'react';
+import React, {useState} from 'react';
 import { useTheme } from '../hooks/useTheme';
 import { useImageLoader } from '../hooks/useImageLoader';
 import { Navigation } from '../components/layout/Navigation';
@@ -27,16 +27,50 @@ const HomePage: React.FC = () => {
     heroMain, heroThumb1, heroThumb2, heroThumb3, heroThumb4, photographerPortrait
   ]);
 
+  const [activeSection, setActiveSection] = useState('home');
+
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+
+    const section = href.replace('#', '');
+    setActiveSection(section);
+
+    if (href === "#home") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      const element = document.querySelector(href);
+      if (element) {
+        const offset = 80;
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+      }
+    }
+  };
+
   if (!imagesLoaded) {
     return <LoadingSpinner />;
   }
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${themeClasses.bg.primary} ${themeClasses.text.primary}`}>
-      <Navigation isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+      <Navigation 
+        isDarkMode={isDarkMode} 
+        toggleTheme={toggleTheme} 
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        onNavClick={handleNavClick}
+      />
       
-      <HeroSection themeClasses={themeClasses}  />
-      <AboutSection themeClasses={themeClasses} />
+      <HeroSection themeClasses={themeClasses} />
+      <AboutSection 
+        themeClasses={themeClasses} 
+        isVisible={activeSection === 'about'} 
+      />
       <PortfolioSection themeClasses={themeClasses} />
       <ServicesSection themeClasses={themeClasses} />
       {/* <ProcessSection themeClasses={themeClasses} /> */}
