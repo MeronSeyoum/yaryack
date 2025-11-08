@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
 
   return (
     <footer className={`border-t py-12 ${baseClasses.bg}`}>
-      <div className="px-4 sm:px-6 lg:px-16 max-w-7xl mx-auto">
+      <div className="px-4 sm:px-6 lg:px-16  mx-auto">
         {/* Main Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           {/* Brand & Contact */}
@@ -84,7 +84,7 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
             <h3 className={`font-semibold mb-4 ${baseClasses.text.primary}`}>
               Quick Links
             </h3>
-            <ul className="space-y-2">
+            <ul className="space-y-2 ">
               {quickLinks.map((link) => (
                 <li key={link.name}>
                   <a

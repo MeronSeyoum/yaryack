@@ -27,7 +27,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ themeClasses }) => {
     <section id="about" className={`border-t ${themeClasses.border}`}>
       <div className="mx-auto">
         {/* Section Header */}
-        <div className={`p-4 sm:p-6 lg:px-16 border-b ${themeClasses.border}`}>
+        <div className={`p-4 sm:p-4 lg:px-16 border-b ${themeClasses.border}`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 sm:gap-3">
               <div className="w-1.5 sm:w-2 h-6 sm:h-8 bg-orange-500 rounded-full"></div>

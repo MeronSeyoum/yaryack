@@ -7,12 +7,11 @@ import { VerticalFilmRoll } from "./VerticalFilmRoll";
 
 // Import images
 import heroMain from "../../assets/images/hero-main.jpg";
+import heroMobile from "../../assets/images/hero-mobile.jpg"; // Add this import for mobile
 import heroThumb1 from "../../assets/images/hero-thumb-1.jpg";
 import heroThumb2 from "../../assets/images/hero-thumb-2.jpeg";
 import heroThumb3 from "../../assets/images/hero-thumb-3.jpeg";
 import heroThumb4 from "../../assets/images/hero-thumb-4.jpeg";
-// import heroThumb5 from "../../assets/images/hero-thumb-5.jpeg";
-// import heroThumb6 from "../../assets/images/hero-thumb-6.jpeg";
 
 import type { ThemeClasses } from "../../types";
 
@@ -23,14 +22,25 @@ interface HeroSectionProps {
 export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const heroImages = [heroThumb1, heroThumb2, heroThumb3, heroThumb4 ];
-  const imagesLoaded = useImageLoader([heroMain, ...heroImages]);
+  const [isMobile, setIsMobile] = useState(false);
+  const heroImages = [heroThumb1, heroThumb2, heroThumb3, heroThumb4];
+  
+  // Load both desktop and mobile images
+  const imagesLoaded = useImageLoader([heroMain, heroMobile, ...heroImages]);
 
   // Determine if we're in dark mode
   const isDarkMode = themeClasses.bg.primary.includes('black') || 
                     themeClasses.bg.primary.includes('gray-900') ||
                     themeClasses.bg.primary.includes('gray-800') ||
                     themeClasses.text.primary.includes('white');
+
+  // Check for mobile on mount and resize
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Auto-slide with pause on user interaction
   useEffect(() => {
@@ -60,34 +70,41 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
   if (!imagesLoaded) return null;
 
   return (
-    <section className={`relative min-h-screen  ${themeClasses.bg.primary}`}>
-      {/* Background Image with Theme Overlay */}
+    <section className={`relative min-h-screen ${themeClasses.bg.primary}`}>
+      {/* Background Image with Centered Gradient Overlay */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Desktop Image - hidden on mobile */}
         <img
           src={heroMain}
           alt="Professional photography by Yaryack"
-          className="w-full h-full object-cover filter grayscale"
+          className="hidden lg:block w-full h-full object-cover filter grayscale"
+        />
+        {/* Mobile Image - hidden on desktop */}
+        <img
+          src={heroMobile}
+          alt="Professional photography by Yaryack"
+          className="lg:hidden w-full h-full object-cover filter grayscale"
         />
         {/* Dynamic gradient based on theme */}
         <div 
           className="absolute inset-0"
           style={{
             background: isDarkMode 
-              ? 'radial-gradient(ellipse at center, transparent 20%, rgba(0,0,0,0.6) 45%, black 85%)'
-              : 'radial-gradient(ellipse at center, transparent 20%, rgba(255,255,255,0.7) 45%, rgba(255,255,255,0.95) 85%)'
+              ? 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.4) 40%, rgba(0,0,0,0.8) 100%)'
+              : 'radial-gradient(ellipse at center, transparent 0%, rgba(255,255,255,0.5) 40%, rgba(255,255,255,0.9) 100%)'
           }}
         />
       </div>
 
       <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-16">
         <div className="flex flex-col lg:grid lg:grid-cols-[1fr_20%] min-h-screen gap-6 lg:gap-8">
-          {/* Main Content Area */}
-          <div className="flex flex-col justify-between py-6 sm:py-8 lg:py-12 min-h-[90vh] lg:min-h-auto">
+          {/* Main Content Area - Centered vertically */}
+          <div className="flex flex-col justify-end lg:justify-center py-6  sm:py-8 lg:py-12 min-h-[80vh] lg:min-h-auto ">
             {/* Header Section */}
-            <div className="space-y-6 sm:space-y-8 lg:space-y-16  mt-16">
+            <div className="space-y-6 sm:space-y-8 lg:space-y-28 ">
               {/* Location Badge */}
               <div 
-                className={`inline-flex items-center gap-2 backdrop-blur-sm rounded-full px-4 py-2 border ${
+                className={`lg:inline-flex hidden items-center gap-2 backdrop-blur-sm rounded-full px-4 py-2 border ${
                   themeClasses.border
                 }`}
                 style={{
@@ -126,9 +143,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
             </div>
 
             {/* CTA Section */}
-            <div className="space-y-6 sm:space-y-8 mt-8 sm:mt-0">
+            <div className="space-y-6 sm:space-y-8 mt-8 sm:mt-12">
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start sm:items-center">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-start  sm:items-center">
                 <Button
                   onClick={() =>
                     document
@@ -157,19 +174,19 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
                   className={`w-full sm:w-auto backdrop-blur-sm ${
                     isDarkMode
                       ? 'border-white/40 text-white hover:bg-white/10'
-                      : 'border-gray-400 text-gray-700  hover:bg-gray-100'
+                      : 'border-gray-400 text-gray-700 hover:bg-gray-100'
                   }`}
                 >
                   <span className="flex items-center gap-3">
-                    <Eye className="w-5 h-5 text-gray-500" />
-                    <span className="text-base sm:text-lg  text-gray-500">View Portfolio</span>
+                    <Eye className="w-5 h-5 text-gray-800" />
+                    <span className="text-base sm:text-lg text-gray-800">View Portfolio</span>
                   </span>
                 </Button>
               </div>
 
               {/* Trust Indicator */}
               <div 
-                className={`flex gap-4 items-center backdrop-blur-sm rounded-2xl p-4 border ${
+                className={`lg:relative absolute flex gap-4 items-center backdrop-blur-sm rounded-2xl  p-4 border ${
                   themeClasses.border
                 }`}
                 style={{
@@ -199,11 +216,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
 
           {/* Desktop Vertical Film Roll */}
           <div
-            className={`hidden lg:flex flex-col justify-center border-l mt-[72px] px-4  ${
+            className={`hidden lg:flex flex-col justify-center border-l mt-[73px]  px-4 ${
               themeClasses.border
             }`}
           >
-            <div className="py-4  rounded-lg -mt-16">
+            <div className="py-4 rounded-lg">
               <div className="mb-4">
                 <h3 className={`text-sm font-medium uppercase tracking-wider mb-2 ${
                   themeClasses.text.secondary
@@ -297,8 +314,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 filter grayscale"
                 />
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+                {/* Centered Gradient Overlay for mobile slideshow */}
+                <div 
+                  className="absolute inset-0"
+                  style={{
+                    background: 'radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0.4) 100%)'
+                  }}
+                />
 
                 {/* Progress Bar */}
                 <div 

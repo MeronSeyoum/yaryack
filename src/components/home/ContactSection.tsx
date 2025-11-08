@@ -96,7 +96,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
         />
         <div className={`absolute inset-0 ${
           isDarkMode 
-            ? 'bg-gradient-to-b from-black/50 via-black/40 to-black/60' 
+            ? 'bg-gradient-to-b from-black/60 via-black/90 to-black/60' 
             : 'bg-gradient-to-b from-white/50 via-white/40 to-white/60'
         }`}></div>
         <div className={`absolute inset-0 ${

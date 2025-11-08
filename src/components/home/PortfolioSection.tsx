@@ -1,6 +1,6 @@
 // src/components/home/PortfolioSection.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, Calendar, Star, Users, Camera, Award, X, ZoomIn, ZoomOut, RotateCcw, Play, Video } from 'lucide-react';
+import { ChevronRight, Calendar, X, ZoomIn, ZoomOut, RotateCcw, Play, Video, Camera } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { PORTFOLIO_CATEGORIES, PORTFOLIO_IMAGES } from '../../constants/portfolio';
 import type { PortfolioCategory } from '../../types/portfolio';
@@ -8,14 +8,6 @@ import type { ThemeClasses } from '../../types';
 
 interface PortfolioSectionProps {
   themeClasses: ThemeClasses;
-}
-
-interface ImageModalState {
-  isOpen: boolean;
-  imageIndex: number;
-  scale: number;
-  position: { x: number; y: number };
-  isDragging: boolean;
 }
 
 // Sample video data - replace with your actual video URLs
@@ -47,18 +39,23 @@ const PORTFOLIO_VIDEOS = [
 ];
 
 export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses }) => {
-  const [activeCategory, setActiveCategory] = useState<PortfolioCategory | 'All' | 'Video'>('Event');
+  const [activeCategory, setActiveCategory] = useState<PortfolioCategory | 'Video'>('Event');
   const [isMobile, setIsMobile] = useState(false);
-  const [modalState, setModalState] = useState<ImageModalState>({
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    imageIndex: number;
+    scale: number;
+    position: { x: number; y: number };
+    isDragging: boolean;
+  }>({
     isOpen: false,
     imageIndex: 0,
     scale: 1,
     position: { x: 0, y: 0 },
     isDragging: false
   });
-  const [videoModal, setVideoModal] = useState({ isOpen: false, video: null as typeof PORTFOLIO_VIDEOS[0] | null });
+  const [videoModal, setVideoModal] = useState<{ isOpen: boolean; video: typeof PORTFOLIO_VIDEOS[0] | null }>({ isOpen: false, video: null });
   
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
@@ -77,34 +74,25 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
 
   // Get images based on active category
   const getDisplayImages = () => {
-    if (activeCategory === 'All') {
-      return Object.values(PORTFOLIO_IMAGES).flat().slice(0, 12);
-    }
     if (activeCategory === 'Video') {
-      return []; // Video category only shows videos
+      return [];
     }
-    // For photo categories, show images
     return PORTFOLIO_IMAGES[activeCategory as PortfolioCategory] || [];
   };
 
   // Get videos based on active category
   const getDisplayVideos = () => {
     if (activeCategory === 'Video') {
-      return PORTFOLIO_VIDEOS; // Video category shows all videos
+      return PORTFOLIO_VIDEOS;
     }
-    if (activeCategory === 'All') {
-      return []; // All category only shows images
-    }
-    // For specific photo categories, show related videos
     return PORTFOLIO_VIDEOS.filter(video => video.category === activeCategory);
   };
 
   const displayImages = getDisplayImages();
   const displayVideos = getDisplayVideos();
   const isVideoCategory = activeCategory === 'Video';
-  const isAllCategory = activeCategory === 'All';
 
-  // Image preview modal functions
+  // Image modal functions
   const openImageModal = (index: number) => {
     setModalState({
       isOpen: true,
@@ -156,7 +144,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
     setModalState(prev => ({
       ...prev,
       scale: Math.max(prev.scale - 0.5, 0.5),
-      position: { x: 0, y: 0 } // Reset position when zooming out to fit
+      position: { x: 0, y: 0 }
     }));
   };
 
@@ -168,14 +156,14 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
     }));
   };
 
-  // Mouse event handlers for image dragging
+  // Mouse drag handlers
   const handleMouseDown = (e: React.MouseEvent) => {
     if (modalState.scale <= 1) return;
     
     setModalState(prev => ({ ...prev, isDragging: true }));
     dragStartRef.current = {
-      x: e.clientX - prev.position.x,
-      y: e.clientY - prev.position.y
+      x: e.clientX - modalState.position.x,
+      y: e.clientY - modalState.position.y
     };
   };
 
@@ -195,15 +183,15 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
     setModalState(prev => ({ ...prev, isDragging: false }));
   };
 
-  // Touch event handlers for mobile
+  // Touch handlers
   const handleTouchStart = (e: React.TouchEvent) => {
     if (modalState.scale <= 1) return;
     
     const touch = e.touches[0];
     setModalState(prev => ({ ...prev, isDragging: true }));
     dragStartRef.current = {
-      x: touch.clientX - prev.position.x,
-      y: touch.clientY - prev.position.y
+      x: touch.clientX - modalState.position.x,
+      y: touch.clientY - modalState.position.y
     };
   };
 
@@ -256,45 +244,24 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [modalState.isOpen]);
 
-  const mobileLayouts = [
-    "row-span-2 col-span-2",
-    "row-span-1 col-span-1",
-    "row-span-1 col-span-1",
-    "row-span-2 col-span-2",
-    "row-span-1 col-span-2",
-    "row-span-2 col-span-1",
-    "row-span-2 col-span-1",
-    "row-span-1 col-span-2",
-  ];
-
-  const desktopLayouts = [
-    "row-span-2 col-span-1",
-    "row-span-1 col-span-1",
-    "row-span-1 col-span-1",
-    "row-span-2 col-span-1",
-    "row-span-3 col-span-1",
-    "row-span-1 col-span-1",
-    "row-span-2 col-span-1",
-    "row-span-2 col-span-2",
-    "row-span-1 col-span-1",
-    "row-span-1 col-span-1",
-    "row-span-2 col-span-1",
-    "row-span-2 col-span-1",
-  ];
-
-  const videoLayouts = [
-    "row-span-2 col-span-2",
-    "row-span-2 col-span-2",
-    "row-span-2 col-span-2",
-    "row-span-2 col-span-2",
+  // Masonry layout classes for different sizes
+  const masonryLayouts = [
+    "row-span-2",
+    "row-span-1",
+    "row-span-1",
+    "row-span-3",
+    "row-span-2",
+    "row-span-1",
+    "row-span-1",
+    "row-span-1",
   ];
 
   return (
     <>
-      <section id="portfolio" className={`border-t ${themeClasses.border} min-h-screen`}>
+      <section  id="portfolio" className={`min-h-screen  ${themeClasses.bg.primary}`}>
         <div className="mx-auto">
-          {/* Section Header - Reduced spacing */}
-          <div className={`p-4 sm:p-6 lg:px-16 border-b ${themeClasses.border}`}>
+          {/* Section Header */}
+          <div className={`p-4 lg:px-16 border-b border-t ${themeClasses.border}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-2 h-8 bg-orange-500 rounded-full"></div>
@@ -302,26 +269,26 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                   Featured Work
                 </p>
               </div>
-              <h2 className={`text-2xl sm:text-3xl lg:text-4xl font-light ${themeClasses.text.primary}`}>
+              <h2 className={`text-3xl lg:text-4xl font-light ${themeClasses.text.primary}`}>
                 Portfolio
               </h2>
             </div>
           </div>
         </div>
 
-        <div className="mx-auto px-4 sm:px-6 lg:px-16 min-h-[calc(100vh-80px)]">
-          {/* Main Content Grid - Reduced gap */}
-          <div className="flex flex-col lg:grid lg:grid-cols-[20%_1fr] h-full gap-4 lg:gap-6">
+        <div className="mx-auto px-6 lg:px-16 py-8">
+          {/* Main Content Grid */}
+          <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-8">
             
-            {/* Left Sidebar - Categories & Info */}
-            <div className={`flex flex-col gap-4 lg:gap-6 border-r lg:pt-5 pr-4 ${themeClasses.border}`}>
+            {/* Left Sidebar - Categories */}
+            <div className="flex flex-col gap-4 lg:gap-6">
               {/* Categories Card */}
-              <div className={`backdrop-blur-lg rounded-xl border py-4 p-4 ${
+              <div className={`backdrop-blur-lg rounded-xl border p-6 ${
                 isDarkMode 
                   ? 'bg-gradient-to-r from-orange-900/50 to-orange-800/50 border-orange-900/30' 
                   : 'bg-gradient-to-r from-orange-100 to-orange-50 border-orange-200'
               }`}>
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-6">
                   <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
                     <div className="w-4 h-4 bg-white rounded-full"></div>
                   </div>
@@ -334,7 +301,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                   {[...PORTFOLIO_CATEGORIES, 'Video'].map((category) => (
                     <button
                       key={category}
-                      onClick={() => setActiveCategory(category as any)}
+                      onClick={() => setActiveCategory(category)}
                       className={`w-full text-left p-3 rounded-xl transition-all duration-300 flex items-center gap-3 group ${
                         activeCategory === category
                           ? 'bg-orange-500/20 border border-orange-500/30 text-orange-500'
@@ -353,13 +320,11 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                         {category === 'Video' && <Video className="w-3 h-3" />}
                       </span>
                       <div className={`ml-auto text-xs ${
-                        activeCategory === category ? 'text-orange-400' : 'opacity-60'
+                        activeCategory === category ? 'text-orange-400' : isDarkMode ? 'text-gray-400' : 'text-gray-500'
                       }`}>
                         {category === 'Video' 
                           ? PORTFOLIO_VIDEOS.length 
-                          : category === 'All'
-                          ? Object.values(PORTFOLIO_IMAGES).flat().length
-                          : PORTFOLIO_IMAGES[category as PortfolioCategory]?.length || 0
+                          : PORTFOLIO_IMAGES[category]?.length || 0
                         }
                       </div>
                     </button>
@@ -368,7 +333,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
               </div>
 
               {/* CTA Card */}
-              <div className={`hidden lg:block backdrop-blur-sm rounded-2xl p-4 border ${
+              <div className={`hidden lg:block backdrop-blur-sm rounded-2xl p-6 border ${
                 isDarkMode 
                   ? 'bg-gradient-to-br from-orange-500/10 to-amber-600/5 border-orange-500/20' 
                   : 'bg-gradient-to-br from-orange-100 to-amber-50 border-orange-200'
@@ -381,9 +346,7 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                     <h4 className={`font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                       Ready to Begin?
                     </h4>
-                    <p className={`text-sm leading-relaxed ${
-                      isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                    }`}>
+                    <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                       Let's create something beautiful together. Book your session today.
                     </p>
                   </div>
@@ -401,23 +364,13 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
             </div>
 
             {/* Right Content - Portfolio Grid */}
-            <div className="flex-1 min-h-[600px]">
-              {/* Portfolio Header - Reduced margin */}
-              <div className="mb-4 lg:mt-4">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
-                  <div>
-                    <h3 className={`text-xl sm:text-2xl font-semibold mb-2 ${themeClasses.text.primary}`}>
-                      {isVideoCategory ? 'Video Productions' : `${activeCategory} Photography`}
-                    </h3>
-                    <p className={`text-sm max-w-2xl ${
-                      isDarkMode ? 'text-gray-400' : 'text-gray-600'
-                    }`}>
-                      {isVideoCategory 
-                        ? 'Explore my video productions across different categories. Each video tells a unique story through motion and sound.'
-                        : 'Explore my work across different photography categories. Each image tells a unique story of authentic moments captured with passion and precision.'
-                      }
-                    </p>
-                  </div>
+            <div className="flex-1">
+              {/* Portfolio Header */}
+              <div className="mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                  <h3 className={`text-2xl font-semibold ${themeClasses.text.primary}`}>
+                    {isVideoCategory ? 'Video Productions' : `${activeCategory} Photography`}
+                  </h3>
                   <div className={`flex items-center gap-2 rounded-full px-4 py-2 border ${
                     isDarkMode 
                       ? 'bg-black/40 border-white/10 text-white/80' 
@@ -434,142 +387,101 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
                 </div>
               </div>
 
-              {/* Portfolio Grid */}
-              <div 
-                ref={scrollContainerRef}
-                className="h-[calc(100vh-280px)] lg:h-[calc(100vh-200px)] overflow-y-auto scrollbar-thin scrollbar-thumb-orange-500 scrollbar-track-gray-800 hover:scrollbar-thumb-orange-600"
-              >
-                {/* Video Grid - Only show for Video category */}
-                {isVideoCategory && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 auto-rows-[200px] sm:auto-rows-[250px] lg:auto-rows-[300px] mb-6">
-                    {displayVideos.map((video, idx) => {
-                      const layout = isMobile 
-                        ? videoLayouts[idx % videoLayouts.length] 
-                        : "row-span-2 col-span-1";
-
-                      return (
-                        <div
-                          key={video.id}
-                          onClick={() => openVideoModal(video)}
-                          className={`relative ${layout} rounded-xl hover:scale-[1.02] transition-all duration-500 cursor-pointer overflow-hidden group`}
-                        >
-                          <img
-                            src={video.thumbnail}
-                            alt={video.title}
-                            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
-                          />
-                          
-                          {/* Video Overlay */}
-                          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-all duration-500"></div>
-                          
-                          {/* Play Button */}
-                          <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-16 h-16 bg-orange-500/90 group-hover:bg-orange-600 rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-2xl">
-                              <Play className="w-6 h-6 text-white ml-1" />
-                            </div>
-                          </div>
-                          
-                          {/* Video Info */}
-                          <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-0 group-hover:translate-y-0 transition-transform duration-500 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <p className="text-sm lg:text-base text-white font-medium">
-                                  {video.title}
-                                </p>
-                                <p className="text-xs text-gray-300 mt-1">
-                                  {video.duration} • {video.category}
-                                </p>
-                              </div>
-                              <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center opacity-100 group-hover:opacity-100 transition-opacity duration-300">
-                                <Play size={12} className="text-black" />
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Video Badge */}
-                          <div className="absolute top-3 left-3 flex items-center gap-2">
-                            <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full border border-white/20 flex items-center gap-1">
-                              <Video className="w-3 h-3" />
-                              Video
-                            </span>
-                            <span className="bg-blue-500/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full border border-blue-500/20">
-                              {video.duration}
-                            </span>
-                          </div>
+              {/* Video Grid */}
+              {isVideoCategory && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {displayVideos.map((video) => (
+                    <div
+                      key={video.id}
+                      onClick={() => openVideoModal(video)}
+                      className="relative aspect-video rounded-xl hover:scale-[1.02] transition-all duration-500 cursor-pointer overflow-hidden group"
+                    >
+                      <img
+                        src={video.thumbnail}
+                        alt={video.title}
+                        className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                      />
+                      
+                      {/* Play Button */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-16 h-16 bg-orange-500/90 group-hover:bg-orange-600 rounded-full flex items-center justify-center transform scale-90 group-hover:scale-100 transition-all duration-300 shadow-2xl">
+                          <Play className="w-6 h-6 text-white ml-1" />
                         </div>
-                      );
-                    })}
-                  </div>
-                )}
+                      </div>
+                      
+                      {/* Video Info */}
+                      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
+                        <p className="text-base text-white font-medium mb-1">
+                          {video.title}
+                        </p>
+                        <p className="text-xs text-gray-300">
+                          {video.duration} • {video.category}
+                        </p>
+                      </div>
 
-                {/* Image Grid - Show for all categories except Video */}
-                {!isVideoCategory && (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-4  sm:auto-rows-[140px] ">
-                    {displayImages.map((img, idx) => {
-                      const layout = isMobile 
-                        ? mobileLayouts[idx % mobileLayouts.length] 
-                        : desktopLayouts[idx % desktopLayouts.length];
-
-                      return (
-                        <div
-                          key={idx}
-                          onClick={() => openImageModal(idx)}
-                          className={`relative ${layout} rounded-xl hover:scale-[1.02] transition-all duration-500 cursor-pointer overflow-hidden group`}
-                        >
-                          <img
-                            src={img}
-                            alt={`${activeCategory} photography ${idx + 1}`}
-                            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-100"
-                          />
-                          
-                          {/* Overlay Effects */}
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-                          <div className="absolute inset-0 bg-orange-500/0 group-hover:bg-orange-500/5 transition-all duration-500"></div>
-                          
-                          {/* Info Panel */}
-                          <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-gradient-to-t from-black/90 via-black/60 to-transparent">
-                            <div className="flex items-center justify-between">
-                              <p className="text-xs lg:text-sm text-white font-medium">
-                                {activeCategory} #{idx + 1}
-                              </p>
-                              <div className="w-6 h-6 lg:w-8 lg:h-8 bg-orange-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
-                                <ChevronRight size={12} className="text-black lg:w-4 lg:h-4" />
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Category Badge */}
-                          <div className="absolute top-3 left-3">
-                            <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full border border-white/20">
-                              {activeCategory}
-                            </span>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
-
-                {/* Empty State */}
-                {(displayImages.length === 0 && !isVideoCategory) || (displayVideos.length === 0 && isVideoCategory) && (
-                  <div className="text-center py-12">
-                    <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
-                      isDarkMode ? 'bg-gray-800' : 'bg-gray-200'
-                    }`}>
-                      {isVideoCategory ? 
-                        <Video className={`w-8 h-8 ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`} /> : 
-                        <Camera className={`w-8 h-8 ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`} />
-                      }
+                      {/* Video Badge */}
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-black/60 backdrop-blur-sm text-white text-xs px-2 py-1 rounded-full border border-white/20 flex items-center gap-1">
+                          <Video className="w-3 h-3" />
+                          Video
+                        </span>
+                      </div>
                     </div>
-                    <h4 className={`text-lg font-semibold mb-2 ${themeClasses.text.primary}`}>
-                      No {isVideoCategory ? 'Videos' : 'Images'} Found
-                    </h4>
-                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                      No {isVideoCategory ? 'videos' : 'images'} available for {activeCategory} category.
-                    </p>
+                  ))}
+                </div>
+              )}
+
+              {/* Image Masonry Grid */}
+              {!isVideoCategory && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 auto-rows-[200px]">
+                  {displayImages.map((img, idx) => {
+                    const layout = masonryLayouts[idx % masonryLayouts.length];
+
+                    return (
+                      <div
+                        key={idx}
+                        onClick={() => openImageModal(idx)}
+                        className={`relative ${layout} rounded-xl hover:scale-[1.02] transition-all duration-500 cursor-pointer overflow-hidden group`}
+                      >
+                        <img
+                          src={img}
+                          alt={`${activeCategory} photography ${idx + 1}`}
+                          className="w-full h-full object-cover transition-all duration-500 group-hover:scale-105"
+                        />
+                        
+                        {/* Info Panel - Hover */}
+                        <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm text-white font-medium">
+                              {activeCategory} #{idx + 1}
+                            </p>
+                            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200">
+                              <ChevronRight size={16} className="text-black" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Empty State */}
+              {displayImages.length === 0 && !isVideoCategory && (
+                <div className="text-center py-12">
+                  <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+                    isDarkMode ? 'bg-gray-800' : 'bg-gray-200'
+                  }`}>
+                    <Camera className={`w-8 h-8 ${isDarkMode ? 'text-gray-600' : 'text-gray-500'}`} />
                   </div>
-                )}
-              </div>
+                  <h4 className={`text-lg font-semibold mb-2 ${themeClasses.text.primary}`}>
+                    No Images Found
+                  </h4>
+                  <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    No images available for {activeCategory} category.
+                  </p>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -578,7 +490,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
       {/* Image Preview Modal */}
       {modalState.isOpen && (
         <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          {/* Close Button */}
           <button
             onClick={closeImageModal}
             className="absolute top-4 right-4 z-50 w-10 h-10 bg-black/80 hover:bg-black rounded-full flex items-center justify-center text-white/80 hover:text-white transition-all duration-300 border border-white/20"
@@ -586,7 +497,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
             <X className="w-5 h-5" />
           </button>
 
-          {/* Navigation Arrows */}
           <button
             onClick={prevImage}
             className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 bg-black/80 hover:bg-black rounded-full flex items-center justify-center text-white/80 hover:text-white transition-all duration-300 border border-white/20"
@@ -601,7 +511,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Zoom Controls */}
           <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 bg-black/80 backdrop-blur-sm rounded-full px-4 py-2 border border-white/20">
             <button
               onClick={zoomOut}
@@ -634,12 +543,10 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
             </button>
           </div>
 
-          {/* Image Counter */}
           <div className="absolute top-4 left-1/2 -translate-x-1/2 z-50 bg-black/80 backdrop-blur-sm text-white px-4 py-2 rounded-full border border-white/20 text-sm">
             {modalState.imageIndex + 1} / {displayImages.length}
           </div>
 
-          {/* Image Container */}
           <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center overflow-hidden">
             <img
               ref={imageRef}
@@ -660,26 +567,12 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
               onTouchEnd={handleTouchEnd}
             />
           </div>
-
-          {/* Horizontal Scrollbar (appears when zoomed) */}
-          {modalState.scale > 1 && (
-            <div className="absolute bottom-16 left-4 right-4 z-50 h-2 bg-gray-800 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-orange-500 rounded-full transition-all duration-200"
-                style={{
-                  width: `${Math.min(100, 100 / modalState.scale)}%`,
-                  transform: `translateX(${Math.max(0, Math.min(100 - (100 / modalState.scale), (modalState.position.x / (imageRef.current?.offsetWidth || 1)) * 100))}%)`
-                }}
-              />
-            </div>
-          )}
         </div>
       )}
 
       {/* Video Preview Modal */}
       {videoModal.isOpen && videoModal.video && (
         <div className="fixed inset-0 bg-black/95 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          {/* Close Button */}
           <button
             onClick={closeVideoModal}
             className="absolute top-4 right-4 z-50 w-10 h-10 bg-black/80 hover:bg-black rounded-full flex items-center justify-center text-white/80 hover:text-white transition-all duration-300 border border-white/20"
@@ -687,7 +580,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
             <X className="w-5 h-5" />
           </button>
 
-          {/* Video Container */}
           <div className="relative w-full max-w-4xl aspect-video bg-black rounded-xl overflow-hidden">
             <video
               controls
@@ -699,7 +591,6 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
               Your browser does not support the video tag.
             </video>
             
-            {/* Video Info Overlay */}
             <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 to-transparent">
               <h3 className="text-xl font-semibold text-white mb-2">
                 {videoModal.video.title}
@@ -719,4 +610,4 @@ export const PortfolioSection: React.FC<PortfolioSectionProps> = ({ themeClasses
       )}
     </>
   );
-};
+}
