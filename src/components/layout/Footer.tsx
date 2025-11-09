@@ -1,96 +1,100 @@
 // src/components/layout/Footer.tsx
 import React from 'react';
-import { Camera, Instagram, Facebook, Twitter, Mail, Phone, MapPin, ArrowUp, Clock } from 'lucide-react';
+import { Instagram, Facebook, Twitter, Mail, Phone, MapPin, Heart } from 'lucide-react';
 
 interface FooterProps {
-  isDarkMode: boolean;
+  isDarkMode?: boolean;
 }
 
-export const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
+export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
   const currentYear = new Date().getFullYear();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+  const footerLinks = {
+    company: [
+      { name: 'About', href: '#about' },
+      { name: 'Portfolio', href: '#portfolio' },
+      { name: 'Services', href: '#services' },
+      { name: 'Contact', href: '#contact' },
+    ],
+    services: [
+      { name: 'Portrait Sessions', href: '#services' },
+      { name: 'Event Photography', href: '#services' },
+      { name: 'Wedding Packages', href: '#services' },
+      { name: 'Commercial Work', href: '#services' },
+    ],
+    legal: [
+      { name: 'Privacy Policy', href: '#' },
+      { name: 'Terms of Service', href: '#' },
+      { name: 'Cookie Policy', href: '#' },
+    ],
   };
-
-  const quickLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Portfolio', href: '#portfolio' },
-    { name: 'Services', href: '#services' },
-    { name: 'Contact', href: '#contact' }
-  ];
-
-  const socialMedia = [
-    { icon: Instagram, label: 'Instagram', color: 'hover:text-pink-500' },
-    { icon: Facebook, label: 'Facebook', color: 'hover:text-blue-500' },
-    { icon: Twitter, label: 'Twitter', color: 'hover:text-sky-500' }
-  ];
 
   const contactInfo = [
-    { icon: Mail, text: 'hello@yaryackphotography.ca' },
-    { icon: Phone, text: '+1 (587) 123-4567' },
-    { icon: MapPin, text: 'Calgary, Alberta' }
+    { icon: Mail, text: 'hello@yaryackphotography.ca', href: 'mailto:hello@yaryackphotography.ca' },
+    { icon: Phone, text: '+1 (587) 123-4567', href: 'tel:+15871234567' },
+    { icon: MapPin, text: 'Calgary, Alberta', href: '#' },
   ];
 
-  const baseClasses = {
-    bg: isDarkMode 
-      ? 'bg-gradient-to-b from-emerald-900 to-emerald-950 border-emerald-500/20' 
-      : 'bg-gradient-to-b from-gray-50 to-white border-gray-200',
-    text: {
-      primary: isDarkMode ? 'text-white' : 'text-gray-900',
-      secondary: isDarkMode ? 'text-white/80' : 'text-gray-600',
-      muted: isDarkMode ? 'text-white/60' : 'text-gray-400'
-    },
-    border: isDarkMode ? 'border-emerald-500/20' : 'border-gray-200',
-    button: isDarkMode 
-      ? 'bg-emerald-900/50 border-emerald-500/20' 
-      : 'bg-white border-gray-300'
-  };
+  const socialLinks = [
+    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Twitter, href: '#', label: 'Twitter' },
+  ];
 
   return (
-    <footer className={`border-t py-12 ${baseClasses.bg}`}>
-      <div className="px-4 sm:px-6 lg:px-16 mx-auto">
-        {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
-          {/* Brand & Contact - Takes more space */}
-          <div className="lg:col-span-5 space-y-6">
+    <footer 
+      className="border-t ds-border-primary"
+      style={{ background: 'var(--color-bg-secondary)' }}
+    >
+      <div className="mx-auto px-4 sm:px-6 lg:px-16 py-12 lg:py-16">
+        {/* Main Footer Content */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
+          {/* Brand Column */}
+          <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
-                <Camera className="w-5 h-5 text-white" />
+              <div 
+                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                style={{
+                  background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                }}
+              >
+                <span className="text-white font-bold text-xl">Y</span>
               </div>
               <div>
-                <div className="font-bold text-lg text-white">Yaryack</div>
-                <div className={`text-sm ${baseClasses.text.muted}`}>Photography</div>
+                <span className="ds-heading-4 ds-text-primary">Yaryack</span>
+                <p className="ds-body-sm ds-text-tertiary -mt-1">Photography</p>
               </div>
             </div>
-
-            <p className={`text-sm leading-relaxed max-w-md ${baseClasses.text.secondary}`}>
-              Capturing authentic moments and creating timeless memories through professional photography in Calgary.
+            <p className="ds-body-sm ds-text-secondary leading-relaxed">
+              Capturing authentic moments and creating timeless memories across Calgary and beyond.
             </p>
-
-            {/* Contact Info - Horizontal layout */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {contactInfo.map((item, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <item.icon className={`w-4 h-4 ${baseClasses.text.muted}`} />
-                  <span className={`text-sm ${baseClasses.text.secondary}`}>{item.text}</span>
-                </div>
+            {/* Social Links */}
+            <div className="flex gap-3">
+              {socialLinks.map((social) => (
+                <a
+                  key={social.label}
+                  href={social.href}
+                  className="w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow border ds-border-light hover:border-emerald-400"
+                  style={{ background: 'var(--color-bg-card)' }}
+                  aria-label={social.label}
+                >
+                  <social.icon className="w-5 h-5 ds-text-secondary" />
+                </a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links - Centered */}
-          <div className="lg:col-span-3">
-            <h3 className={`font-semibold mb-4 ${baseClasses.text.primary}`}>
+          {/* Quick Links */}
+          <div>
+            <h3 className="ds-heading-4 ds-text-primary mb-4">
               Quick Links
             </h3>
             <ul className="space-y-3">
-              {quickLinks.map((link) => (
+              {footerLinks.company.map((link) => (
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className={`text-sm transition-colors duration-200 ${baseClasses.text.secondary} hover:text-emerald-400 block py-1`}
+                    className="ds-body-sm ds-text-secondary hover:ds-text-primary ds-transition-base inline-block"
                   >
                     {link.name}
                   </a>
@@ -99,110 +103,119 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode }) => {
             </ul>
           </div>
 
-          {/* Business Hours & Quick Response - Side by side on larger screens */}
-          <div className="lg:col-span-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-              {/* Quick Response */}
-              <div className="backdrop-blur-sm border border-emerald-500/20 p-4 rounded-lg bg-emerald-900/40">
-                <div className="text-center">
-                  <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center mx-auto mb-2 shadow-md">
-                    <Clock className="w-4 h-4 text-white" />
-                  </div>
-                  <h4 className={`text-sm font-semibold mb-1 ${baseClasses.text.primary}`}>
-                    Quick Response
-                  </h4>
-                  <p className={`text-xs leading-relaxed mb-2 ${baseClasses.text.secondary}`}>
-                    I respond within 2-4 hours on business days.
-                  </p>
-                  <div className="text-emerald-400 text-xs font-medium">
-                    Response: 2-4 hours
-                  </div>
-                </div>
-              </div>
+          {/* Services */}
+          <div>
+            <h3 className="ds-heading-4 ds-text-primary mb-4">
+              Services
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.services.map((link) => (
+                <li key={link.name}>
+                  <a
+                    href={link.href}
+                    className="ds-body-sm ds-text-secondary hover:ds-text-primary ds-transition-base inline-block"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-              {/* Business Hours */}
-              <div className="backdrop-blur-sm border border-emerald-500/20 p-4 rounded-lg bg-emerald-900/40">
-                <div className="text-center">
-                  <h4 className={`text-sm font-semibold mb-2 ${baseClasses.text.primary}`}>
-                    Business Hours
-                  </h4>
-                  <div className="space-y-1 text-xs">
-                    <div className={`flex justify-between ${baseClasses.text.secondary}`}>
-                      <span>Mon - Fri</span>
-                      <span className="text-emerald-400">9AM - 6PM</span>
+          {/* Contact Info */}
+          <div>
+            <h3 className="ds-heading-4 ds-text-primary mb-4">
+              Get in Touch
+            </h3>
+            <ul className="space-y-4">
+              {contactInfo.map((info, index) => (
+                <li key={index}>
+                  <a
+                    href={info.href}
+                    className="flex items-start gap-3 group ds-transition-base"
+                  >
+                    <div 
+                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 ds-transition-slow"
+                      style={{
+                        background: 'var(--color-bg-card)',
+                      }}
+                    >
+                      <info.icon className="w-4 h-4 ds-text-secondary" />
                     </div>
-                    <div className={`flex justify-between ${baseClasses.text.secondary}`}>
-                      <span>Saturday</span>
-                      <span className="text-emerald-400">10AM - 4PM</span>
-                    </div>
-                    <div className={`flex justify-between ${baseClasses.text.secondary}`}>
-                      <span>Sunday</span>
-                      <span className="text-emerald-400">Appointment</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+                    <span className="ds-body-sm ds-text-secondary group-hover:ds-text-primary">
+                      {info.text}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
-        {/* Social & CTA */}
-        <div className={`border-t pt-6 mb-6 ${baseClasses.border}`}>
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-4">
-              <span className={`text-sm ${baseClasses.text.secondary}`}>
-                Follow my work:
-              </span>
-              <div className="flex gap-2">
-                {socialMedia.map(({ icon: Icon, label, color }) => (
-                  <button
-                    key={label}
-                    className={`w-8 h-8 border rounded-lg flex items-center justify-center transition-all duration-200 hover:border-emerald-400 hover:bg-emerald-500/10 ${baseClasses.button}`}
-                    aria-label={label}
-                  >
-                    <Icon className={`w-4 h-4 ${baseClasses.text.muted} ${color}`} />
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <span className={`text-sm ${baseClasses.text.secondary} hidden sm:block`}>
-                Ready to create something amazing?
-              </span>
+        {/* Newsletter Section */}
+        <div 
+          className="mb-12 p-6 lg:p-8 rounded-2xl border ds-border-primary"
+          style={{ background: 'var(--color-bg-card)' }}
+        >
+          <div className="max-w-2xl mx-auto text-center space-y-4">
+            <h3 className="ds-heading-4 ds-text-primary">
+              Stay Updated
+            </h3>
+            <p className="ds-body-base ds-text-secondary">
+              Subscribe to our newsletter for photography tips, special offers, and behind-the-scenes content.
+            </p>
+            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 ds-input ds-input-md"
+                required
+              />
               <button
-                onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-                className="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-emerald-500/25"
+                type="submit"
+                className="ds-btn ds-btn-primary ds-btn-md whitespace-nowrap"
               >
-                Start Your Project
+                Subscribe
               </button>
-            </div>
+            </form>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className={`border-t pt-6 flex flex-col sm:flex-row justify-between items-center gap-4 ${baseClasses.border}`}>
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-6">
-            <p className={`text-sm ${baseClasses.text.muted}`}>
+        <div 
+          className="pt-8 border-t ds-border-primary"
+        >
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="ds-body-sm ds-text-tertiary text-center md:text-left">
               © {currentYear} Yaryack Photography. All rights reserved.
             </p>
-            <div className="flex items-center gap-4 text-sm">
-              <a href="#" className={`${baseClasses.text.muted} hover:text-emerald-400 transition-colors`}>
-                Privacy Policy
-              </a>
-              <a href="#" className={`${baseClasses.text.muted} hover:text-emerald-400 transition-colors`}>
-                Terms of Service
-              </a>
+            
+            {/* Legal Links */}
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              {footerLinks.legal.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="ds-body-sm ds-text-tertiary hover:ds-text-primary ds-transition-base"
+                >
+                  {link.name}
+                </a>
+              ))}
+            </div>
+
+            {/* Made with Love */}
+            <div className="flex items-center gap-2">
+              <span className="ds-body-sm ds-text-tertiary">Made with</span>
+              <Heart 
+                className="w-4 h-4 animate-pulse" 
+                style={{ 
+                  fill: 'var(--color-brand-primary)',
+                  color: 'var(--color-brand-primary)'
+                }} 
+              />
+              <span className="ds-body-sm ds-text-tertiary">in Calgary</span>
             </div>
           </div>
-
-          <button
-            onClick={scrollToTop}
-            className={`flex items-center gap-2 text-sm transition-all duration-200 ${baseClasses.text.muted} hover:text-emerald-400 hover:scale-105`}
-          >
-            Back to Top
-            <ArrowUp className="w-4 h-4" />
-          </button>
         </div>
       </div>
     </footer>

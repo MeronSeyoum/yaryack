@@ -1,43 +1,31 @@
 // src/components/home/HeroSection.tsx
 import React, { useState, useEffect, useCallback } from "react";
-import { ChevronRight, Calendar, Eye } from "lucide-react";
-import { useImageLoader } from "../../hooks/useImageLoader";
-import { Button } from "../ui/Button";
+import { Calendar, Eye } from "lucide-react";
 import { VerticalFilmRoll } from "./VerticalFilmRoll";
 
 // Import images
 import heroMain from "../../assets/images/hero-main.jpg";
 import heroMobile from "../../assets/images/hero-mobile.jpg";
 import heroThumb1 from "../../assets/images/hero-thumb-1.jpg";
-import heroThumb2 from "../../assets/images/hero-thumb-2.jpeg";
-import heroThumb3 from "../../assets/images/hero-thumb-3.jpeg";
-import heroThumb4 from "../../assets/images/hero-thumb-4.jpeg";
+import heroThumb2 from "../../assets/images/hero-thumb-2.jpg";
+import heroThumb3 from "../../assets/images/hero-thumb-3.jpg";
+import heroThumb4 from "../../assets/images/hero-thumb-4.jpg";
 import heroMobile1 from "../../assets/images/event-4.jpg";
-import heroMobile2 from "../../assets/images/hero-thumb-5.jpeg";  
+import heroMobile2 from "../../assets/images/hero-thumb-5.jpg";  
 import heroMobile3 from "../../assets/images/hero-thumb-6.jpeg";
-
 import type { ThemeClasses } from "../../types";
 
 interface HeroSectionProps {
-  themeClasses: ThemeClasses;
+  themeClasses?: ThemeClasses;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  
   const heroImages = [heroThumb1, heroThumb2, heroThumb3, heroThumb4];
   const mobileSlides = [heroMobile1, heroMobile2, heroMobile3];
-
-  // Load both desktop and mobile images
-  const imagesLoaded = useImageLoader([heroMain, heroMobile, ...heroImages, ...mobileSlides]);
-
-  // Determine if we're in dark mode
-  const isDarkMode =
-    themeClasses.bg.primary.includes("black") ||
-    themeClasses.bg.primary.includes("gray-900") ||
-    themeClasses.bg.primary.includes("gray-800") ||
-    themeClasses.text.primary.includes("white");
 
   // Check for mobile on mount and resize
   useEffect(() => {
@@ -64,31 +52,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
     setTimeout(() => setIsAutoPlaying(true), 8000);
   }, []);
 
-  const nextSlide = useCallback(() => {
-    goToSlide((currentSlide + 1) % mobileSlides.length);
-  }, [currentSlide, mobileSlides.length, goToSlide]);
-
-  const prevSlide = useCallback(() => {
-    goToSlide((currentSlide - 1 + mobileSlides.length) % mobileSlides.length);
-  }, [currentSlide, mobileSlides.length, goToSlide]);
-
-  if (!imagesLoaded) return null;
-
   return (
-    <section className={`relative min-h-screen ${themeClasses.bg.primary}`}>
-      {/* Background Image with Dark Green Gradient Overlay */}
+    <section className="relative min-h-screen bg-black">
+      {/* Background Image with Overlay */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Desktop Image - hidden on mobile */}
+        {/* Desktop Image */}
         <img
           src={heroMain}
           alt="Professional photography by Yaryack"
           className="hidden lg:block w-full h-full object-cover"
         />
         
-        {/* Mobile Slideshow - hidden on desktop */}
+        {/* Mobile Slideshow */}
         <div className="lg:hidden w-full h-full relative">
           <div 
-            className="flex w-full h-full transition-transform duration-500 ease-in-out" 
+            className="flex w-full h-full ds-transition-slow ease-in-out" 
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {mobileSlides.map((slide, index) => (
@@ -103,142 +81,157 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
           </div>
           
           {/* Slide indicators */}
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-3">
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
             {mobileSlides.map((_, index) => (
               <button
                 key={index}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`w-3 h-3 rounded-full ds-transition-slow ${
                   currentSlide === index 
-                    ? 'bg-emerald-400 shadow-lg shadow-emerald-400/50' 
-                    : 'bg-white/60 backdrop-blur-sm'
+                    ? 'w-8 shadow-lg' 
+                    : 'opacity-60'
                 }`}
+                style={{
+                  background: currentSlide === index 
+                    ? 'var(--color-brand-primary)' 
+                    : 'var(--color-text-primary)',
+                  boxShadow: currentSlide === index 
+                    ? 'var(--shadow-brand)' 
+                    : 'none'
+                }}
                 onClick={() => goToSlide(index)}
+                aria-label={`Go to slide ${index + 1}`}
               />
             ))}
           </div>
         </div>
 
-        {/* Desktop Gradient - Dark Green */}
+        {/* Gradients */}
         <div
           className="hidden lg:block absolute inset-0"
           style={{
-            background: isDarkMode
-              ? "linear-gradient(135deg, rgba(6, 78, 59, 0.85) 0%, rgba(6, 78, 59, 0.4) 20%, rgba(6, 78, 59, 0.2) 100%)"
-              : "linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 78, 59, 0.1) 50%, transparent 100%)",
+            background: "linear-gradient(135deg, rgba(0,0,0, 0.8) 0%, rgba(0,0,0, 0.6) 40%, rgba(0,0,0, 0.2) 90%)",
           }}
         />
-
-        {/* Mobile Gradient - Dark Green */}
         <div
           className="lg:hidden absolute inset-0"
           style={{
-            background: isDarkMode
-              ? "radial-gradient(ellipse at center, transparent 0%, rgba(6, 78, 59, 0.6) 60%, rgba(6, 78, 59, 0.8) 100%)"
-              : "radial-gradient(ellipse at center, transparent 0%, rgba(16, 185, 129, 0.2) 50%, rgba(6, 78, 59, 0.3) 100%)",
+            background: "radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.4) 100%)",
           }}
         />
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_300px] min-h-screen gap-6 lg:gap-8">
+      <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-16">
+        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_22%] min-h-screen gap-8">
           {/* Main Content Area */}
-          <div className="flex flex-col justify-end lg:justify-center py-8 sm:py-12 lg:py-16 min-h-[80vh] lg:min-h-auto">
+          <div className="flex flex-col justify-end lg:justify-center py-12 lg:py-16 min-h-[80vh] lg:min-h-0">
             {/* Header Section */}
-            <div className="space-y-6 sm:space-y-8 lg:space-y-12">
+            <div className="space-y-8 lg:space-y-12">
               {/* Location Badge - Desktop */}
               <div
-                className="hidden lg:flex items-center gap-3 backdrop-blur-sm rounded-full max-w-md px-6 py-3 border border-emerald-500/30"
+                className="hidden lg:flex items-center gap-3 backdrop-blur-sm rounded-full max-w-md border ds-transition-slow hover:border-emerald-400/40"
                 style={{
-                  background: isDarkMode
-                    ? "rgba(6, 78, 59, 0.4)"
-                    : "rgba(16, 185, 129, 0.15)",
+                  background: 'var(--color-bg-card)',
+                  borderColor: 'var(--color-border-primary)',
+                  padding: 'var(--spacing-3) var(--spacing-6)',
                 }}
               >
-                <div className="w-2 h-2 bg-emerald-400 rounded-full  animate-pulse"></div>
-                <p className="text-base font-medium text-white">
+                <div 
+                  className="w-2 h-2 rounded-full animate-pulse"
+                  style={{ background: 'var(--color-brand-primary)' }}
+                />
+                <p className="ds-body-base ds-text-primary font-medium">
                   Professional Photography • Calgary
                 </p>
               </div>
 
-              {/* Mobile Location Badge */}
-             
-
               {/* Main Heading */}
-              <div className="space-y-4  text-left">
-                <div className="border-l-4 border-emerald-400 pl-4 sm:pl-6 lg:pl-8">
-                  <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-tight text-white">
+              <div className="space-y-6 text-left">
+                <div 
+                  className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
+                  style={{ borderColor: 'var(--color-brand-primary)' }}
+                >
+                  <h1 className="ds-heading-1 ds-text-primary">
                     Yaryack
                     <br />
-                    <span className="font-medium bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent">
+                    <span 
+                      className="font-semibold bg-gradient-to-r bg-clip-text text-transparent"
+                      style={{
+                        backgroundImage: `linear-gradient(to right, var(--color-brand-primary), var(--color-brand-primary-light))`
+                      }}
+                    >
                       Photography
                     </span>
                   </h1>
                 </div>
-                <p className="text-xl sm:text-2xl text-white/90 leading-relaxed max-w-2xl mx-auto lg:mx-0 lg:pl-8">
+                <p className="ds-body-lg ds-text-secondary max-w-2xl mx-auto lg:mx-0 lg:pl-10">
                   Capturing authentic moments and creating timeless memories
                 </p>
               </div>
             </div>
 
             {/* CTA Section */}
-            <div className="space-y-6 sm:space-y-8 mt-8 sm:mt-12 lg:mt-16">
+            <div className="space-y-8 mt-12 lg:mt-16">
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
-                <Button
+                <button
                   onClick={() =>
                     document
                       .getElementById("contact")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  size="lg"
-                  className="w-full sm:w-auto group bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 border-0 shadow-lg hover:shadow-xl transition-all duration-300 text-white"
+                  className="w-full sm:w-auto ds-btn ds-btn-primary ds-btn-lg group"
                 >
-                  <span className="flex items-center gap-3">
-                    <Calendar className="w-5 h-5 sm:w-6 sm:h-6" />
-                    <span className="text-base sm:text-lg font-semibold">
-                      Book a Session
-                    </span>
-                  </span>
-                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Button>
+                  <Calendar className="w-6 h-6" />
+                  <span>Book a Session</span>
+                  <svg 
+                    className="w-5 h-5 ds-transition-base group-hover:translate-x-1" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
                 
-                <Button
-                  variant="outline"
+                <button
                   onClick={() =>
                     document
                       .getElementById("portfolio")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  size="lg"
-                  className="lg:block hidden w-full sm:w-auto backdrop-blur-sm border-white/40 text-white hover:bg-white/10 hover:text-white"
+                  className="hidden lg:flex w-full sm:w-auto ds-btn ds-btn-outline ds-btn-lg"
                 >
-                  <span className="flex items-center gap-3">
-                    <Eye className="w-5 h-5" />
-                    <span className="text-base sm:text-lg font-semibold">
-                      View Portfolio
-                    </span>
-                  </span>
-                </Button>
+                  <Eye className="w-5 h-5" />
+                  <span>View Portfolio</span>
+                </button>
               </div>
 
               {/* Trust Indicator - Desktop */}
               <div
-                className="hidden lg:flex gap-4 items-center backdrop-blur-sm rounded-2xl p-6 border border-emerald-500/30 max-w-2xl"
+                className="hidden lg:flex gap-4 items-center backdrop-blur-sm rounded-2xl border max-w-2xl ds-transition-slow hover:border-emerald-400/40"
                 style={{
-                  background: isDarkMode
-                    ? "rgba(6, 78, 59, 0.4)"
-                    : "rgba(16, 185, 129, 0.15)",
+                  background: 'var(--color-bg-card)',
+                  borderColor: 'var(--color-border-primary)',
+                  padding: 'var(--spacing-6)',
                 }}
               >
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                      <div className="w-4 h-4 bg-emerald-500 rounded-full"></div>
+                  <div 
+                    className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+                    style={{
+                      background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                    }}
+                  >
+                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                      <div 
+                        className="w-5 h-5 rounded-full"
+                        style={{ background: 'var(--color-brand-primary)' }}
+                      />
                     </div>
                   </div>
                 </div>
-                <p className="text-white text-base leading-relaxed">
+                <p className="ds-body-base ds-text-primary">
                   Trusted by clients across Calgary for professional portrait,
                   event, and commercial photography.
                 </p>
@@ -246,21 +239,29 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
 
               {/* Trust Indicator - Mobile */}
               <div
-                className="hidden  gap-3 items-center backdrop-blur-sm rounded-xl p-4 border border-emerald-400/30 mx-auto max-w-md"
+                className="lg:hidden flex gap-3 items-center backdrop-blur-sm rounded-xl border mx-auto max-w-md"
                 style={{
-                  background: isDarkMode
-                    ? "rgba(6, 78, 59, 0.5)"
-                    : "rgba(16, 185, 129, 0.2)",
+                  background: 'var(--color-bg-card)',
+                  borderColor: 'var(--color-border-light)',
+                  padding: 'var(--spacing-4)',
                 }}
               >
                 <div className="flex-shrink-0">
-                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center shadow-lg">
-                    <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                      <div className="w-3 h-3 bg-emerald-500 rounded-full"></div>
+                  <div 
+                    className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+                    style={{
+                      background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                    }}
+                  >
+                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                      <div 
+                        className="w-4 h-4 rounded-full"
+                        style={{ background: 'var(--color-brand-primary)' }}
+                      />
                     </div>
                   </div>
                 </div>
-                <p className="text-white text-sm leading-relaxed">
+                <p className="ds-body-sm ds-text-primary">
                   Trusted by clients across Calgary for professional photography services.
                 </p>
               </div>
@@ -268,44 +269,57 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ themeClasses }) => {
           </div>
 
           {/* Desktop Vertical Film Roll */}
-          <div className="hidden lg:flex flex-col justify-center border-l border-emerald-500/30 pl-6">
+          <div 
+            className="hidden lg:flex flex-col justify-center border-l pl-6 mt-[72px]"
+            style={{ borderColor: 'var(--color-border-primary)' }}
+          >
             <div className="space-y-4">
-              <div className="flex items-center gap-2 backdrop-blur-sm rounded-full px-4 py-2 w-fit border border-emerald-500/30"
+              <div 
+                className="flex items-center gap-2 backdrop-blur-sm rounded-full px-4 py-2 w-fit border"
                 style={{
-                  background: "rgba(6, 78, 59, 0.3)",
+                  background: 'var(--color-bg-card)',
+                  borderColor: 'var(--color-border-primary)',
                 }}
               >
-                <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-white font-medium">
+                <div 
+                  className="w-2 h-2 rounded-full animate-pulse"
+                  style={{ background: 'var(--color-brand-primary)' }}
+                />
+                <span className="ds-body-sm ds-text-primary font-medium">
                   Live Preview
                 </span>
               </div>
 
-              {/* Vertical Film Roll Component */}
               <VerticalFilmRoll
                 images={heroImages}
-                themeClasses={themeClasses}
+                themeClasses={{} as ThemeClasses}
               />
             </div>
           </div>
         </div>
 
         {/* Mobile Portfolio Preview */}
-        <div className="lg:hidden py-8">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-semibold text-white mb-2">
+        <div className="lg:hidden py-12">
+          <div className="text-center mb-8">
+            <h3 className="ds-heading-3 ds-text-primary mb-3">
               Featured Work
             </h3>
-            <p className="text-white/80">Swipe to view more portfolio samples</p>
+            <p className="ds-body-base ds-text-secondary">
+              Swipe to view more portfolio samples
+            </p>
           </div>
           
           <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
             {heroImages.slice(0, 4).map((image, index) => (
-              <div key={index} className="aspect-square rounded-xl overflow-hidden border-2 border-emerald-400/30 shadow-lg">
+              <div 
+                key={index} 
+                className="aspect-square rounded-xl overflow-hidden border-2 shadow-lg ds-transition-slow hover:scale-105"
+                style={{ borderColor: 'var(--color-border-light)' }}
+              >
                 <img
                   src={image}
                   alt={`Portfolio sample ${index + 1}`}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full object-cover"
                 />
               </div>
             ))}

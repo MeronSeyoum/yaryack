@@ -1,11 +1,10 @@
 // src/components/ui/Button.tsx
 import React from 'react';
- import { DESIGN_SYSTEM } from '../../config/designSystem';
 import type { LucideIcon } from 'lucide-react';
 
 interface ButtonProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'outline';
+  variant?: 'primary' | 'outline' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   onClick?: () => void;
   href?: string;
@@ -26,27 +25,29 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   type = 'button',
 }) => {
-  const baseClasses = `inline-flex items-center justify-center font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-offset-2`;
+  // Base classes using design system
+  const baseClasses = 'ds-btn';
   
+  // Variant classes
   const variantClasses = {
-    primary: `bg-orange-500 text-black hover:bg-orange-600 disabled:bg-gray-600 disabled:cursor-not-allowed focus:ring-orange-500`,
-    secondary: `bg-white text-gray-900 hover:bg-gray-100 focus:ring-gray-300`,
-    outline: `border border-white text-white hover:bg-white hover:text-black focus:ring-white`,
+    primary: 'ds-btn-primary',
+    outline: 'ds-btn-outline',
+    ghost: 'bg-transparent hover:bg-white/5 text-white',
   };
 
+  // Size classes
   const sizeClasses = {
-    sm: `px-4 py-2 text-sm rounded-md`,
-    md: `px-6 py-3 text-sm rounded-lg`,
-    lg: `px-8 py-4 text-base rounded-lg`,
+    sm: 'ds-btn-sm',
+    md: 'ds-btn-md',
+    lg: 'ds-btn-lg',
   };
 
-  const transitionClass = `duration-200`;
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${transitionClass} ${className}`;
   if (href) {
     return (
       <a href={href} className={classes}>
-        {Icon && <Icon className="w-4 h-4 mr-2" />}
+        {Icon && <Icon className={size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-6 h-6' : 'w-5 h-5'} />}
         {children}
       </a>
     );
@@ -59,7 +60,7 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={classes}
     >
-      {Icon && <Icon className="w-4 h-4 mr-2" />}
+      {Icon && <Icon className={size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-6 h-6' : 'w-5 h-5'} />}
       {children}
     </button>
   );

@@ -1,15 +1,17 @@
 // src/components/home/ContactSection.tsx
 import React, { useState } from 'react';
-import { ChevronRight, Mail, Phone, MapPin, Send, Instagram, Facebook, Twitter, Clock } from 'lucide-react';
-import type { FormData } from '../../types';
-import { Button } from '../ui/Button';
-import { Card } from '../ui/Card';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
-interface ContactSectionProps {
-  themeClasses: any;
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  message: string;
+  agree: boolean;
 }
 
-export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) => {
+export const ContactSection: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -73,15 +75,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
     }
   ];
 
-  const socialMedia = [
-    { name: 'Instagram', icon: Instagram, color: 'hover:text-pink-500' },
-    { name: 'Facebook', icon: Facebook, color: 'hover:text-blue-500' },
-    { name: 'Twitter', icon: Twitter, color: 'hover:text-sky-500' }
-  ];
-
   return (
-    <section id="contact" className="relative border-t border-emerald-500/20 py-8 sm:py-12 overflow-hidden" style={{
-      background: 'linear-gradient(to bottom, rgba(6, 78, 59, 0.95) 10%, rgba(4, 47, 46, 0.98) 100%)'
+    <section id="contact" className="relative border-t ds-border-primary py-16 overflow-hidden" style={{
+      background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.98) 100%)'
     }}>
       {/* Background Image */}
       <div className="absolute inset-0">
@@ -90,207 +86,189 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ themeClasses }) 
           alt="Photography background"
           className="w-full h-full object-cover filter grayscale"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-emerald-900/0 via-emerald-900/30 to-emerald-900/70"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(6,78,59,0.8)_100%)]"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/30 to-emerald-400/70"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
-        {/* Section Header - Compact */}
-        <div className="text-center mb-6 sm:mb-8">
-          <div className="flex items-center justify-center gap-2 mb-3">
-            <div className="w-1.5 h-8 bg-emerald-400 rounded-full"></div>
-            <p className="text-xl uppercase tracking-wider text-white/80">
+        {/* Section Header */}
+        <div className="text-center mb-12">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <div className="w-2 h-10 rounded-full" style={{ background: 'var(--color-brand-primary)' }}></div>
+            <p className="ds-heading-4 uppercase tracking-wider ds-text-secondary">
               Get In Touch
             </p>
           </div>
-          <h2 className="text-xl sm:text-2xl font-light mb-3 text-white">
+          <h2 className="ds-heading-2 mb-4 ds-text-primary">
             Let's Create
-            <span className="font-medium bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent"> Together </span>
+            <span className="font-semibold bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent"> Together </span>
           </h2>
-          <p className="text-xs max-w-2xl mx-auto leading-relaxed text-white/80">
+          <p className="ds-body-base ds-text-secondary max-w-2xl mx-auto">
             Ready to capture your special moments? Contact me to discuss your photography needs.
           </p>
         </div>
 
         <div className="max-w-5xl mx-auto">
-          {/* Contact Info Cards - Compact with email and phone in same row on mobile */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+          {/* Contact Info Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {contactInfo.map((item, index) => (
-              <Card 
+              <div
                 key={index}
-                className={`backdrop-blur-sm border border-emerald-500/20 p-4 text-center transition-all duration-500 group bg-emerald-900/70 hover:border-emerald-400/50 ${
-                  // Hide location on mobile, show on desktop
+                className={`ds-card ds-card-p-md text-center group ${
                   item.title === "Location" ? "hidden lg:block" : ""
                 }`}
               >
-                <div className="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-lg mx-auto mb-3 flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-md">
-                  <item.icon className="w-4 h-4 text-white" />
+                <div 
+                  className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center group-hover:scale-105 ds-transition-slow shadow-md"
+                  style={{ background: 'linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))' }}
+                >
+                  <item.icon className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-sm font-semibold mb-1 text-white">
+                <h3 className="ds-body-base font-semibold mb-2 ds-text-primary">
                   {item.title}
                 </h3>
-                <p className="text-emerald-400 text-xs font-medium mb-1">{item.content}</p>
-                <p className="text-xs text-white/80">
+                <p className="ds-body-sm font-medium mb-1" style={{ color: 'var(--color-brand-primary-light)' }}>
+                  {item.content}
+                </p>
+                <p className="ds-body-sm ds-text-tertiary">
                   {item.subtitle}
                 </p>
-              </Card>
+              </div>
             ))}
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-            {/* Contact Form - Compact */}
-            <div className="lg:col-span-3">
-              <Card className="backdrop-blur-sm border border-emerald-500/40 p-4 sm:p-6 shadow-lg bg-emerald-900/80">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-6 h-6 bg-emerald-500 rounded-full flex items-center justify-center">
-                    <Send className="w-3 h-3 text-white" />
-                  </div>
-                  <h3 className="text-lg font-semibold text-white">
-                    Send a Message
-                  </h3>
-                </div>
-
-                <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div>
-                      <label className="block text-xs mb-1 font-medium text-white/90">
-                        Name *
-                      </label>
-                      <input
-                        type="text"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleFormChange}
-                        required
-                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
-                        placeholder="Your full name"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs mb-1 font-medium text-white/90">
-                        Email *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleFormChange}
-                        required
-                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
-                        placeholder="your.email@example.com"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-                    <div>
-                      <label className="block text-xs mb-1 font-medium text-white/90">
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        name="phone"
-                        value={formData.phone}
-                        onChange={handleFormChange}
-                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
-                        placeholder="Your phone number"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-xs mb-1 font-medium text-white/90">
-                        Service Interest
-                      </label>
-                      <select
-                        name="service"
-                        value={formData.service}
-                        onChange={handleFormChange}
-                        className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg transition-all duration-300 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
-                      >
-                        <option value="" className="bg-emerald-900">Select a service</option>
-                        <option value="portrait" className="bg-emerald-900">Portrait Session</option>
-                        <option value="event" className="bg-emerald-900">Event Photography</option>
-                        <option value="wedding" className="bg-emerald-900">Wedding Photography</option>
-                        <option value="maternity" className="bg-emerald-900">Maternity Shoot</option>
-                        <option value="engagement" className="bg-emerald-900">Engagement Session</option>
-                        <option value="other" className="bg-emerald-900">Other</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs mb-1 font-medium text-white/90">
-                      Message *
-                    </label>
-                    <textarea
-                      name="message"
-                      value={formData.message}
-                      onChange={handleFormChange}
-                      required
-                      rows={4}
-                      className="w-full border border-emerald-500/20 text-xs p-2.5 focus:border-emerald-400 focus:outline-none rounded-lg resize-none transition-all duration-300 placeholder-white/60 bg-emerald-900/30 text-white focus:bg-emerald-900/50"
-                      placeholder="Tell me about your project..."
-                    ></textarea>
-                  </div>
-
-                  <div className="flex items-start gap-2 p-2 rounded-lg border border-emerald-500/20 bg-emerald-900/30">
-                    <input
-                      type="checkbox"
-                      name="agree"
-                      checked={formData.agree}
-                      onChange={handleFormChange}
-                      className="w-3.5 h-3.5 text-emerald-500 focus:ring-emerald-500 rounded mt-0.5 flex-shrink-0 bg-emerald-900/50 border-emerald-500/30"
-                    />
-                    <span className="text-xs leading-relaxed text-white/90">
-                      I agree to the privacy policy and terms of service.
-                    </span>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting || !formData.agree}
-                    className="w-full bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 border-0 shadow-md hover:shadow transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed py-2.5 text-sm"
-                  >
-                    {isSubmitting ? (
-                      <div className="flex items-center gap-2">
-                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                        <span>Sending...</span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center gap-2">
-                        <Send className="w-4 h-4" />
-                        <span className="font-semibold">Send Message</span>
-                        <ChevronRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                      </div>
-                    )}
-                  </Button>
-                </form>
-              </Card>
+          {/* Contact Form */}
+          <div className="ds-card ds-card-elevated ds-card-p-lg">
+            <div className="flex items-center gap-3 mb-6">
+              <div 
+                className="w-10 h-10 rounded-full flex items-center justify-center"
+                style={{ background: 'var(--color-brand-primary)' }}
+              >
+                <Send className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="ds-heading-4 ds-text-primary">
+                Send a Message
+              </h3>
             </div>
 
-            {/* Sidebar - Additional Info - Hidden on mobile */}
-            {/* <div className="lg:col-span-2 space-y-4 hidden lg:block"> */}
-              {/* Social Media */}
-              {/* <Card className="backdrop-blur-sm border border-emerald-500/20 p-4 bg-emerald-900/40">
-                <div className="text-center">
-                  <h4 className="text-sm font-semibold mb-2 text-white">
-                    Follow My Work
-                  </h4>
-                  <p className="text-xs mb-3 text-white/80">
-                    Latest projects & behind-the-scenes
-                  </p>
-                  <div className="flex justify-center gap-2">
-                    {socialMedia.map((social, index) => (
-                      <button
-                        key={index}
-                        className="w-8 h-8 backdrop-blur-md border border-emerald-500/20 rounded-lg flex items-center justify-center hover:border-emerald-400 hover:bg-emerald-500/10 transition-all duration-300 group bg-emerald-900/30"
-                      >
-                        <social.icon className={`w-3.5 h-3.5 transition-colors duration-300 text-white/80 ${social.color}`} />
-                      </button>
-                    ))}
-                  </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block ds-body-sm mb-2 font-medium ds-text-secondary">
+                    Name *
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleFormChange}
+                    required
+                    className="ds-input ds-input-md"
+                    placeholder="Your full name"
+                  />
                 </div>
-              </Card> */}
-            {/* </div> */}
+                <div>
+                  <label className="block ds-body-sm mb-2 font-medium ds-text-secondary">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleFormChange}
+                    required
+                    className="ds-input ds-input-md"
+                    placeholder="your.email@example.com"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block ds-body-sm mb-2 font-medium ds-text-secondary">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={formData.phone}
+                    onChange={handleFormChange}
+                    className="ds-input ds-input-md"
+                    placeholder="Your phone number"
+                  />
+                </div>
+                <div>
+                  <label className="block ds-body-sm mb-2 font-medium ds-text-secondary">
+                    Service Interest
+                  </label>
+                  <select
+                    name="service"
+                    value={formData.service}
+                    onChange={handleFormChange}
+                    className="ds-input ds-input-md"
+                  >
+                    <option value="">Select a service</option>
+                    <option value="portrait">Portrait Session</option>
+                    <option value="event">Event Photography</option>
+                    <option value="wedding">Wedding Photography</option>
+                    <option value="maternity">Maternity Shoot</option>
+                    <option value="engagement">Engagement Session</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block ds-body-sm mb-2 font-medium ds-text-secondary">
+                  Message *
+                </label>
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleFormChange}
+                  required
+                  rows={5}
+                  className="ds-input ds-input-md resize-none"
+                  placeholder="Tell me about your project..."
+                ></textarea>
+              </div>
+
+              <div className="flex items-start gap-3 p-4 rounded-xl border ds-border-primary" style={{ background: 'var(--color-bg-input)' }}>
+                <input
+                  type="checkbox"
+                  name="agree"
+                  checked={formData.agree}
+                  onChange={handleFormChange}
+                  className="w-4 h-4 mt-0.5 flex-shrink-0 rounded"
+                  style={{ 
+                    accentColor: 'var(--color-brand-primary)',
+                    background: 'var(--color-bg-input-focus)',
+                    border: '1px solid var(--color-border-primary)'
+                  }}
+                />
+                <span className="ds-body-sm ds-text-secondary">
+                  I agree to the privacy policy and terms of service.
+                </span>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting || !formData.agree}
+                className="w-full ds-btn ds-btn-primary ds-btn-lg"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                    <span>Sending...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-5 h-5" />
+                    <span>Send Message</span>
+                  </>
+                )}
+              </button>
+            </form>
           </div>
         </div>
       </div>

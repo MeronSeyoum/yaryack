@@ -1,17 +1,17 @@
 // src/components/layout/Navigation.tsx
-import React, { useState, useEffect } from "react";
-import { Menu, X, Sun, Moon, Camera } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Sun, Moon } from 'lucide-react';
 
 interface NavigationProps {
-  isDarkMode: boolean;
-  toggleTheme: () => void;
+  isDarkMode?: boolean;
+  toggleTheme?: () => void;
   activeSection: string;
   setActiveSection: (section: string) => void;
   onNavClick: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({
-  isDarkMode,
+  isDarkMode = true,
   toggleTheme,
   activeSection,
   setActiveSection,
@@ -22,181 +22,186 @@ export const Navigation: React.FC<NavigationProps> = ({
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
-      // Update active section based on scroll position
-      const sections = ['home', 'about', 'portfolio', 'services', 'contact'];
-      const currentSection = sections.find(section => {
-        const element = document.getElementById(section);
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          return rect.top <= 100 && rect.bottom >= 100;
-        }
-        return false;
-      });
-      
-      if (currentSection && currentSection !== activeSection) {
-        setActiveSection(currentSection);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [activeSection, setActiveSection]);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Portfolio", href: "#portfolio" },
-    { name: "Services", href: "#services" },
-    { name: "Contact", href: "#contact" },
+    { name: 'Home', href: '#home' },
+    { name: 'About', href: '#about' },
+    { name: 'Portfolio', href: '#portfolio' },
+    { name: 'Services', href: '#services' },
+    { name: 'Contact', href: '#contact' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+  const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsMobileMenuOpen(false);
     onNavClick(e, href);
   };
 
-  // Theme-based styles - Updated to emerald green
-  const navBackground = isScrolled
-    ? isDarkMode
-      ? "bg-emerald-900/95 backdrop-blur-md border-b border-emerald-500/20"
-      : "bg-white/95 backdrop-blur-md border-b border-emerald-200 shadow-lg"
-    : isDarkMode
-    ? "bg-transparent border-b border-emerald-500/20"
-    : "bg-transparent border-b border-emerald-200";
-
-  const textColor = isDarkMode ? "text-white" : "text-emerald-900";
-  const subtitleColor = isDarkMode ? "text-emerald-300/80" : "text-emerald-600";
-  const navItemColor = isDarkMode ? "text-emerald-200" : "text-emerald-700";
-  const navItemHoverColor = "hover:text-emerald-400";
-  const activeNavItemColor = "text-emerald-400";
-  const mobileMenuBackground = isDarkMode 
-    ? "bg-emerald-900/95 backdrop-blur-md" 
-    : "bg-white/95 backdrop-blur-md";
-  const mobileBorderColor = isDarkMode ? "border-emerald-500/20" : "border-emerald-200";
-  const buttonBackground = isDarkMode ? "bg-emerald-500/10" : "bg-emerald-500/10";
-  const buttonHoverBackground = isDarkMode ? "hover:bg-emerald-500/20" : "hover:bg-emerald-500/20";
-  const buttonIconColor = isDarkMode ? "text-emerald-200" : "text-emerald-700";
-
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navBackground} ${
-        isScrolled ? "py-2 sm:py-5" : "py-4"
+      className={`fixed top-0 left-0 right-0 z-50 ds-transition-slow ${
+        isScrolled
+          ? 'backdrop-blur-lg shadow-lg'
+          : ''
       }`}
+      style={{
+        background: isScrolled 
+          ? 'rgba(0, 0, 0, 0.8)' 
+          : 'transparent',
+        borderBottom: isScrolled 
+          ? '1px solid var(--color-border-primary)' 
+          : '1px solid transparent'
+      }}
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-16">
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <a
             href="#home"
-            onClick={(e) => handleNavClick(e, "#home")}
-            className="flex items-center gap-2 sm:gap-3 group"
+            onClick={(e) => onNavClick(e, '#home')}
+            className="flex items-center gap-3 group"
           >
-            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:scale-110 shadow-lg">
-              <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+            <div 
+              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 ds-transition-slow"
+              style={{
+                background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+              }}
+            >
+              <span className="text-white font-bold text-lg">Y</span>
             </div>
-            <div className={textColor}>
-              <div className="font-semibold text-base sm:text-lg leading-tight">Yaryack</div>
-              <div className={`text-xs ${subtitleColor} -mt-0.5 leading-tight`}>Photography</div>
+            <div className="hidden sm:block">
+              <span className="ds-heading-4 ds-text-primary">Yaryack</span>
+              <p className="ds-body-sm ds-text-tertiary -mt-1">Photography</p>
             </div>
           </a>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {navItems.map((item) => {
-              const sectionName = item.href.replace('#', '');
-              const isActive = activeSection === sectionName;
-              
-              return (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className={`text-sm font-medium transition-colors duration-200 ${
-                    isActive ? activeNavItemColor : navItemColor
-                  } ${navItemHoverColor}`}
-                >
-                  {item.name}
-                </a>
-              );
-            })}
+          <div className="hidden lg:flex items-center gap-2">
+            {navItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={(e) => onNavClick(e, item.href)}
+                className={`px-4 py-2 rounded-xl ds-body-base font-medium ds-transition-slow ${
+                  activeSection === item.href.replace('#', '')
+                    ? 'ds-text-primary'
+                    : 'ds-text-tertiary hover:ds-text-primary'
+                }`}
+                style={{
+                  background: activeSection === item.href.replace('#', '')
+                    ? 'var(--color-bg-card)'
+                    : 'transparent',
+                }}
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
 
-            {/* Theme Toggle */}
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center gap-3">
+            {toggleTheme && (
+              <button
+                onClick={toggleTheme}
+                className="w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow border ds-border-light hover:border-emerald-400"
+                style={{ background: 'var(--color-bg-card)' }}
+                aria-label="Toggle theme"
+              >
+                {isDarkMode ? (
+                  <Sun className="w-5 h-5 ds-text-secondary" />
+                ) : (
+                  <Moon className="w-5 h-5 ds-text-secondary" />
+                )}
+              </button>
+            )}
             <button
-              onClick={toggleTheme}
-              className={`p-2 rounded-lg ${buttonBackground} ${buttonHoverBackground} transition-all duration-200 border ${
-                isDarkMode ? "border-emerald-500/20" : "border-emerald-300"
-              }`}
-              aria-label="Toggle theme"
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className="ds-btn ds-btn-primary ds-btn-sm"
             >
-              {isDarkMode ? (
-                <Sun className={`w-4 h-4 ${buttonIconColor}`} />
-              ) : (
-                <Moon className={`w-4 h-4 ${buttonIconColor}`} />
-              )}
+              Book Now
             </button>
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex lg:hidden items-center gap-3">
-            <button
-              onClick={toggleTheme}
-              className={`p-2 rounded-lg ${buttonBackground} ${buttonHoverBackground} transition-all duration-200 border ${
-                isDarkMode ? "border-emerald-500/20" : "border-emerald-300"
-              }`}
-              aria-label="Toggle theme"
-            >
-              {isDarkMode ? (
-                <Sun className={`w-4 h-4 ${buttonIconColor}`} />
-              ) : (
-                <Moon className={`w-4 h-4 ${buttonIconColor}`} />
-              )}
-            </button>
-
-            <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`p-2 rounded-lg ${buttonBackground} ${buttonHoverBackground} transition-all duration-200 border ${
-                isDarkMode ? "border-emerald-500/20" : "border-emerald-300"
-              }`}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? (
-                <X className={`w-5 h-5 ${buttonIconColor}`} />
-              ) : (
-                <Menu className={`w-5 h-5 ${buttonIconColor}`} />
-              )}
-            </button>
-          </div>
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow border ds-border-light"
+            style={{ background: 'var(--color-bg-card)' }}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-5 h-5 ds-text-primary" />
+            ) : (
+              <Menu className="w-5 h-5 ds-text-primary" />
+            )}
+          </button>
         </div>
+      </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className={`lg:hidden mt-4 pt-4 border-t ${mobileBorderColor} ${mobileMenuBackground} rounded-lg -mx-4 px-4 pb-4 shadow-xl`}>
-            <div className="flex flex-col gap-1">
-              {navItems.map((item) => {
-                const sectionName = item.href.replace('#', '');
-                const isActive = activeSection === sectionName;
-                
-                return (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    onClick={(e) => handleNavClick(e, item.href)}
-                    className={`text-sm font-medium py-3 px-4 rounded-lg transition-all duration-200 ${
-                      isActive ? activeNavItemColor : navItemColor
-                    } ${navItemHoverColor} ${
-                      isDarkMode ? "hover:bg-emerald-500/10" : "hover:bg-emerald-500/10"
-                    }`}
-                  >
-                    {item.name}
-                  </a>
-                );
-              })}
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div
+          className="lg:hidden backdrop-blur-lg border-t ds-border-primary"
+          style={{ background: 'rgba(0, 0, 0, 0.95)' }}
+        >
+          <div className="px-4 py-6 space-y-2">
+            {navItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={(e) => handleMobileNavClick(e, item.href)}
+                className={`block px-4 py-3 rounded-xl ds-body-base font-medium ds-transition-slow ${
+                  activeSection === item.href.replace('#', '')
+                    ? 'ds-text-primary'
+                    : 'ds-text-tertiary'
+                }`}
+                style={{
+                  background: activeSection === item.href.replace('#', '')
+                    ? 'var(--color-bg-card)'
+                    : 'transparent',
+                }}
+              >
+                {item.name}
+              </a>
+            ))}
+            <div className="pt-4 space-y-3">
+              {toggleTheme && (
+                <button
+                  onClick={toggleTheme}
+                  className="w-full px-4 py-3 rounded-xl flex items-center justify-center gap-2 ds-transition-slow border ds-border-light"
+                  style={{ background: 'var(--color-bg-card)' }}
+                >
+                  {isDarkMode ? (
+                    <>
+                      <Sun className="w-5 h-5" />
+                      <span className="ds-body-base ds-text-primary">Light Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-5 h-5" />
+                      <span className="ds-body-base ds-text-primary">Dark Mode</span>
+                    </>
+                  )}
+                </button>
+              )}
+              <button
+                onClick={() => {
+                  setIsMobileMenuOpen(false);
+                  document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="w-full ds-btn ds-btn-primary ds-btn-md"
+              >
+                Book Now
+              </button>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </nav>
   );
 };

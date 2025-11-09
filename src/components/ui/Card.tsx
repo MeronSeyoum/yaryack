@@ -1,23 +1,43 @@
 // src/components/ui/Card.tsx
 import React from 'react';
- import { DESIGN_SYSTEM } from '../../config/designSystem';
 
 interface CardProps {
   children: React.ReactNode;
   className?: string;
+  variant?: 'default' | 'elevated' | 'glass';
+  padding?: 'sm' | 'md' | 'lg';
   hover?: boolean;
 }
 
 export const Card: React.FC<CardProps> = ({ 
   children, 
   className = '',
-  hover = false 
+  variant = 'default',
+  padding = 'md',
+  hover = true
 }) => {
-  const baseClasses = `rounded-lg border transition-all duration-300`;
-  const hoverClasses = hover ? `hover:border-orange-500 hover:-translate-y-2` : '';
+  // Base classes using design system
+  const baseClasses = 'ds-card';
+  
+  // Variant classes
+  const variantClasses = {
+    default: '',
+    elevated: 'ds-card-elevated',
+    glass: 'bg-white/5 border-white/20 hover:border-white/30',
+  };
+
+  // Padding classes
+  const paddingClasses = {
+    sm: 'ds-card-p-sm',
+    md: 'ds-card-p-md',
+    lg: 'ds-card-p-lg',
+  };
+
+  // Disable hover effect if specified
+  const hoverClass = hover ? '' : 'hover:bg-[var(--color-bg-card)] hover:border-[var(--color-border-primary)] hover:shadow-none';
   
   return (
-    <div className={`${baseClasses} ${hoverClasses} ${className}`}>
+    <div className={`${baseClasses} ${variantClasses[variant]} ${paddingClasses[padding]} ${hoverClass} ${className}`}>
       {children}
     </div>
   );

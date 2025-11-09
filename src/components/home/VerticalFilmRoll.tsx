@@ -5,13 +5,13 @@ import type { ThemeClasses } from "../../types";
 
 interface VerticalFilmRollProps {
   images: string[];
-  themeClasses: ThemeClasses;
+  themeClasses?: ThemeClasses; // Make optional
   className?: string;
 }
 
 export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
   images,
-  themeClasses,
+  themeClasses = {}, // Provide default empty object
   className = "",
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -45,47 +45,46 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
     }, 200);
   }, []);
 
-  // Determine if we're in dark mode based on background color
-  const isDarkMode =
-    themeClasses.bg.primary.includes("black") ||
-    themeClasses.bg.primary.includes("gray-900") ||
-    themeClasses.bg.primary.includes("gray-800");
+  // Safe theme detection with defaults
+  const isDarkMode = themeClasses?.bg?.primary?.includes("black") ||
+    themeClasses?.bg?.primary?.includes("gray-900") ||
+    themeClasses?.bg?.primary?.includes("gray-800") ||
+    themeClasses?.text?.primary?.includes("white") ||
+    true; // Default to dark mode
 
   return (
     <div className={`relative ${className}`}>
       {/* Camera Housing with Side Tubes */}
       <div className="relative">
-        {/* Left Side Tube */}
-
         {/* Right Side Tube */}
         <div
           className={`absolute -right-0 top-8 bottom-8 w-6 rounded-lg border-2 ${
             isDarkMode
-              ? "bg-emerald-800 border-emerald-600 shadow-2xl"
-              : "bg-emerald-200 border-emerald-300 shadow-lg"
+              ? "bg-black border-gray-600 shadow-2xl"
+              : "bg-white border-gray-300 shadow-lg"
           }`}
         >
           {/* Tube End Caps */}
           <div
             className={`absolute -right-1 top-2 w-2 h-4 rounded-l ${
-              isDarkMode ? "bg-emerald-700" : "bg-emerald-400"
+              isDarkMode ? "bg-gray-700" : "bg-gray-400"
             }`}
           />
           <div
             className={`absolute -right-1 bottom-2 w-2 h-4 rounded-l ${
-              isDarkMode ? "bg-emerald-700" : "bg-emerald-400"
+              isDarkMode ? "bg-gray-700" : "bg-gray-400"
             }`}
           />
 
           {/* Tube Mounting Brackets */}
           <div
             className={`absolute right-0 top-1/4 w-1 h-3 ${
-              isDarkMode ? "bg-emerald-600" : "bg-emerald-500"
+              isDarkMode ? "bg-gray-600" : "bg-gray-500"
             }`}
           />
           <div
             className={`absolute right-0 top-3/4 w-1 h-3 ${
-              isDarkMode ? "bg-emerald-600" : "bg-emerald-500"
+              isDarkMode ? "bg-gray-600" : "bg-gray-500"
             }`}
           />
         </div>
@@ -94,8 +93,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
         <motion.div
           className={`absolute -right-4 top-1/2 -translate-y-1/2 w-10 h-16 rounded-lg border-2 ${
             isDarkMode
-              ? "bg-emerald-900 border-emerald-600"
-              : "bg-emerald-300 border-emerald-400"
+              ? "bg-black border-gray-600"
+              : "bg-white border-gray-400"
           } shadow-xl`}
           animate={{
             x: solenoidActive ? [0, -4, 0] : 0,
@@ -108,7 +107,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
           {/* Solenoid Plunger */}
           <motion.div
             className={`absolute left-0 top-1/2 -translate-y-1/2 w-4 h-8 rounded-l ${
-              isDarkMode ? "bg-emerald-700" : "bg-emerald-500"
+              isDarkMode ? "bg-black" : "bg-white"
             }`}
             animate={{
               x: solenoidActive ? [0, 6, 0] : 0,
@@ -125,7 +124,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
               <div
                 key={i}
                 className={`h-1 rounded-full ${
-                  isDarkMode ? "bg-emerald-600" : "bg-emerald-400"
+                  isDarkMode ? "bg-gray-600" : "bg-gray-400"
                 }`}
               />
             ))}
@@ -148,8 +147,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
         <div
           className={`relative p-4 rounded-lg border-2 mr-8 mb-20 ${
             isDarkMode
-              ? "border-emerald-700 bg-gradient-to-b from-emerald-900 to-black"
-              : "border-emerald-300 bg-gradient-to-b from-emerald-100 to-white"
+              ? "border-gray-700 bg-gradient-to-b from-gray-900 to-black"
+              : "border-gray-300 bg-gradient-to-b from-gray-100 to-white"
           } shadow-2xl`}
           style={{
             transform: "perspective(800px) rotateX(2deg)",
@@ -160,8 +159,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
           <div
             className={`absolute inset-0 rounded-lg pointer-events-none ${
               isDarkMode
-                ? "bg-gradient-to-br from-emerald-900 via-emerald-800 to-emerald-900"
-                : "bg-gradient-to-br from-emerald-200 via-emerald-100 to-emerald-200"
+                ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
+                : "bg-gradient-to-br from-gray-200 via-gray-100 to-gray-200"
             } opacity-60`}
           />
 
@@ -173,7 +172,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                 <motion.div
                   key={`left-${i}`}
                   className={`w-1.5 h-2 rounded-sm ${
-                    isDarkMode ? "bg-emerald-600" : "bg-emerald-400"
+                    isDarkMode ? "bg-gray-600" : "bg-gray-400"
                   }`}
                   animate={{
                     opacity: [0.4, 0.8, 0.4],
@@ -194,7 +193,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                 <motion.div
                   key={`right-${i}`}
                   className={`w-1.5 h-2 rounded-sm ${
-                    isDarkMode ? "bg-emerald-600" : "bg-emerald-400"
+                    isDarkMode ? "bg-gray-600" : "bg-gray-400"
                   }`}
                   animate={{
                     opacity: [0.4, 0.8, 0.4],
@@ -213,8 +212,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
             <div
               className={`relative rounded border-2 overflow-hidden ${
                 isDarkMode
-                  ? "bg-emerald-800 border-emerald-600"
-                  : "bg-emerald-100 border-emerald-300"
+                  ? "bg-gray-800 border-gray-600"
+                  : "bg-gray-100 border-gray-300"
               } shadow-inner`}
             >
               {/* Film Frames Stack */}
@@ -256,19 +255,19 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                       <div
                         className={`p-2 rounded-lg border-2 ${
                           isActive
-                            ? "border-emerald-500 shadow-2xl shadow-emerald-500/30 bg-white/5"
+                            ? "border-gray-500 shadow-2xl shadow-gray-500/30 bg-white/5"
                             : `${
                                 isDarkMode
-                                  ? "border-emerald-500 bg-emerald-700/30"
-                                  : "border-emerald-300 bg-emerald-200/30"
+                                  ? "border-gray-500 bg-gray-700/30"
+                                  : "border-gray-300 bg-gray-200/30"
                               }`
                         }`}
                       >
                         {/* Frame Corners */}
-                        <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-emerald-500/50 rounded-tl" />
-                        <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-emerald-500/50 rounded-tr" />
-                        <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-emerald-500/50 rounded-bl" />
-                        <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-emerald-500/50 rounded-br" />
+                        <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-gray-500/50 rounded-tl" />
+                        <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-gray-500/50 rounded-tr" />
+                        <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-gray-500/50 rounded-bl" />
+                        <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-gray-500/50 rounded-br" />
 
                         {/* Image */}
                         <div className="aspect-[3/4] rounded overflow-hidden relative">
@@ -306,26 +305,26 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                           <motion.div
                             className={`absolute -bottom-6 left-1/2 -translate-x-1/2 px-2 py-1 rounded text-xs font-mono border shadow-lg ${
                               isDarkMode
-                                ? "bg-emerald-800 border-emerald-600 text-emerald-300"
-                                : "bg-emerald-200 border-emerald-300 text-emerald-700"
+                                ? "bg-gray-800 border-gray-600 text-gray-300"
+                                : "bg-gray-200 border-gray-300 text-gray-700"
                             }`}
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             transition={{ delay: 0.2, type: "spring" }}
                           >
-                            <span className="text-emerald-500 font-bold">
+                            <span className="text-gray-500 font-bold">
                               {String(idx + 1).padStart(2, "0")}
                             </span>
                             <span
                               className={
-                                isDarkMode ? "text-emerald-400" : "text-emerald-500"
+                                isDarkMode ? "text-gray-400" : "text-gray-500"
                               }
                             >
                               /
                             </span>
                             <span
                               className={
-                                isDarkMode ? "text-emerald-400" : "text-emerald-500"
+                                isDarkMode ? "text-gray-400" : "text-gray-500"
                               }
                             >
                               {String(images.length).padStart(2, "0")}
@@ -340,7 +339,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                           <div className="absolute -left-6 top-1/2 -translate-y-1/2 -rotate-90">
                             <span
                               className={`text-xs font-mono tracking-widest ${
-                                isDarkMode ? "text-emerald-400" : "text-emerald-600"
+                                isDarkMode ? "text-gray-400" : "text-gray-600"
                               }`}
                             >
                               KODAK
@@ -349,7 +348,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                           <div className="absolute -right-6 top-1/2 -translate-y-1/2 rotate-90">
                             <span
                               className={`text-xs font-mono tracking-widest ${
-                                isDarkMode ? "text-emerald-400" : "text-emerald-600"
+                                isDarkMode ? "text-gray-400" : "text-gray-600"
                               }`}
                             >
                               400
@@ -365,11 +364,11 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
               {/* Progress Indicator */}
               <div
                 className={`absolute bottom-0 left-0 right-0 h-1 ${
-                  isDarkMode ? "bg-emerald-700" : "bg-emerald-400"
+                  isDarkMode ? "bg-gray-700" : "bg-gray-400"
                 }`}
               >
                 <motion.div
-                  className="h-full bg-gradient-to-r from-emerald-500 to-green-400"
+                  className="h-full bg-gradient-to-r from-gray-500 to-green-400"
                   animate={{
                     width: isAutoPlaying ? ["0%", "100%"] : "0%",
                   }}
@@ -386,8 +385,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
             <motion.div
               className={`mt-3 text-center py-2 rounded text-sm font-mono tracking-wider border shadow-md ${
                 isDarkMode
-                  ? "bg-emerald-800 border-emerald-600"
-                  : "bg-emerald-200 border-emerald-300"
+                  ? "bg-gray-800 border-gray-600"
+                  : "bg-gray-200 border-gray-300"
               }`}
               animate={{
                 y: [0, -1, 0],
@@ -398,8 +397,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                 ease: "easeInOut",
               }}
             >
-              <span className="text-emerald-500 font-bold">PORTRA</span>
-              <span className={isDarkMode ? "text-emerald-400" : "text-emerald-600"}>
+              <span className="text-gray-500 font-bold">PORTRA</span>
+              <span className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
                 {" "}
                 400
               </span>
@@ -413,8 +412,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                   onClick={() => goToSlide(idx)}
                   className={`w-2 h-2 rounded-full ${
                     idx === currentSlide
-                      ? "bg-emerald-500"
-                      : `${isDarkMode ? "bg-emerald-600" : "bg-emerald-400"}`
+                      ? "bg-gray-500"
+                      : `${isDarkMode ? "bg-gray-600" : "bg-gray-400"}`
                   }`}
                   whileHover={{ scale: 1.5 }}
                   whileTap={{ scale: 0.8 }}
@@ -437,8 +436,8 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                   isAutoPlaying
                     ? "bg-green-500"
                     : isDarkMode
-                    ? "bg-emerald-600"
-                    : "bg-emerald-400"
+                    ? "bg-gray-600"
+                    : "bg-gray-400"
                 }`}
                 animate={{
                   scale: isAutoPlaying ? [1, 1.2, 1] : 1,
@@ -451,7 +450,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
               />
               <span
                 className={`text-xs ${
-                  isDarkMode ? "text-emerald-400" : "text-emerald-600"
+                  isDarkMode ? "text-gray-400" : "text-gray-600"
                 }`}
               >
                 {isAutoPlaying ? "Auto" : "Paused"}
@@ -460,9 +459,9 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
           </div>
         </div>
 
-        {/* High-Tech Film Canister - Centered and Aligned */}
+        {/* High-Tech Film Canister */}
         <motion.div
-          className="absolute -bottom-[120px] -left-3 -translate-x-1/ z-30 w-full  max-w-sm"
+          className="absolute -bottom-[120px] -left-3 -translate-x-1/ z-30 w-full max-w-sm"
           animate={{
             y: canisterEngaged ? [0, -2, 0] : 0,
           }}
@@ -489,13 +488,13 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
               }}
             >
               {/* Metallic Border */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-emerald-400/30 pointer-events-none" />
+              <div className="absolute inset-0 rounded-2xl border-2 border-gray-400/30 pointer-events-none" />
 
               {/* High-Tech Slider Track */}
               <div className="absolute top-3 left-4 right-4 h-3 bg-black/60 rounded-full overflow-hidden backdrop-blur-sm">
                 {/* Slider Progress Glow */}
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-emerald-400 to-green-500 rounded-full"
+                  className="absolute inset-0 bg-gradient-to-r from-gray-400 to-green-500 rounded-full"
                   animate={{
                     opacity: [0.3, 0.6, 0.3],
                     boxShadow: [
@@ -512,7 +511,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
 
                 {/* Slider Knob */}
                 <motion.div
-                  className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white cursor-pointer shadow-2xl border border-emerald-300"
+                  className="absolute top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white cursor-pointer shadow-2xl border border-gray-300"
                   style={{
                     left: "100%",
                     transform: "translate(-50%, -50%)",
@@ -533,16 +532,16 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                   whileTap={{ scale: 0.95 }}
                 >
                   {/* Knob Grip Pattern */}
-                  <div className="absolute inset-1 rounded-full bg-gradient-to-br from-emerald-200 to-emerald-400">
-                    <div className="absolute inset-0.5 rounded-full border border-emerald-300/50" />
+                  <div className="absolute inset-1 rounded-full bg-gradient-to-br from-gray-200 to-gray-400">
+                    <div className="absolute inset-0.5 rounded-full border border-gray-300/50" />
                     {/* Vector-style grip lines */}
-                    <div className="absolute top-1 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-emerald-500/40 rounded" />
-                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-emerald-500/40 rounded" />
+                    <div className="absolute top-1 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-gray-500/40 rounded" />
+                    <div className="absolute bottom-1 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-gray-500/40 rounded" />
                   </div>
 
                   {/* LED Indicator */}
                   <motion.div
-                    className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 shadow-lg"
+                    className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-gray-400 shadow-lg"
                     animate={{
                       scale: [1, 1.3, 1],
                       opacity: [0.7, 1, 0.7],
@@ -556,20 +555,20 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
               </div>
 
               {/* Inner Canister with Vector Design */}
-              <div className="absolute inset-2 bg-gradient-to-b from-emerald-100 to-emerald-300 rounded-xl shadow-inner overflow-hidden border border-emerald-200/50">
+              <div className="absolute inset-2 bg-gradient-to-b from-gray-100 to-gray-300 rounded-xl shadow-inner overflow-hidden border border-gray-200/50">
                 {/* Top Black Bar with Tech Details */}
                 <div className="absolute top-0 left-0 right-0 h-3 bg-black rounded-t-xl flex items-center justify-between px-3">
                   {/* Small Tech Dots */}
                   <div className="flex gap-1">
-                    <div className="w-1 h-1 rounded-full bg-emerald-400/60" />
-                    <div className="w-1 h-1 rounded-full bg-emerald-400/60" />
+                    <div className="w-1 h-1 rounded-full bg-gray-400/60" />
+                    <div className="w-1 h-1 rounded-full bg-gray-400/60" />
                   </div>
-                  <div className="text-[10px] text-emerald-300 font-mono uppercase tracking-widest">
+                  <div className="text-[10px] text-gray-300 font-mono uppercase tracking-widest">
                     35mm
                   </div>
                   <div className="flex gap-1">
-                    <div className="w-1 h-1 rounded-full bg-emerald-400/60" />
-                    <div className="w-1 h-1 rounded-full bg-emerald-400/60" />
+                    <div className="w-1 h-1 rounded-full bg-gray-400/60" />
+                    <div className="w-1 h-1 rounded-full bg-gray-400/60" />
                   </div>
                 </div>
 
@@ -617,22 +616,22 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                     {[...Array(5)].map((_, i) => (
                       <div
                         key={i}
-                        className="w-0.5 h-0.5 rounded-full bg-emerald-400/40"
+                        className="w-0.5 h-0.5 rounded-full bg-gray-400/40"
                       />
                     ))}
                   </div>
                 </div>
 
                 {/* Vector-style Corner Accents */}
-                <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-emerald-600/30" />
-                <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-emerald-600/30" />
-                <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-emerald-600/30" />
-                <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-emerald-600/30" />
+                <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-gray-600/30" />
+                <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-gray-600/30" />
+                <div className="absolute bottom-2 left-2 w-2 h-2 border-b border-l border-gray-600/30" />
+                <div className="absolute bottom-2 right-2 w-2 h-2 border-b border-r border-gray-600/30" />
               </div>
 
               {/* Film Slot with High-Tech Design */}
               <motion.div
-                className="absolute -top-2 left-1/2 -translate-x-1/2 w-20 h-3 bg-gradient-to-b from-emerald-900 via-emerald-800 to-black rounded-t-lg border border-emerald-700"
+                className="absolute -top-2 left-1/2 -translate-x-1/2 w-20 h-3 bg-gradient-to-b from-gray-900 via-gray-800 to-black rounded-t-lg border border-gray-700"
                 style={{
                   clipPath: "polygon(0 100%, 100% 100%, 88% 0, 12% 0)",
                 }}
@@ -657,16 +656,16 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                 >
                   <div
                     className={`h-3 ${
-                      isDarkMode ? "bg-emerald-600" : "bg-emerald-400"
-                    } rounded-t-lg border border-emerald-500/30`}
+                      isDarkMode ? "bg-gray-600" : "bg-gray-400"
+                    } rounded-t-lg border border-gray-500/30`}
                   >
                     <div className="flex justify-between px-3 pb-0.5">
                       {[...Array(3)].map((_, i) => (
                         <motion.div
                           key={i}
                           className={`w-1 h-1 rounded-sm ${
-                            isDarkMode ? "bg-emerald-800" : "bg-emerald-500"
-                          } border border-emerald-600/30`}
+                            isDarkMode ? "bg-gray-800" : "bg-gray-500"
+                          } border border-gray-600/30`}
                           animate={{
                             opacity: [0.3, 0.8, 0.3],
                           }}
@@ -684,7 +683,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
 
               {/* Status Display */}
               <motion.div
-                className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono bg-black/90 text-emerald-400 backdrop-blur-sm border border-emerald-500/30 shadow-2xl"
+                className="absolute -top-10 left-1/2 -translate-x-1/2 flex items-center gap-2 px-4 py-2 rounded-full text-xs font-mono bg-black/90 text-gray-400 backdrop-blur-sm border border-gray-500/30 shadow-2xl"
                 animate={{
                   backgroundColor: [
                     "rgba(0,0,0,0.9)",
@@ -699,7 +698,7 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                 }}
               >
                 <motion.div
-                  className="w-2 h-2 rounded-full bg-emerald-400 shadow-lg shadow-emerald-400/50"
+                  className="w-2 h-2 rounded-full bg-gray-400 shadow-lg shadow-gray-400/50"
                   animate={{
                     scale: [1, 1.4, 1],
                   }}
@@ -709,16 +708,16 @@ export const VerticalFilmRoll: React.FC<VerticalFilmRollProps> = ({
                   }}
                 />
                 <span className="tracking-widest">ENGAGED</span>
-                <div className="w-1 h-3 bg-emerald-400/60 rounded-full animate-pulse" />
+                <div className="w-1 h-3 bg-gray-400/60 rounded-full animate-pulse" />
               </motion.div>
 
               {/* Side Extension */}
-              <div className="absolute w-5 bottom-7 border-r border-t border-b border-emerald-500 rounded-r-lg h-14 -right-5 bg-white/30 z-10" />
+              <div className="absolute w-5 bottom-7 border-r border-t border-b border-gray-500 rounded-r-lg h-14 -right-5 bg-white/30 z-10" />
             </div>
 
             {/* Outer Glow Effect */}
             <motion.div
-              className="absolute inset-0 rounded-2xl bg-emerald-400/20 blur-xl -z-10"
+              className="absolute inset-0 rounded-2xl bg-gray-400/20 blur-xl -z-10"
               animate={{ opacity: [0.1, 0.3, 0.1] }}
               transition={{ duration: 3, repeat: Infinity }}
             />

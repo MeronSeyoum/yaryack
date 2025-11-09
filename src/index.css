@@ -1,3 +1,6 @@
+/* src/index.css */
+@import './design-tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,7 +12,8 @@
 }
 
 body {
-  font-family: 'Courier New', monospace;
+  /* font-family: 'Courier New', monospace; */
+   font-family: 'Uber Move', 'Cabinet Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   background: #1a1a1a;
   color: #fff;
 }
