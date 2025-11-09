@@ -10,7 +10,7 @@ import heroThumb1 from "../../assets/images/hero-thumb-1.jpg";
 import heroThumb2 from "../../assets/images/hero-thumb-2.jpg";
 import heroThumb3 from "../../assets/images/hero-thumb-3.jpg";
 import heroThumb4 from "../../assets/images/hero-thumb-4.jpg";
-import heroMobile1 from "../../assets/images/event-4.jpg";~
+import heroMobile1 from "../../assets/images/event-4.jpg";
 import heroMobile2 from "../../assets/images/hero-thumb-5.jpg";  
 import heroMobile3 from "../../assets/images/hero-thumb-6.jpeg";
 import type { ThemeClasses } from "../../types";
