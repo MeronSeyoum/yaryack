@@ -5,7 +5,7 @@ import { VerticalFilmRoll } from "./VerticalFilmRoll";
 
 // Import images
 import heroMain from "../../assets/images/hero-main.jpg";
-import heroMobile from "../../assets/images/hero-mobile.jpg";
+import heroMobileBottom from "../../assets/images/bg-hero-mobile.jpg";
 import heroThumb1 from "../../assets/images/hero-thumb-1.jpg";
 import heroThumb2 from "../../assets/images/hero-thumb-2.jpg";
 import heroThumb3 from "../../assets/images/hero-thumb-3.jpg";
@@ -13,6 +13,11 @@ import heroThumb4 from "../../assets/images/hero-thumb-4.jpg";
 import heroMobile1 from "../../assets/images/event-4.jpg";
 import heroMobile2 from "../../assets/images/hero-thumb-5.jpg";  
 import heroMobile3 from "../../assets/images/hero-thumb-6.jpeg";
+
+import heroMobileThumb1 from "../../assets/images/hero-thumb-mobile-5.jpg";
+import heroMobileThumb2 from "../../assets/images/hero-thumb-mobile-6.jpg";
+import heroMobileThumb3 from "../../assets/images/hero-thumb-mobile-3.jpg";
+import heroMobileThumb4 from "../../assets/images/hero-thumb-mobile-4.jpg";
 import type { ThemeClasses } from "../../types";
 
 interface HeroSectionProps {
@@ -25,6 +30,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
   const [isMobile, setIsMobile] = useState(false);
   
   const heroImages = [heroThumb1, heroThumb2, heroThumb3, heroThumb4];
+  const heroMobileImages = [heroMobileThumb1, heroMobileThumb2, heroMobileThumb3, heroMobileThumb4];
   const mobileSlides = [heroMobile1, heroMobile2, heroMobile3];
 
   // Check for mobile on mount and resize
@@ -66,7 +72,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
         {/* Mobile Slideshow */}
         <div className="lg:hidden w-full h-full relative">
           <div 
-            className="flex w-full h-full ds-transition-slow ease-in-out" 
+            className="flex w-full h-[100vh] ds-transition-slow ease-in-out" 
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
             {mobileSlides.map((slide, index) => (
@@ -109,7 +115,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
         <div
           className="hidden lg:block absolute inset-0"
           style={{
-            background: "linear-gradient(135deg, rgba(0,0,0, 0.8) 0%, rgba(0,0,0, 0.6) 40%, rgba(0,0,0, 0.2) 90%)",
+            background: "linear-gradient(135deg, rgba(0,0,0, 0.3) 0%, rgba(0,0,0, 0.3) 30%, rgba(0,0,0, 0.2) 90%)",
           }}
         />
         <div
@@ -124,9 +130,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
       <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-16">
         <div className="flex flex-col lg:grid lg:grid-cols-[1fr_22%] min-h-screen gap-8">
           {/* Main Content Area */}
-          <div className="flex flex-col justify-end lg:justify-center py-12 lg:py-16 min-h-[80vh] lg:min-h-0">
+          <div className="flex flex-col justify-end lg:justify-center pt-12 lg:py-16 min-h-[95vh] lg:min-h-0">
             {/* Header Section */}
-            <div className="space-y-8 lg:space-y-12">
+            <div className="space-y-4 lg:space-y-12">
               {/* Location Badge - Desktop */}
               <div
                 className="hidden lg:flex items-center gap-3 backdrop-blur-sm rounded-full max-w-md border ds-transition-slow hover:border-emerald-400/40"
@@ -151,27 +157,27 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
                   className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
                   style={{ borderColor: 'var(--color-brand-primary)' }}
                 >
-                  <h1 className="ds-heading-1 ds-text-primary">
+                  <h1 className="lg:ds-heading-1 ds-heading-3 ds-text-primary ">
                     Yaryack
                     <br />
                     <span 
                       className="font-semibold bg-gradient-to-r bg-clip-text text-transparent"
                       style={{
-                        backgroundImage: `linear-gradient(to right, var(--color-brand-primary), var(--color-brand-primary-light))`
+                        backgroundImage: `linear-gradient(to right, var(--color-text-primary), var(--color-text-primary))`
                       }}
                     >
                       Photography
                     </span>
                   </h1>
                 </div>
-                <p className="ds-body-lg ds-text-secondary max-w-2xl mx-auto lg:mx-0 lg:pl-10">
+                <p className="lg:ds-body-lg ds-body-sm ds-text-secondary max-w-2xl mx-auto lg:mx-0 lg:pl-10">
                   Capturing authentic moments and creating timeless memories
                 </p>
               </div>
             </div>
 
             {/* CTA Section */}
-            <div className="space-y-8 mt-12 lg:mt-16">
+            <div className="space-y-8 mt-8 lg:mt-16">
               {/* Action Buttons */}
               <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
                 <button
@@ -180,7 +186,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
                       .getElementById("contact")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="w-full sm:w-auto ds-btn ds-btn-primary ds-btn-lg group"
+                  className="w-full sm:w-auto ds-btn ds-btn-primary lg:ds-btn-lg ds-btn-md group"
                 >
                   <Calendar className="w-6 h-6" />
                   <span>Book a Session</span>
@@ -243,7 +249,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
                 style={{
                   background: 'var(--color-bg-card)',
                   borderColor: 'var(--color-border-light)',
-                  padding: 'var(--spacing-4)',
+                  padding: 'var(--spacing-3)',
                 }}
               >
                 <div className="flex-shrink-0">
@@ -299,8 +305,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
         </div>
 
         {/* Mobile Portfolio Preview */}
-        <div className="lg:hidden py-12">
-          <div className="text-center mb-8">
+        <div className="lg:hidden -mx-4 ">
+         <div 
+            className="absolute -z-10 w-full h-[100vh] " 
+          >
+              <div  className="w-full h-full flex-shrink-0">
+                <img
+                  src={heroMobileBottom}
+                  alt={`Professional photography by Yaryack - Slide `}
+                  className="w-full h-full object-cover grayscale "
+                />
+              </div>
+          </div>
+        <div className="p-3 ">
+           <div className="text-center mb-8 py-12 ">
             <h3 className="ds-heading-3 ds-text-primary mb-3">
               Featured Work
             </h3>
@@ -310,7 +328,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
           </div>
           
           <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-            {heroImages.slice(0, 4).map((image, index) => (
+            {heroMobileImages.slice(0, 4).map((image, index) => (
               <div 
                 key={index} 
                 className="aspect-square rounded-xl overflow-hidden border-2 shadow-lg ds-transition-slow hover:scale-105"
@@ -323,6 +341,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
                 />
               </div>
             ))}
+          </div>
           </div>
         </div>
       </div>

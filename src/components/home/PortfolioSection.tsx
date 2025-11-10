@@ -201,7 +201,7 @@ export const PortfolioSection: React.FC = () => {
                           ? 'rgba(2, 156, 72, 0.2)' 
                           : 'rgba(0, 0, 0, 0.6)',
                         color: activeCategory === category 
-                          ? 'var(--color-brand-primary)' 
+                          ? 'var(--color-brand-secondary)' 
                           : 'var(--color-text-tertiary)'
                       }}
                     >
@@ -220,7 +220,7 @@ export const PortfolioSection: React.FC = () => {
                         className="ml-auto ds-body-sm"
                         style={{
                           color: activeCategory === category 
-                            ? 'var(--color-brand-primary)' 
+                            ? 'var(--color-brand-secondary)' 
                             : 'var(--color-text-tertiary)'
                         }}
                       >
@@ -284,7 +284,7 @@ export const PortfolioSection: React.FC = () => {
 
               {/* Masonry Image Grid */}
               {!isVideoCategory && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 auto-rows-[150px] sm:auto-rows-[200px]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 auto-rows-[200px] sm:auto-rows-[200px]">
                   {displayImages.map((img, idx) => {
                     const mobileLayout = masonryLayouts.mobile[idx % masonryLayouts.mobile.length];
                     const desktopLayout = masonryLayouts.desktop[idx % masonryLayouts.desktop.length];
@@ -300,7 +300,7 @@ export const PortfolioSection: React.FC = () => {
                         <img
                           src={img}
                           alt={`${activeCategory} photography ${idx + 1}`}
-                          className="w-full h-full object-cover ds-transition-slower group-hover:scale-105"
+                          className="w-full h-full lg:object-contain object-cover rounded-xl ds-transition-slower group-hover:scale-105"
                         />
                         
                         {/* Info Panel - Hover */}
