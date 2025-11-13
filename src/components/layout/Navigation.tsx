@@ -52,27 +52,51 @@ export const Navigation: React.FC<NavigationProps> = ({
     handleNavClick(e, href);
   };
 
+  // Text color functions - Focus on high contrast
+  const getPrimaryTextColor = () => {
+    return isDarkMode ? '#ffffff' : '#111827'; // Pure white / Near black
+  };
+
+  const getSecondaryTextColor = () => {
+    return isDarkMode ? '#e5e7eb' : '#374151'; // Light gray / Dark gray
+  };
+
+  const getActiveTextColor = () => {
+    return '#10b981'; // Brand green for active states
+  };
+
+  const getHoverTextColor = () => {
+    return isDarkMode ? '#10b981' : '#059669'; // Green shades for hover
+  };
+
+  // Background remains subtle
+  const getNavBackground = () => {
+    if (!isScrolled) return 'transparent';
+    return isDarkMode 
+      ? 'rgba(10, 10, 10, 0.85)' 
+      : 'rgba(255, 255, 255, 0.85)';
+  };
+
+  const getNavBorder = () => {
+    if (!isScrolled) return 'transparent';
+    return isDarkMode 
+      ? 'rgba(255, 255, 255, 0.1)' 
+      : 'rgba(0, 0, 0, 0.1)';
+  };
+
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 ds-transition-slow ${
-        isScrolled ? 'backdrop-blur-lg shadow-lg' : ''
+      className={`fixed top-0 left-0 right-0 z-50 ds-transition-slow  ${
+        isScrolled ? 'shadow-lg' : ''
       }`}
       style={{
-        background: isScrolled 
-          ? isDarkMode 
-            ? 'rgba(10, 10, 10, 0.85)' 
-            : 'rgba(245, 245, 245, 0.85)'
-          : 'transparent',
-        borderBottom: isScrolled 
-          ? isDarkMode
-            ? '1px solid rgba(255, 255, 255, 0.1)' 
-            : '1px solid rgba(0, 0, 0, 0.1)'
-          : '1px solid transparent'
+        background: getNavBackground(),
+        borderBottom: `1px solid ${getNavBorder()}`,
       }}
     >
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto px-4 sm:px-6 lg:px-8 lg:border-b ds-border-primary">
         <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+          {/* Logo - High contrast text */}
           <a
             href="#home"
             onClick={(e) => handleNavClick(e, '#home')}
@@ -84,153 +108,167 @@ export const Navigation: React.FC<NavigationProps> = ({
                 background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
               }}
             >
-               <Camera className="w-5 h-5  text-white " />
+              <Camera className="w-5 h-5 text-white" />
             </div>
             <div className="hidden sm:block">
-              <span className="ds-heading-4" style={{
-                color: isDarkMode ? '#ffffff' : '#1f2937'
-              }}>Yaryack</span>
-              <p className="ds-body-sm -mt-1" style={{
-                color: isDarkMode ? '#9ca3af' : '#6b7280'
-              }}>Photography</p>
+              <span 
+                className="ds-heading-4 font-bold"
+                style={{ color: getPrimaryTextColor() }}
+              >
+                Yaryack
+              </span>
+              <p 
+                className="ds-body-sm -mt-1 font-medium"
+                style={{ color: getSecondaryTextColor() }}
+              >
+                Photography
+              </p>
             </div>
           </a>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Clear text focus */}
           <div className="hidden lg:flex items-center gap-2">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleNavClick(e, item.href)}
-                className={`px-4 py-2 rounded-xl ds-body-base font-medium ds-transition-slow hover:scale-105`}
-                style={{
-                  background: activeSection === item.href.replace('#', '')
-                    ? isDarkMode 
-                      ? 'rgba(16, 185, 129, 0.15)' 
-                      : 'rgba(16, 185, 129, 0.1)'
-                    : 'transparent',
-                  color: activeSection === item.href.replace('#', '')
-                    ? '#10b981'
-                    : isDarkMode ? '#d1d5db' : '#6b7280'
-                }}
-              >
-                {item.name}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace('#', '');
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className={`px-4 py-2 rounded-xl ds-body-base font-semibold ds-transition-slow hover:scale-105`}
+                  style={{
+                    color: isActive ? getActiveTextColor() : getPrimaryTextColor(),
+                    background: isActive 
+                      ? (isDarkMode ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)')
+                      : 'transparent',
+                    textShadow: isActive ? '0 0 10px rgba(16, 185, 129, 0.3)' : 'none',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = getHoverTextColor();
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isActive) {
+                      e.currentTarget.style.color = getPrimaryTextColor();
+                    }
+                  }}
+                >
+                  {item.name}
+                </a>
+              );
+            })}
           </div>
 
-          {/* Desktop Actions */}
+          {/* Desktop Actions - Clear icons and text */}
           <div className="hidden lg:flex items-center gap-3">
             {toggleTheme && (
               <button
                 onClick={toggleTheme}
-                className="w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow hover:scale-105"
+                className="w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow hover:scale-105 hover:shadow-lg"
                 style={{ 
                   background: isDarkMode 
                     ? 'rgba(255, 255, 255, 0.1)' 
                     : 'rgba(0, 0, 0, 0.05)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(255, 255, 255, 0.1)' 
-                    : '1px solid rgba(0, 0, 0, 0.1)'
+                  color: getPrimaryTextColor(),
+                  border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
                 }}
                 aria-label="Toggle theme"
               >
                 {isDarkMode ? (
-                  <Sun className="w-5 h-5 text-yellow-400" />
+                  <Sun className="w-5 h-5 text-yellow-300" />
                 ) : (
-                  <Moon className="w-5 h-5 text-gray-700" />
+                  <Moon className="w-5 h-5 text-indigo-600" />
                 )}
               </button>
             )}
             <button
               onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-              className="ds-btn ds-btn-primary ds-btn-sm"
+              className="ds-btn ds-btn-primary ds-btn-sm font-semibold shadow-lg hover:shadow-xl"
+              style={{
+                textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+              }}
             >
               Book Now
             </button>
           </div>
 
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button - Clear icon */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow"
+            className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow hover:scale-105 hover:shadow-lg"
             style={{ 
               background: isDarkMode 
                 ? 'rgba(255, 255, 255, 0.1)' 
                 : 'rgba(0, 0, 0, 0.05)',
-              border: isDarkMode 
-                ? '1px solid rgba(255, 255, 255, 0.1)' 
-                : '1px solid rgba(0, 0, 0, 0.1)'
+              color: getPrimaryTextColor(),
+              border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
             }}
             aria-label="Toggle menu"
           >
             {isMobileMenuOpen ? (
-              <X className="w-5 h-5" style={{ color: isDarkMode ? '#ffffff' : '#1f2937' }} />
+              <X className="w-5 h-5" />
             ) : (
-              <Menu className="w-5 h-5" style={{ color: isDarkMode ? '#ffffff' : '#1f2937' }} />
+              <Menu className="w-5 h-5" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - Clear text focus */}
       {isMobileMenuOpen && (
         <div
           className="lg:hidden backdrop-blur-lg border-t"
           style={{ 
             background: isDarkMode 
               ? 'rgba(10, 10, 10, 0.95)' 
-              : 'rgba(245, 245, 245, 0.95)',
-            borderColor: isDarkMode 
-              ? 'rgba(255, 255, 255, 0.1)' 
-              : 'rgba(0, 0, 0, 0.1)'
+              : 'rgba(255, 255, 255, 0.95)',
+            borderColor: getNavBorder(),
           }}
         >
           <div className="px-4 py-6 space-y-2">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={(e) => handleMobileNavClick(e, item.href)}
-                className={`block px-4 py-3 rounded-xl ds-body-base font-medium ds-transition-slow`}
-                style={{
-                  background: activeSection === item.href.replace('#', '')
-                    ? isDarkMode 
-                      ? 'rgba(16, 185, 129, 0.15)' 
-                      : 'rgba(16, 185, 129, 0.1)'
-                    : 'transparent',
-                  color: activeSection === item.href.replace('#', '')
-                    ? '#10b981'
-                    : isDarkMode ? '#d1d5db' : '#6b7280'
-                }}
-              >
-                {item.name}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.replace('#', '');
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => handleMobileNavClick(e, item.href)}
+                  className={`block px-4 py-3 rounded-xl ds-body-base font-semibold ds-transition-slow`}
+                  style={{
+                    color: isActive ? getActiveTextColor() : getPrimaryTextColor(),
+                    background: isActive 
+                      ? (isDarkMode ? 'rgba(16, 185, 129, 0.15)' : 'rgba(16, 185, 129, 0.1)')
+                      : 'transparent',
+                    textShadow: isActive ? '0 0 10px rgba(16, 185, 129, 0.3)' : 'none',
+                  }}
+                >
+                  {item.name}
+                </a>
+              );
+            })}
             <div className="pt-4 space-y-3">
               {toggleTheme && (
                 <button
                   onClick={toggleTheme}
-                  className="w-full px-4 py-3 rounded-xl flex items-center justify-center gap-2 ds-transition-slow"
+                  className="w-full px-4 py-3 rounded-xl flex items-center justify-center gap-2 ds-transition-slow font-semibold hover:shadow-lg"
                   style={{ 
                     background: isDarkMode 
                       ? 'rgba(255, 255, 255, 0.1)' 
                       : 'rgba(0, 0, 0, 0.05)',
-                    border: isDarkMode 
-                      ? '1px solid rgba(255, 255, 255, 0.1)' 
-                      : '1px solid rgba(0, 0, 0, 0.1)'
+                    color: getPrimaryTextColor(),
+                    border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
                   }}
                 >
                   {isDarkMode ? (
                     <>
-                      <Sun className="w-5 h-5 text-yellow-400" />
-                      <span className="ds-body-base" style={{ color: isDarkMode ? '#ffffff' : '#1f2937' }}>Light Mode</span>
+                      <Sun className="w-5 h-5 text-yellow-300" />
+                      <span>Light Mode</span>
                     </>
                   ) : (
                     <>
-                      <Moon className="w-5 h-5 text-gray-700" />
-                      <span className="ds-body-base" style={{ color: isDarkMode ? '#ffffff' : '#1f2937' }}>Dark Mode</span>
+                      <Moon className="w-5 h-5 text-indigo-600" />
+                      <span>Dark Mode</span>
                     </>
                   )}
                 </button>
@@ -240,7 +278,10 @@ export const Navigation: React.FC<NavigationProps> = ({
                   setIsMobileMenuOpen(false);
                   document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className="w-full ds-btn ds-btn-primary ds-btn-md"
+                className="w-full ds-btn ds-btn-primary ds-btn-md font-semibold shadow-lg"
+                style={{
+                  textShadow: '0 1px 2px rgba(0, 0, 0, 0.2)',
+                }}
               >
                 Book Now
               </button>

@@ -300,7 +300,7 @@ export const PortfolioSection: React.FC = () => {
                         <img
                           src={img}
                           alt={`${activeCategory} photography ${idx + 1}`}
-                          className="w-full h-full lg:object-contain object-cover rounded-xl ds-transition-slower group-hover:scale-105"
+                          className="w-full h-full lg:object-cover object-cover rounded-xl ds-transition-slower group-hover:scale-105"
                         />
                         
                         {/* Info Panel - Hover */}

@@ -1,7 +1,6 @@
 // src/components/home/HeroSection.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Calendar, Eye } from "lucide-react";
-import { Navigation } from "../layout/Navigation";
 
 // Import images
 import heroMain from "../../assets/images/hero-main.jpg";
@@ -18,10 +17,8 @@ import heroMobileThumb1 from "../../assets/images/hero-thumb-mobile-5.jpg";
 import heroMobileThumb2 from "../../assets/images/hero-thumb-mobile-6.jpg";
 import heroMobileThumb3 from "../../assets/images/hero-thumb-mobile-3.jpg";
 import heroMobileThumb4 from "../../assets/images/hero-thumb-mobile-4.jpg";
-import type { ThemeClasses } from "../../types";
 
 interface HeroSectionProps {
-  themeClasses?: ThemeClasses;
   isDarkMode?: boolean;
   toggleTheme?: () => void;
   activeSection?: string;
@@ -29,7 +26,6 @@ interface HeroSectionProps {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  themeClasses,
   isDarkMode: externalIsDarkMode,
   toggleTheme: externalToggleTheme,
   activeSection = 'home',
@@ -39,7 +35,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [internalIsDarkMode, setInternalIsDarkMode] = useState(true);
-  const [windowHeight, setWindowHeight] = useState(0);
   
   // Use external dark mode if provided, otherwise use internal
   const isDarkMode = externalIsDarkMode ?? internalIsDarkMode;
@@ -52,9 +47,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   // Check for mobile on mount and resize
   useEffect(() => {
     const checkMobile = () => {
-      const mobile = window.innerWidth < 1024;
-      setIsMobile(mobile);
-      setWindowHeight(window.innerHeight);
+      setIsMobile(window.innerWidth < 1024);
     };
     
     checkMobile();
@@ -84,14 +77,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       background: isDarkMode ? '#0a0a0a' : '#f5f5f5',
       minHeight: isMobile ? '100vh' : '100vh'
     }}>
-      {/* Navigation Bar */}
-      <Navigation 
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
-        activeSection={activeSection}
-        onNavClick={onNavClick}
-      />
-
       {/* Main Content Container */}
       <div className="relative">
         {/* Hero Section */}
@@ -166,173 +151,168 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             />
           </div>
 
-          {/* Main Content - Mobile: Start from bottom */}
+          {/* Main Content - Mobile */}
           <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8 h-full">
-            <div className="flex flex-col lg:grid lg:grid-cols-[1fr_380px] h-full gap-0 ">
+            <div className="flex flex-col lg:grid lg:grid-cols-[1fr_380px] h-full gap-0">
               {/* Main Content Area */}
-              <div className="flex flex-col  bottom-10 absolute justify-end lg:justify-center mr-4  lg:py-16 lg:pr-8 pb-8 lg:pb-16">
-               
-                 {/* Header Section - Mobile: Above CTA */}
-                  <div className="space-y-4 lg:space-y-12 ">
-                    {/* Location Badge - Desktop */}
-                    <div
-                      className="hidden lg:flex items-center gap-3 backdrop-blur-sm rounded-full max-w-md border ds-transition-slow hover:border-emerald-400/40"
-                      style={{
-                        background: isDarkMode 
-                          ? 'rgba(0, 0, 0, 0.5)' 
-                          : 'rgba(255, 255, 255, 0.7)',
-                        borderColor: isDarkMode 
-                          ? 'rgba(16, 185, 129, 0.3)' 
-                          : 'rgba(16, 185, 129, 0.5)',
-                        padding: 'var(--spacing-3) var(--spacing-6)',
-                      }}
-                    >
-                      <div 
-                        className="w-2 h-2 rounded-full animate-pulse"
-                        style={{ background: 'var(--color-brand-primary)' }}
-                      />
-                      <p className="ds-body-base font-medium" style={{
-                        color: isDarkMode ? '#ffffff' : '#1f2937'
-                      }}>
-                        Professional Photography • Calgary
-                      </p>
-                    </div>
-
-                    {/* Main Heading */}
-                    <div className="space-y-6 text-left">
-                      <div 
-                        className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
-                        style={{ borderColor: 'var(--color-brand-primary)' }}
-                      >
-                        <h1 className="lg:ds-heading-1 ds-heading-3" style={{
-                          color: isDarkMode ? '#ffffff' : '#1f2937'
-                        }}>
-                          Yaryack
-                          <br />
-                          <span className="font-semibold">
-                            Photography
-                          </span>
-                        </h1>
-                      </div>
-                      <p className="lg:ds-body-lg ds-body-sm max-w-2xl mx-auto lg:mx-0 lg:pl-10" style={{
-                        color: isDarkMode ? '#d1d5db' : '#4b5563'
-                      }}>
-                        Capturing authentic moments and creating timeless memories
-                      </p>
-                    </div>
-                  </div>
-                {/* Mobile Content Stack - Starts from bottom */}
-                <div className="space-y-6 lg:space-y-12">
-                  {/* CTA Section - Mobile: At the bottom */}
-                  <div className="space-y-6 lg:space-y-8">
-                    {/* Action Buttons */}
-                    <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
-                      <button
-                        onClick={() =>
-                          document
-                            .getElementById("contact")
-                            ?.scrollIntoView({ behavior: "smooth" })
-                        }
-                        className="w-full sm:w-auto ds-btn ds-btn-primary lg:ds-btn-lg ds-btn-md group"
-                      >
-                        <Calendar className="w-6 h-6" />
-                        <span>Book a Session</span>
-                        <svg 
-                          className="w-5 h-5 ds-transition-base group-hover:translate-x-1" 
-                          fill="none" 
-                          viewBox="0 0 24 24" 
-                          stroke="currentColor"
-                        >
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </button>
-                      
-                      <button
-                        onClick={() =>
-                          document
-                            .getElementById("portfolio")
-                            ?.scrollIntoView({ behavior: "smooth" })
-                        }
-                        className="hidden lg:flex w-full sm:w-auto ds-btn ds-btn-outline ds-btn-md"
-                      >
-                        <Eye className="w-5 h-5" />
-                        <span>View Portfolio</span>
-                      </button>
-                    </div>
-
-                    {/* Trust Indicator - Mobile */}
-                    <div
-                      className="lg:hidden flex gap-3 items-center backdrop-blur-sm rounded-xl border mx-auto max-w-md ds-transition-slow hover:border-emerald-400/40"
-                      style={{
-                        background: isDarkMode 
-                          ? 'rgba(0, 0, 0, 0.6)' 
-                          : 'rgba(255, 255, 255, 0.8)',
-                        borderColor: isDarkMode 
-                          ? 'rgba(16, 185, 129, 0.3)' 
-                          : 'rgba(16, 185, 129, 0.5)',
-                        padding: 'var(--spacing-4)',
-                      }}
-                    >
-                      <div className="flex-shrink-0">
-                        <div 
-                          className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
-                          style={{
-                            background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
-                          }}
-                        >
-                          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                            <div 
-                              className="w-4 h-4 rounded-full"
-                              style={{ background: 'var(--color-brand-primary)' }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <p className="ds-body-sm" style={{
-                        color: isDarkMode ? '#ffffff' : '#1f2937'
-                      }}>
-                        Trusted by clients across Calgary for professional photography services.
-                      </p>
-                    </div>
+              <div className="flex flex-col lg:border-r mt-[80px] ds-border-primary justify-end lg:justify-center pt-16 lg:py-16 lg:pr-8 bottom-0 absolute lg:relative pb-16 lg:pb-0">
+                {/* Header Section */}
+                <div className="space-y-4 lg:space-y-12">
+                  {/* Location Badge - Desktop */}
+                  <div
+                    className="hidden lg:flex items-center gap-3 backdrop-blur-sm rounded-full max-w-md border ds-transition-slow hover:border-emerald-400/40"
+                    style={{
+                      background: isDarkMode 
+                        ? 'rgba(0, 0, 0, 0.5)' 
+                        : 'rgba(255, 255, 255, 0.7)',
+                      borderColor: isDarkMode 
+                        ? 'rgba(16, 185, 129, 0.3)' 
+                        : 'rgba(16, 185, 129, 0.5)',
+                      padding: 'var(--spacing-3) var(--spacing-6)',
+                    }}
+                  >
+                    <div 
+                      className="w-2 h-2 rounded-full animate-pulse"
+                      style={{ background: 'var(--color-brand-primary)' }}
+                    />
+                    <p className="ds-body-base font-medium" style={{
+                      color: isDarkMode ? '#ffffff' : '#1f2937'
+                    }}>
+                      Professional Photography • Calgary
+                    </p>
                   </div>
 
-                
+                  {/* Main Heading */}
+                  <div className="space-y-6 text-left ">
+                    <div 
+                      className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
+                      style={{ borderColor: 'var(--color-brand-primary)' }}
+                    >
+                      <h1 className="lg:ds-heading-1 ds-heading-3" style={{
+                        color: isDarkMode ? '#ffffff' : 'var(--color-brand-primary)'
+                      }}>
+                        Yaryack
+                        <br />
+                        <span className="font-semibold">
+                          Photography
+                        </span>
+                      </h1>
+                    </div>
+                    <p className="lg:ds-body-lg ds-body-sm max-w-2xl mx-auto lg:mx-0 lg:pl-10" style={{
+                      color: isDarkMode ? '#d1d5db' : 'var(--color-brand-secondary)'
+                    }}>
+                      Capturing authentic moments and creating timeless memories
+                    </p>
+                  </div>
                 </div>
 
-                {/* Trust Indicator - Desktop */}
-                <div
-                  className="hidden lg:flex gap-4 items-center backdrop-blur-sm rounded-2xl border max-w-2xl ds-transition-slow hover:border-emerald-400/40 mt-8"
-                  style={{
-                    background: isDarkMode 
-                      ? 'rgba(0, 0, 0, 0.5)' 
-                      : 'rgba(255, 255, 255, 0.7)',
-                    borderColor: isDarkMode 
-                      ? 'rgba(16, 185, 129, 0.3)' 
-                      : 'rgba(16, 185, 129, 0.5)',
-                    padding: 'var(--spacing-6)',
-                  }}
-                >
-                  <div className="flex-shrink-0">
-                    <div 
-                      className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
-                      style={{
-                        background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
-                      }}
+                {/* CTA Section */}
+                <div className="space-y-8 mt-8 lg:mt-16 mr-4">
+                  {/* Action Buttons */}
+                  <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
+                    <button
+                      onClick={() =>
+                        document
+                          .getElementById("contact")
+                          ?.scrollIntoView({ behavior: "smooth" })
+                      }
+                      className="w-full sm:w-auto ds-btn ds-btn-primary lg:ds-btn-lg ds-btn-md group"
                     >
-                      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                        <div 
-                          className="w-5 h-5 rounded-full"
-                          style={{ background: 'var(--color-brand-primary)' }}
-                        />
+                      <Calendar className="w-6 h-6" />
+                      <span>Book a Session</span>
+                      <svg 
+                        className="w-5 h-5 ds-transition-base group-hover:translate-x-1" 
+                        fill="none" 
+                        viewBox="0 0 24 24" 
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                    
+                    <button
+                      onClick={() =>
+                        document
+                          .getElementById("portfolio")
+                          ?.scrollIntoView({ behavior: "smooth" })
+                      }
+                      className="hidden lg:flex w-full sm:w-auto ds-btn ds-btn-outline ds-btn-md"
+                    >
+                      <Eye className="w-5 h-5" />
+                      <span>View Portfolio</span>
+                    </button>
+                  </div>
+
+                  {/* Trust Indicator - Desktop */}
+                  <div
+                    className="hidden lg:flex gap-4 items-center backdrop-blur-sm rounded-2xl border max-w-2xl ds-transition-slow hover:border-emerald-400/40"
+                    style={{
+                      background: isDarkMode 
+                        ? 'rgba(0, 0, 0, 0.5)' 
+                        : 'rgba(255, 255, 255, 0.7)',
+                      borderColor: isDarkMode 
+                        ? 'rgba(16, 185, 129, 0.3)' 
+                        : 'rgba(16, 185, 129, 0.5)',
+                      padding: 'var(--spacing-6)',
+                    }}
+                  >
+                    <div className="flex-shrink-0">
+                      <div 
+                        className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+                        style={{
+                          background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                        }}
+                      >
+                        <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                          <div 
+                            className="w-5 h-5 rounded-full"
+                            style={{ background: 'var(--color-brand-primary)' }}
+                          />
+                        </div>
                       </div>
                     </div>
+                    <p className="ds-body-base" style={{
+                      color: isDarkMode ? '#ffffff' : '#1f2937'
+                    }}>
+                      Trusted by clients across Calgary for professional portrait,
+                      event, and commercial photography.
+                    </p>
                   </div>
-                  <p className="ds-body-base" style={{
-                    color: isDarkMode ? '#ffffff' : '#1f2937'
-                  }}>
-                    Trusted by clients across Calgary for professional portrait,
-                    event, and commercial photography.
-                  </p>
+
+                  {/* Trust Indicator - Mobile */}
+                  <div
+                    className="lg:hidden flex gap-3 items-center backdrop-blur-sm rounded-xl border mx-auto max-w-md ds-transition-slow hover:border-emerald-400/40"
+                    style={{
+                      background: isDarkMode 
+                        ? 'rgba(0, 0, 0, 0.6)' 
+                        : 'rgba(255, 255, 255, 0.8)',
+                      borderColor: isDarkMode 
+                        ? 'rgba(16, 185, 129, 0.3)' 
+                        : 'rgba(16, 185, 129, 0.5)',
+                      padding: 'var(--spacing-4)',
+                    }}
+                  >
+                    <div className="flex-shrink-0">
+                      <div 
+                        className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+                        style={{
+                          background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                        }}
+                      >
+                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                          <div 
+                            className="w-4 h-4 rounded-full"
+                            style={{ background: 'var(--color-brand-primary)' }}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <p className="ds-body-sm" style={{
+                      color: isDarkMode ? '#ffffff' : '#1f2937'
+                    }}>
+                      Trusted by clients across Calgary for professional photography services.
+                    </p>
+                  </div>
                 </div>
               </div>
 
