@@ -1,7 +1,7 @@
 // src/components/home/HeroSection.tsx
 import React, { useState, useEffect, useCallback } from "react";
 import { Calendar, Eye } from "lucide-react";
-import { VerticalFilmRoll } from "./VerticalFilmRoll";
+import { Navigation } from "../layout/Navigation";
 
 // Import images
 import heroMain from "../../assets/images/hero-main.jpg";
@@ -22,12 +22,28 @@ import type { ThemeClasses } from "../../types";
 
 interface HeroSectionProps {
   themeClasses?: ThemeClasses;
+  isDarkMode?: boolean;
+  toggleTheme?: () => void;
+  activeSection?: string;
+  onNavClick?: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
+export const HeroSection: React.FC<HeroSectionProps> = ({
+  themeClasses,
+  isDarkMode: externalIsDarkMode,
+  toggleTheme: externalToggleTheme,
+  activeSection = 'home',
+  onNavClick
+}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [internalIsDarkMode, setInternalIsDarkMode] = useState(true);
+  const [windowHeight, setWindowHeight] = useState(0);
+  
+  // Use external dark mode if provided, otherwise use internal
+  const isDarkMode = externalIsDarkMode ?? internalIsDarkMode;
+  const toggleTheme = externalToggleTheme ?? (() => setInternalIsDarkMode(!internalIsDarkMode));
   
   const heroImages = [heroThumb1, heroThumb2, heroThumb3, heroThumb4];
   const heroMobileImages = [heroMobileThumb1, heroMobileThumb2, heroMobileThumb3, heroMobileThumb4];
@@ -35,7 +51,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
 
   // Check for mobile on mount and resize
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      setWindowHeight(window.innerHeight);
+    };
+    
     checkMobile();
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
@@ -59,139 +80,368 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
   }, []);
 
   return (
-    <section className="relative min-h-screen bg-black">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Desktop Image */}
-        <img
-          src={heroMain}
-          alt="Professional photography by Yaryack"
-          className="hidden lg:block w-full h-full object-cover"
-        />
-        
-        {/* Mobile Slideshow */}
-        <div className="lg:hidden w-full h-full relative">
-          <div 
-            className="flex w-full h-[100vh] ds-transition-slow ease-in-out" 
-            style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-          >
-            {mobileSlides.map((slide, index) => (
-              <div key={index} className="w-full h-full flex-shrink-0">
-                <img
-                  src={slide}
-                  alt={`Professional photography by Yaryack - Slide ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-          
-          {/* Slide indicators */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
-            {mobileSlides.map((_, index) => (
-              <button
-                key={index}
-                className={`w-3 h-3 rounded-full ds-transition-slow ${
-                  currentSlide === index 
-                    ? 'w-8 shadow-lg' 
-                    : 'opacity-60'
-                }`}
-                style={{
-                  background: currentSlide === index 
-                    ? 'var(--color-brand-primary)' 
-                    : 'var(--color-text-primary)',
-                  boxShadow: currentSlide === index 
-                    ? 'var(--shadow-brand)' 
-                    : 'none'
-                }}
-                onClick={() => goToSlide(index)}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
-          </div>
-        </div>
+    <section className="relative" style={{ 
+      background: isDarkMode ? '#0a0a0a' : '#f5f5f5',
+      minHeight: isMobile ? '100vh' : '100vh'
+    }}>
+      {/* Navigation Bar */}
+      <Navigation 
+        isDarkMode={isDarkMode}
+        toggleTheme={toggleTheme}
+        activeSection={activeSection}
+        onNavClick={onNavClick}
+      />
 
-        {/* Gradients */}
-        <div
-          className="hidden lg:block absolute inset-0"
-          style={{
-            background: "linear-gradient(135deg, rgba(0,0,0, 0.3) 0%, rgba(0,0,0, 0.3) 30%, rgba(0,0,0, 0.2) 90%)",
-          }}
-        />
-        <div
-          className="lg:hidden absolute inset-0"
-          style={{
-            background: "radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.4) 100%)",
-          }}
-        />
-      </div>
-
-      {/* Main Content */}
-      <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-16">
-        <div className="flex flex-col lg:grid lg:grid-cols-[1fr_22%] min-h-screen gap-8">
-          {/* Main Content Area */}
-          <div className="flex flex-col justify-end lg:justify-center pt-12 lg:py-16 min-h-[95vh] lg:min-h-0">
-            {/* Header Section */}
-            <div className="space-y-4 lg:space-y-12">
-              {/* Location Badge - Desktop */}
-              <div
-                className="hidden lg:flex items-center gap-3 backdrop-blur-sm rounded-full max-w-md border ds-transition-slow hover:border-emerald-400/40"
-                style={{
-                  background: 'var(--color-bg-card)',
-                  borderColor: 'var(--color-border-primary)',
-                  padding: 'var(--spacing-3) var(--spacing-6)',
-                }}
+      {/* Main Content Container */}
+      <div className="relative">
+        {/* Hero Section */}
+        <div className="relative overflow-hidden h-screen">
+          {/* Full Cover Background Image */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Desktop Image - Full Cover */}
+            <img
+              src={heroMain}
+              alt="Professional photography by Yaryack"
+              className="hidden lg:block w-full h-full object-cover"
+            />
+            
+            {/* Mobile Slideshow */}
+            <div className="lg:hidden w-full h-full relative">
+              <div 
+                className="flex w-full h-full ds-transition-slow ease-in-out" 
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
-                <div 
-                  className="w-2 h-2 rounded-full animate-pulse"
-                  style={{ background: 'var(--color-brand-primary)' }}
-                />
-                <p className="ds-body-base ds-text-primary font-medium">
-                  Professional Photography • Calgary
-                </p>
+                {mobileSlides.map((slide, index) => (
+                  <div key={index} className="w-full h-full flex-shrink-0">
+                    <img
+                      src={slide}
+                      alt={`Professional photography by Yaryack - Slide ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
               </div>
-
-              {/* Main Heading */}
-              <div className="space-y-6 text-left">
-                <div 
-                  className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
-                  style={{ borderColor: 'var(--color-brand-primary)' }}
-                >
-                  <h1 className="lg:ds-heading-1 ds-heading-3 ds-text-primary ">
-                    Yaryack
-                    <br />
-                    <span 
-                      className="font-semibold bg-gradient-to-r bg-clip-text text-transparent"
-                      style={{
-                        backgroundImage: `linear-gradient(to right, var(--color-text-primary), var(--color-text-primary))`
-                      }}
-                    >
-                      Photography
-                    </span>
-                  </h1>
-                </div>
-                <p className="lg:ds-body-lg ds-body-sm ds-text-secondary max-w-2xl mx-auto lg:mx-0 lg:pl-10">
-                  Capturing authentic moments and creating timeless memories
-                </p>
+              
+              {/* Slide indicators */}
+              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
+                {mobileSlides.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`w-3 h-3 rounded-full ds-transition-slow ${
+                      currentSlide === index 
+                        ? 'w-8 shadow-lg' 
+                        : 'opacity-60'
+                    }`}
+                    style={{
+                      background: currentSlide === index 
+                        ? 'var(--color-brand-primary)' 
+                        : 'var(--color-text-primary)',
+                      boxShadow: currentSlide === index 
+                        ? 'var(--shadow-brand)' 
+                        : 'none'
+                    }}
+                    onClick={() => goToSlide(index)}
+                    aria-label={`Go to slide ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
 
-            {/* CTA Section */}
-            <div className="space-y-8 mt-8 lg:mt-16">
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
+            {/* Dark Overlay Gradient */}
+            <div
+              className="hidden lg:block absolute inset-0"
+              style={{
+                background: isDarkMode 
+                  ? "linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.3) 100%)"
+                  : "linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 100%)",
+              }}
+            />
+            <div
+              className="lg:hidden absolute inset-0"
+              style={{
+                background: isDarkMode 
+                  ? "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.3) 60%, transparent 100%)"
+                  : "linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.3) 60%, transparent 100%)",
+              }}
+            />
+          </div>
+
+          {/* Main Content - Mobile: Start from bottom */}
+          <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div className="flex flex-col lg:grid lg:grid-cols-[1fr_380px] h-full gap-0 ">
+              {/* Main Content Area */}
+              <div className="flex flex-col  bottom-10 absolute justify-end lg:justify-center mr-4  lg:py-16 lg:pr-8 pb-8 lg:pb-16">
+               
+                 {/* Header Section - Mobile: Above CTA */}
+                  <div className="space-y-4 lg:space-y-12 ">
+                    {/* Location Badge - Desktop */}
+                    <div
+                      className="hidden lg:flex items-center gap-3 backdrop-blur-sm rounded-full max-w-md border ds-transition-slow hover:border-emerald-400/40"
+                      style={{
+                        background: isDarkMode 
+                          ? 'rgba(0, 0, 0, 0.5)' 
+                          : 'rgba(255, 255, 255, 0.7)',
+                        borderColor: isDarkMode 
+                          ? 'rgba(16, 185, 129, 0.3)' 
+                          : 'rgba(16, 185, 129, 0.5)',
+                        padding: 'var(--spacing-3) var(--spacing-6)',
+                      }}
+                    >
+                      <div 
+                        className="w-2 h-2 rounded-full animate-pulse"
+                        style={{ background: 'var(--color-brand-primary)' }}
+                      />
+                      <p className="ds-body-base font-medium" style={{
+                        color: isDarkMode ? '#ffffff' : '#1f2937'
+                      }}>
+                        Professional Photography • Calgary
+                      </p>
+                    </div>
+
+                    {/* Main Heading */}
+                    <div className="space-y-6 text-left">
+                      <div 
+                        className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
+                        style={{ borderColor: 'var(--color-brand-primary)' }}
+                      >
+                        <h1 className="lg:ds-heading-1 ds-heading-3" style={{
+                          color: isDarkMode ? '#ffffff' : '#1f2937'
+                        }}>
+                          Yaryack
+                          <br />
+                          <span className="font-semibold">
+                            Photography
+                          </span>
+                        </h1>
+                      </div>
+                      <p className="lg:ds-body-lg ds-body-sm max-w-2xl mx-auto lg:mx-0 lg:pl-10" style={{
+                        color: isDarkMode ? '#d1d5db' : '#4b5563'
+                      }}>
+                        Capturing authentic moments and creating timeless memories
+                      </p>
+                    </div>
+                  </div>
+                {/* Mobile Content Stack - Starts from bottom */}
+                <div className="space-y-6 lg:space-y-12">
+                  {/* CTA Section - Mobile: At the bottom */}
+                  <div className="space-y-6 lg:space-y-8">
+                    {/* Action Buttons */}
+                    <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
+                      <button
+                        onClick={() =>
+                          document
+                            .getElementById("contact")
+                            ?.scrollIntoView({ behavior: "smooth" })
+                        }
+                        className="w-full sm:w-auto ds-btn ds-btn-primary lg:ds-btn-lg ds-btn-md group"
+                      >
+                        <Calendar className="w-6 h-6" />
+                        <span>Book a Session</span>
+                        <svg 
+                          className="w-5 h-5 ds-transition-base group-hover:translate-x-1" 
+                          fill="none" 
+                          viewBox="0 0 24 24" 
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                      
+                      <button
+                        onClick={() =>
+                          document
+                            .getElementById("portfolio")
+                            ?.scrollIntoView({ behavior: "smooth" })
+                        }
+                        className="hidden lg:flex w-full sm:w-auto ds-btn ds-btn-outline ds-btn-md"
+                      >
+                        <Eye className="w-5 h-5" />
+                        <span>View Portfolio</span>
+                      </button>
+                    </div>
+
+                    {/* Trust Indicator - Mobile */}
+                    <div
+                      className="lg:hidden flex gap-3 items-center backdrop-blur-sm rounded-xl border mx-auto max-w-md ds-transition-slow hover:border-emerald-400/40"
+                      style={{
+                        background: isDarkMode 
+                          ? 'rgba(0, 0, 0, 0.6)' 
+                          : 'rgba(255, 255, 255, 0.8)',
+                        borderColor: isDarkMode 
+                          ? 'rgba(16, 185, 129, 0.3)' 
+                          : 'rgba(16, 185, 129, 0.5)',
+                        padding: 'var(--spacing-4)',
+                      }}
+                    >
+                      <div className="flex-shrink-0">
+                        <div 
+                          className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
+                          style={{
+                            background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                          }}
+                        >
+                          <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                            <div 
+                              className="w-4 h-4 rounded-full"
+                              style={{ background: 'var(--color-brand-primary)' }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <p className="ds-body-sm" style={{
+                        color: isDarkMode ? '#ffffff' : '#1f2937'
+                      }}>
+                        Trusted by clients across Calgary for professional photography services.
+                      </p>
+                    </div>
+                  </div>
+
+                
+                </div>
+
+                {/* Trust Indicator - Desktop */}
+                <div
+                  className="hidden lg:flex gap-4 items-center backdrop-blur-sm rounded-2xl border max-w-2xl ds-transition-slow hover:border-emerald-400/40 mt-8"
+                  style={{
+                    background: isDarkMode 
+                      ? 'rgba(0, 0, 0, 0.5)' 
+                      : 'rgba(255, 255, 255, 0.7)',
+                    borderColor: isDarkMode 
+                      ? 'rgba(16, 185, 129, 0.3)' 
+                      : 'rgba(16, 185, 129, 0.5)',
+                    padding: 'var(--spacing-6)',
+                  }}
+                >
+                  <div className="flex-shrink-0">
+                    <div 
+                      className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
+                      style={{
+                        background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                      }}
+                    >
+                      <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <div 
+                          className="w-5 h-5 rounded-full"
+                          style={{ background: 'var(--color-brand-primary)' }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <p className="ds-body-base" style={{
+                    color: isDarkMode ? '#ffffff' : '#1f2937'
+                  }}>
+                    Trusted by clients across Calgary for professional portrait,
+                    event, and commercial photography.
+                  </p>
+                </div>
+              </div>
+
+              {/* Desktop Vertical Film Roll */}
+              <VerticalImageRoll 
+                images={heroImages}
+                isDarkMode={isDarkMode}
+                isMobile={isMobile}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Portfolio Preview */}
+        {isMobile && (
+          <div className="lg:hidden relative min-h-[60vh] bg-gradient-to-b from-transparent to-gray-900">
+            {/* Background image with dark overlay */}
+            <div className="absolute inset-0 -z-10 overflow-hidden">
+              <img
+                src={heroMobileBottom}
+                alt="Background"
+                className="w-full h-full object-cover"
+              />
+              <div 
+                className="absolute inset-0"
+                style={{
+                  background: 'linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.7) 50%, rgba(0,0,0,0.9) 100%)'
+                }}
+              />
+            </div>
+
+            <div className="h-full flex flex-col justify-end px-4 py-8">
+              {/* Section header */}
+              <div className="text-center mb-6">
+                <div 
+                  className="inline-flex items-center gap-2 backdrop-blur-md rounded-full px-4 py-2 mb-4 border"
+                  style={{
+                    background: isDarkMode 
+                      ? 'rgba(0,0,0,0.4)' 
+                      : 'rgba(255,255,255,0.6)',
+                    borderColor: 'var(--color-brand-primary)',
+                  }}
+                >
+                  <div 
+                    className="w-2 h-2 rounded-full animate-pulse"
+                    style={{ background: 'var(--color-brand-primary)' }}
+                  />
+                  <span className="ds-body-sm font-medium" style={{
+                    color: isDarkMode ? '#ffffff' : '#1f2937'
+                  }}>
+                    Portfolio Preview
+                  </span>
+                </div>
+                <h3 className="ds-heading-3 mb-2" style={{
+                  color: isDarkMode ? '#ffffff' : '#1f2937'
+                }}>
+                  Featured Work
+                </h3>
+                <p className="ds-body-base" style={{
+                  color: isDarkMode ? '#d1d5db' : '#4b5563'
+                }}>
+                  Recent captures from our portfolio
+                </p>
+              </div>
+              
+              {/* Grid of images */}
+              <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-6">
+                {heroMobileImages.slice(0, 4).map((image, index) => (
+                  <div 
+                    key={index} 
+                    className="relative aspect-[3/4] rounded-lg overflow-hidden backdrop-blur-sm border-2 ds-transition-slow hover:scale-[1.02] group"
+                    style={{ borderColor: 'var(--color-border-primary)' }}
+                  >
+                    <img
+                      src={image}
+                      alt={`Portfolio sample ${index + 1}`}
+                      className="w-full h-full object-cover ds-transition-slow group-hover:scale-110"
+                    />
+                    {/* Hover overlay */}
+                    <div 
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 ds-transition-slow flex items-center justify-center"
+                      style={{
+                        background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%)'
+                      }}
+                    >
+                      <div className="absolute bottom-3 left-3 right-3">
+                        <span className="ds-body-sm ds-text-primary font-medium">
+                          View Details
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* View more button */}
+              <div className="text-center">
                 <button
                   onClick={() =>
                     document
-                      .getElementById("contact")
+                      .getElementById("portfolio")
                       ?.scrollIntoView({ behavior: "smooth" })
                   }
-                  className="w-full sm:w-auto ds-btn ds-btn-primary lg:ds-btn-lg ds-btn-md group"
+                  className="ds-btn ds-btn-outline ds-btn-md group"
                 >
-                  <Calendar className="w-6 h-6" />
-                  <span>Book a Session</span>
+                  <Eye className="w-5 h-5" />
+                  <span>View Full Portfolio</span>
                   <svg 
-                    className="w-5 h-5 ds-transition-base group-hover:translate-x-1" 
+                    className="w-4 h-4 ds-transition-base group-hover:translate-x-1" 
                     fill="none" 
                     viewBox="0 0 24 24" 
                     stroke="currentColor"
@@ -199,152 +449,166 @@ export const HeroSection: React.FC<HeroSectionProps> = ({themeClasses}) => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </button>
-                
-                <button
-                  onClick={() =>
-                    document
-                      .getElementById("portfolio")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className="hidden lg:flex w-full sm:w-auto ds-btn ds-btn-outline ds-btn-lg"
-                >
-                  <Eye className="w-5 h-5" />
-                  <span>View Portfolio</span>
-                </button>
-              </div>
-
-              {/* Trust Indicator - Desktop */}
-              <div
-                className="hidden lg:flex gap-4 items-center backdrop-blur-sm rounded-2xl border max-w-2xl ds-transition-slow hover:border-emerald-400/40"
-                style={{
-                  background: 'var(--color-bg-card)',
-                  borderColor: 'var(--color-border-primary)',
-                  padding: 'var(--spacing-6)',
-                }}
-              >
-                <div className="flex-shrink-0">
-                  <div 
-                    className="w-14 h-14 rounded-full flex items-center justify-center shadow-lg"
-                    style={{
-                      background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
-                    }}
-                  >
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                      <div 
-                        className="w-5 h-5 rounded-full"
-                        style={{ background: 'var(--color-brand-primary)' }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <p className="ds-body-base ds-text-primary">
-                  Trusted by clients across Calgary for professional portrait,
-                  event, and commercial photography.
-                </p>
-              </div>
-
-              {/* Trust Indicator - Mobile */}
-              <div
-                className="lg:hidden flex gap-3 items-center backdrop-blur-sm rounded-xl border mx-auto max-w-md"
-                style={{
-                  background: 'var(--color-bg-card)',
-                  borderColor: 'var(--color-border-light)',
-                  padding: 'var(--spacing-3)',
-                }}
-              >
-                <div className="flex-shrink-0">
-                  <div 
-                    className="w-12 h-12 rounded-full flex items-center justify-center shadow-md"
-                    style={{
-                      background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
-                    }}
-                  >
-                    <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                      <div 
-                        className="w-4 h-4 rounded-full"
-                        style={{ background: 'var(--color-brand-primary)' }}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <p className="ds-body-sm ds-text-primary">
-                  Trusted by clients across Calgary for professional photography services.
-                </p>
               </div>
             </div>
           </div>
+        )}
+      </div>
+    </section>
+  );
+};
 
-          {/* Desktop Vertical Film Roll */}
-          <div 
-            className="hidden lg:flex flex-col justify-center border-l pl-6 mt-[72px]"
-            style={{ borderColor: 'var(--color-border-primary)' }}
-          >
-            <div className="space-y-4">
-              <div 
-                className="flex items-center gap-2 backdrop-blur-sm rounded-full px-4 py-2 w-fit border"
+// Separate Vertical Image Roll Component
+interface VerticalImageRollProps {
+  images: string[];
+  isDarkMode: boolean;
+  isMobile: boolean;
+}
+
+const VerticalImageRoll: React.FC<VerticalImageRollProps> = ({ images, isDarkMode, isMobile }) => {
+  if (isMobile) return null;
+
+  const [activeIndex, setActiveIndex] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+    
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [images.length, isPaused]);
+
+  const scrollTo = (direction: 'up' | 'down') => {
+    setIsPaused(true);
+    if (direction === 'up') {
+      setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+    } else {
+      setActiveIndex((prev) => (prev + 1) % images.length);
+    }
+    setTimeout(() => setIsPaused(false), 4000);
+  };
+
+  const getImageStyle = (offset: number) => {
+    const isCenterTop = offset === 0;
+    const isCenterBottom = offset === 1;
+    const isCenter = isCenterTop || isCenterBottom;
+    
+    return {
+      opacity: isCenter ? 1 : 0.35,
+      transform: `scale(${isCenter ? 1 : 0.88})`,
+      filter: isCenter 
+        ? 'grayscale(0%) brightness(1)' 
+        : isDarkMode 
+          ? 'grayscale(70%) brightness(0.5)' 
+          : 'grayscale(70%) brightness(1.15)',
+    };
+  };
+
+  return (
+    <div 
+      className="hidden lg:flex flex-col justify-center relative"
+      style={{ marginTop: '70px' }}
+    >
+      <div className="relative h-[750px] w-full overflow-hidden">
+        {/* Top fade gradient with brand color */}
+        <div 
+          className="absolute top-0 left-0 right-0 h-56 z-20 pointer-events-none"
+          style={{
+            background: isDarkMode
+              ? 'linear-gradient(to bottom, rgba(10,10,10,1) 0%, rgba(10,10,10,0.98) 8%, rgba(16,185,129,0.12) 45%, transparent 100%)'
+              : 'linear-gradient(to bottom, rgba(245,245,245,1) 0%, rgba(245,245,245,0.98) 8%, rgba(16,185,129,0.08) 45%, transparent 100%)'
+          }}
+        />
+        
+        {/* Bottom fade gradient with brand color */}
+        <div 
+          className="absolute bottom-0 left-0 right-0 h-56 z-20 pointer-events-none"
+          style={{
+            background: isDarkMode
+              ? 'linear-gradient(to top, rgba(10,10,10,1) 0%, rgba(10,10,10,0.98) 8%, rgba(16,185,129,0.12) 45%, transparent 100%)'
+              : 'linear-gradient(to top, rgba(245,245,245,1) 0%, rgba(245,245,245,0.98) 8%, rgba(16,185,129,0.08) 45%, transparent 100%)'
+          }}
+        />
+
+        {/* Images container */}
+        <div className="relative h-full flex flex-col items-center justify-center gap-5 px-6">
+          {[0, 1, 2].map((offset) => {
+            const imageIndex = (activeIndex + offset) % images.length;
+            const style = getImageStyle(offset);
+            
+            return (
+              <div
+                key={`${imageIndex}-${offset}`}
+                className="w-full ds-transition-slow"
                 style={{
-                  background: 'var(--color-bg-card)',
-                  borderColor: 'var(--color-border-primary)',
+                  opacity: style.opacity,
+                  transform: style.transform,
+                  filter: style.filter,
                 }}
               >
                 <div 
-                  className="w-2 h-2 rounded-full animate-pulse"
-                  style={{ background: 'var(--color-brand-primary)' }}
-                />
-                <span className="ds-body-sm ds-text-primary font-medium">
-                  Live Preview
-                </span>
+                  className="aspect-[4/5] overflow-hidden shadow-2xl"
+                  style={{ 
+                    border: offset === 1
+                      ? '4px solid #10b981' 
+                      : isDarkMode 
+                        ? '2px solid rgba(255,255,255,0.12)' 
+                        : '2px solid rgba(0,0,0,0.12)',
+                  }}
+                >
+                  <img
+                    src={images[imageIndex]}
+                    alt={`Portfolio ${imageIndex + 1}`}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
               </div>
-
-              <VerticalFilmRoll
-                images={heroImages}
-                themeClasses={{} as ThemeClasses}
-              />
-            </div>
-          </div>
+            );
+          })}
         </div>
 
-        {/* Mobile Portfolio Preview */}
-        <div className="lg:hidden -mx-4 ">
-         <div 
-            className="absolute -z-10 w-full h-[100vh] " 
+        {/* Navigation arrows */}
+        <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-30">
+          <button
+            onClick={() => scrollTo('up')}
+            className="w-10 h-10 rounded-full ds-transition-slow hover:scale-110 flex items-center justify-center shadow-xl "
+            style={{ background: 'var(--color-brand-primary)' }}
+            aria-label="Previous image"
           >
-              <div  className="w-full h-full flex-shrink-0">
-                <img
-                  src={heroMobileBottom}
-                  alt={`Professional photography by Yaryack - Slide `}
-                  className="w-full h-full object-cover grayscale "
-                />
-              </div>
-          </div>
-        <div className="p-3 ">
-           <div className="text-center mb-8 py-12 ">
-            <h3 className="ds-heading-3 ds-text-primary mb-3">
-              Featured Work
-            </h3>
-            <p className="ds-body-base ds-text-secondary">
-              Swipe to view more portfolio samples
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 gap-4 max-w-md mx-auto">
-            {heroMobileImages.slice(0, 4).map((image, index) => (
-              <div 
-                key={index} 
-                className="aspect-square rounded-xl overflow-hidden border-2 shadow-lg ds-transition-slow hover:scale-105"
-                style={{ borderColor: 'var(--color-border-light)' }}
-              >
-                <img
-                  src={image}
-                  alt={`Portfolio sample ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            ))}
-          </div>
-          </div>
+            <svg 
+              className="w-5 h-5 text-white" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-30">
+          <button
+            onClick={() => scrollTo('down')}
+            className="w-10 h-10 rounded-full ds-transition-slow hover:scale-110 flex items-center justify-center shadow-xl"
+            style={{ background: 'var(--color-brand-primary)' }}
+            aria-label="Next image"
+          >
+            <svg 
+              className="w-5 h-5 text-white" 
+              fill="none" 
+              viewBox="0 0 24 24" 
+              stroke="currentColor"
+              strokeWidth={2.5}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
