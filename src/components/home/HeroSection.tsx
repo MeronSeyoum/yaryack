@@ -36,7 +36,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const [isMobile, setIsMobile] = useState(false);
   const [internalIsDarkMode, setInternalIsDarkMode] = useState(true);
   
-  // Use external dark mode if provided, otherwise use internal
   const isDarkMode = externalIsDarkMode ?? internalIsDarkMode;
   const toggleTheme = externalToggleTheme ?? (() => setInternalIsDarkMode(!internalIsDarkMode));
   
@@ -44,7 +43,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const heroMobileImages = [heroMobileThumb1, heroMobileThumb2, heroMobileThumb3, heroMobileThumb4];
   const mobileSlides = [heroMobile1, heroMobile2, heroMobile3];
 
-  // Check for mobile on mount and resize
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
@@ -55,7 +53,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Auto-slide for mobile slideshow
   useEffect(() => {
     if (!isAutoPlaying || !isMobile) return;
 
@@ -75,15 +72,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section className="relative" style={{ 
       background: isDarkMode ? '#0a0a0a' : '#f5f5f5',
-      minHeight: isMobile ? '100vh' : '100vh'
+      minHeight: '100vh'
     }}>
-      {/* Main Content Container */}
       <div className="relative">
         {/* Hero Section */}
-        <div className="relative overflow-hidden h-screen">
-          {/* Full Cover Background Image */}
+        <div className="relative overflow-hidden" style={{
+          height: isMobile ? '100dvh' : '100vh'
+        }}>
+          {/* Background Image */}
           <div className="absolute inset-0 overflow-hidden">
-            {/* Desktop Image - Full Cover */}
+            {/* Desktop Image */}
             <img
               src={heroMain}
               alt="Professional photography by Yaryack"
@@ -108,7 +106,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
               
               {/* Slide indicators */}
-              <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
+              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-3 z-10">
                 {mobileSlides.map((_, index) => (
                   <button
                     key={index}
@@ -132,7 +130,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
             </div>
 
-            {/* Dark Overlay Gradient */}
+            {/* Overlay Gradients */}
             <div
               className="hidden lg:block absolute inset-0"
               style={{
@@ -145,17 +143,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               className="lg:hidden absolute inset-0"
               style={{
                 background: isDarkMode 
-                  ? "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 30%, rgba(0,0,0,0.3) 60%, transparent 100%)"
-                  : "linear-gradient(to top, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.3) 60%, transparent 100%)",
+                  ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.3) 60%, transparent 100%)"
+                  : "linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 35%, rgba(255,255,255,0.3) 60%, transparent 100%)",
               }}
             />
           </div>
 
-          {/* Main Content - Mobile */}
+          {/* Main Content */}
           <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8 h-full">
             <div className="flex flex-col lg:grid lg:grid-cols-[1fr_380px] h-full gap-0">
-              {/* Main Content Area */}
-              <div className="flex flex-col lg:border-r mt-[80px] ds-border-primary justify-end lg:justify-center pt-16 lg:py-16 lg:pr-8 bottom-0 absolute lg:relative pb-16 lg:pb-0">
+              {/* Content Area */}
+              <div 
+                className="flex flex-col lg:border-r lg:ds-border-primary justify-end lg:justify-center lg:pr-8"
+                style={{
+                  paddingTop: isMobile ? '80px' : '0',
+                  paddingBottom: isMobile ? '5rem' : '0',
+                  minHeight: isMobile ? '100%' : 'auto'
+                }}
+              >
                 {/* Header Section */}
                 <div className="space-y-4 lg:space-y-12">
                   {/* Location Badge - Desktop */}
@@ -183,7 +188,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   </div>
 
                   {/* Main Heading */}
-                  <div className="space-y-6 text-left ">
+                  <div className="space-y-6 text-left">
                     <div 
                       className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
                       style={{ borderColor: 'var(--color-brand-primary)' }}
@@ -329,7 +334,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         {/* Mobile Portfolio Preview */}
         {isMobile && (
           <div className="lg:hidden relative min-h-[60vh] bg-gradient-to-b from-transparent to-gray-900">
-            {/* Background image with dark overlay */}
             <div className="absolute inset-0 -z-10 overflow-hidden">
               <img
                 src={heroMobileBottom}
@@ -345,7 +349,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
 
             <div className="h-full flex flex-col justify-end px-4 py-8">
-              {/* Section header */}
               <div className="text-center mb-6">
                 <div 
                   className="inline-flex items-center gap-2 backdrop-blur-md rounded-full px-4 py-2 mb-4 border"
@@ -378,7 +381,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </p>
               </div>
               
-              {/* Grid of images */}
               <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mb-6">
                 {heroMobileImages.slice(0, 4).map((image, index) => (
                   <div 
@@ -391,7 +393,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       alt={`Portfolio sample ${index + 1}`}
                       className="w-full h-full object-cover ds-transition-slow group-hover:scale-110"
                     />
-                    {/* Hover overlay */}
                     <div 
                       className="absolute inset-0 opacity-0 group-hover:opacity-100 ds-transition-slow flex items-center justify-center"
                       style={{
@@ -408,7 +409,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 ))}
               </div>
 
-              {/* View more button */}
               <div className="text-center">
                 <button
                   onClick={() =>
@@ -438,7 +438,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   );
 };
 
-// Separate Vertical Image Roll Component
+// Vertical Image Roll Component
 interface VerticalImageRollProps {
   images: string[];
   isDarkMode: boolean;
@@ -493,7 +493,6 @@ const VerticalImageRoll: React.FC<VerticalImageRollProps> = ({ images, isDarkMod
       style={{ marginTop: '70px' }}
     >
       <div className="relative h-[750px] w-full overflow-hidden">
-        {/* Top fade gradient with brand color */}
         <div 
           className="absolute top-0 left-0 right-0 h-56 z-20 pointer-events-none"
           style={{
@@ -503,7 +502,6 @@ const VerticalImageRoll: React.FC<VerticalImageRollProps> = ({ images, isDarkMod
           }}
         />
         
-        {/* Bottom fade gradient with brand color */}
         <div 
           className="absolute bottom-0 left-0 right-0 h-56 z-20 pointer-events-none"
           style={{
@@ -513,7 +511,6 @@ const VerticalImageRoll: React.FC<VerticalImageRollProps> = ({ images, isDarkMod
           }}
         />
 
-        {/* Images container */}
         <div className="relative h-full flex flex-col items-center justify-center gap-5 px-6">
           {[0, 1, 2].map((offset) => {
             const imageIndex = (activeIndex + offset) % images.length;
@@ -550,11 +547,10 @@ const VerticalImageRoll: React.FC<VerticalImageRollProps> = ({ images, isDarkMod
           })}
         </div>
 
-        {/* Navigation arrows */}
         <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-30">
           <button
             onClick={() => scrollTo('up')}
-            className="w-10 h-10 rounded-full ds-transition-slow hover:scale-110 flex items-center justify-center shadow-xl "
+            className="w-10 h-10 rounded-full ds-transition-slow hover:scale-110 flex items-center justify-center shadow-xl"
             style={{ background: 'var(--color-brand-primary)' }}
             aria-label="Previous image"
           >
