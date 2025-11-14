@@ -144,7 +144,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               style={{
                 background: isDarkMode 
                   ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.3) 60%, transparent 100%)"
-                  : "linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.6) 35%, rgba(255,255,255,0.3) 60%, transparent 100%)",
+                  : "linear-gradient(to top, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.5) 35%, rgba(255,255,255,0.25) 60%, transparent 100%)",
               }}
             />
           </div>
@@ -286,7 +286,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
                   {/* Trust Indicator - Mobile */}
                   <div
-                    className="lg:hidden flex gap-3 items-center backdrop-blur-sm rounded-xl border mx-auto max-w-md ds-transition-slow hover:border-emerald-400/40"
+                    className="hidden  gap-3 items-center backdrop-blur-sm rounded-xl border mx-auto max-w-md ds-transition-slow hover:border-emerald-400/40"
                     style={{
                       background: isDarkMode 
                         ? 'rgba(0, 0, 0, 0.6)' 
