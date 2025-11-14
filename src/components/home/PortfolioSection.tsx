@@ -161,7 +161,7 @@ export const PortfolioSection: React.FC = () => {
                       : undefined
                   }}
                 >
-                  {category} Photography 
+                  {category}
                 </button>
               ))}
             </div>
@@ -265,7 +265,7 @@ export const PortfolioSection: React.FC = () => {
               <div className="mb-6 lg:mb-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 lg:gap-4 mb-6 lg:mb-8">
                   <h3 className="text-lg sm:text-xl lg:ds-heading-3 ds-text-primary font-bold">
-                    {isVideoCategory ? 'Video Productions' : `${activeCategory}`}
+                    {isVideoCategory ? 'Video Productions' : `${activeCategory} photography `}
                   </h3>
                   <div 
                     className="lg:flex hidden items-center gap-2 rounded-full px-3 py-1.5 border ds-border-primary w-fit"
