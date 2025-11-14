@@ -3,10 +3,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Calendar, X, ZoomIn, ZoomOut, RotateCcw, Camera, Video, Play } from 'lucide-react';
 import { PORTFOLIO_CATEGORIES, PORTFOLIO_IMAGES } from '../../constants/portfolio';
 
-type PortfolioCategory = "Event" | "Engagement" | "Wedding" | "Maternity" | "Portrait";
+type PortfolioCategory =  "Wedding" |  "Engagement" | "Maternity" | "Portrait"| "Event" ;
 
 export const PortfolioSection: React.FC = () => {
-  const [activeCategory, setActiveCategory] = useState<PortfolioCategory | 'Video'>('Event');
+  const [activeCategory, setActiveCategory] = useState<PortfolioCategory | 'Video'>('Wedding');
   const [isMobile, setIsMobile] = useState(false);
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
@@ -154,8 +154,8 @@ export const PortfolioSection: React.FC = () => {
                       ? 'var(--color-brand-primary)' 
                       : 'var(--color-bg-card)',
                     color: activeCategory === category 
-                      ? 'var(--color-text-primary)' 
-                      : undefined,
+                      ? 'var(--color-text-primary-light)' 
+                      : 'var(--color-text-secondary)',
                     boxShadow: activeCategory === category 
                       ? 'var(--shadow-brand)' 
                       : undefined
@@ -199,10 +199,10 @@ export const PortfolioSection: React.FC = () => {
                       style={{
                         background: activeCategory === category 
                           ? 'rgba(2, 156, 72, 0.2)' 
-                          : 'rgba(0, 0, 0, 0.6)',
+                          : 'var(--color-brand-primary-light)',
                         color: activeCategory === category 
                           ? 'var(--color-brand-secondary)' 
-                          : 'var(--color-text-tertiary)'
+                          : 'var(--color-text-primary-light)'
                       }}
                     >
                       <div 
