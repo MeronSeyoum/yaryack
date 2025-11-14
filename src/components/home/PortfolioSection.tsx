@@ -118,33 +118,33 @@ export const PortfolioSection: React.FC = () => {
   return (
     <>
       <section id="portfolio" className="min-h-screen ds-bg-section-primary">
-        {/* Section Header */}
+        {/* Section Header - Compact Mobile */}
         <div className="ds-section-header">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 lg:gap-3">
               <div 
-                className="w-2 h-8 rounded-full"
+                className="w-1.5 h-6 lg:w-2 lg:h-8 rounded-full"
                 style={{ background: 'var(--color-brand-primary)' }}
               />
-              <p className="ds-body-sm ds-text-secondary uppercase tracking-wider font-medium">
+              <p className="ds-body-xs lg:ds-body-sm ds-text-secondary uppercase tracking-wider font-medium">
                 Featured Work
               </p>
             </div>
-            <h2 className="ds-heading-3 lg:ds-heading-2 ds-text-primary">
+            <h2 className="ds-body-lg lg:ds-heading-3 xl:ds-heading-2 ds-text-primary font-bold">
               Portfolio
             </h2>
           </div>
         </div>
 
-        <div className="mx-auto px-4 sm:px-6 lg:px-16 py-12">
-          {/* Mobile Horizontal Menu */}
-          <div className="lg:hidden mb-8">
-            <div className="flex overflow-x-auto gap-2 pb-4 scrollbar-hide">
+        <div className="mx-auto px-3 sm:px-4 lg:px-16 py-8 lg:py-12">
+          {/* Mobile Horizontal Menu - Compact */}
+          <div className="lg:hidden mb-6">
+            <div className="flex overflow-x-auto gap-2 pb-3 scrollbar-hide -mx-3 px-3">
               {filteredCategories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`flex-shrink-0 px-4 py-2 rounded-full ds-body-sm font-medium ds-transition-slow border ${
+                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium ds-transition-slow border ${
                     activeCategory === category
                       ? 'border-0 shadow-lg'
                       : 'ds-border-primary ds-text-secondary hover:bg-emerald-700/40'
@@ -261,22 +261,22 @@ export const PortfolioSection: React.FC = () => {
 
             {/* Right Content - Portfolio Grid */}
             <div className="flex-1">
-              {/* Portfolio Header */}
-              <div className="mb-8">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
-                  <h3 className="ds-heading-3 ds-text-primary">
-                    {isVideoCategory ? 'Video Productions' : `${activeCategory} Photography`}
+              {/* Portfolio Header - Compact Mobile */}
+              <div className="mb-6 lg:mb-8">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 lg:gap-4 mb-6 lg:mb-8">
+                  <h3 className="text-lg sm:text-xl lg:ds-heading-3 ds-text-primary font-bold">
+                    {isVideoCategory ? 'Video Productions' : `${activeCategory}`}
                   </h3>
                   <div 
-                    className="flex items-center gap-2 rounded-full px-4 py-2 border ds-border-primary"
+                    className="flex items-center gap-2 rounded-full px-3 py-1.5 border ds-border-primary w-fit"
                     style={{ background: 'var(--color-bg-card)' }}
                   >
                     <div 
-                      className="w-2 h-2 rounded-full animate-pulse"
+                      className="w-1.5 h-1.5 rounded-full animate-pulse"
                       style={{ background: 'var(--color-brand-primary)' }}
                     />
-                    <span className="ds-body-sm ds-text-secondary">
-                      {displayImages.length} {displayImages.length === 1 ? 'Image' : 'Images'}
+                    <span className="text-xs lg:ds-body-sm ds-text-secondary font-medium">
+                      {displayImages.length} {displayImages.length === 1 ? 'Photo' : 'Photos'}
                     </span>
                   </div>
                 </div>
@@ -284,7 +284,7 @@ export const PortfolioSection: React.FC = () => {
 
               {/* Masonry Image Grid */}
               {!isVideoCategory && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4 auto-rows-[200px] sm:auto-rows-[200px]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 lg:gap-4 auto-rows-[200px] sm:auto-rows-[200px]">
                   {displayImages.map((img, idx) => {
                     const mobileLayout = masonryLayouts.mobile[idx % masonryLayouts.mobile.length];
                     const desktopLayout = masonryLayouts.desktop[idx % masonryLayouts.desktop.length];
@@ -304,16 +304,16 @@ export const PortfolioSection: React.FC = () => {
                         />
                         
                         {/* Info Panel - Hover */}
-                        <div className="absolute bottom-0 left-0 right-0 p-4 transform translate-y-full group-hover:translate-y-0 ds-transition-slower bg-gradient-to-t from-black/60 via-black/30 to-transparent">
+                        <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4 transform translate-y-full group-hover:translate-y-0 ds-transition-slower bg-gradient-to-t from-black/60 via-black/30 to-transparent">
                           <div className="flex items-center justify-between">
-                            <p className="ds-body-sm ds-text-primary font-medium">
+                            <p className="text-xs lg:ds-body-sm ds-text-primary font-medium">
                               {activeCategory} #{idx + 1}
                             </p>
                             <div 
-                              className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 ds-transition-slow delay-200"
+                              className="w-7 h-7 lg:w-8 lg:h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 ds-transition-slow delay-200"
                               style={{ background: 'var(--color-brand-primary)' }}
                             >
-                              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                               </svg>
                             </div>
