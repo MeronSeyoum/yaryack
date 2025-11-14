@@ -138,13 +138,13 @@ export const PortfolioSection: React.FC = () => {
 
         <div className="mx-auto px-3 sm:px-4 lg:px-16 py-8 lg:py-12">
           {/* Mobile Horizontal Menu - Compact */}
-          <div className="lg:hidden mb-6">
+          <div className="lg:hidden mb-4">
             <div className="flex overflow-x-auto gap-2 pb-3 scrollbar-hide -mx-3 px-3">
               {filteredCategories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-medium ds-transition-slow border ${
+                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-sm font-medium ds-transition-slow border ${
                     activeCategory === category
                       ? 'border-0 shadow-lg'
                       : 'ds-border-primary ds-text-secondary hover:bg-emerald-700/40'
@@ -161,7 +161,7 @@ export const PortfolioSection: React.FC = () => {
                       : undefined
                   }}
                 >
-                  {category}
+                  {category} Photography 
                 </button>
               ))}
             </div>
@@ -268,7 +268,7 @@ export const PortfolioSection: React.FC = () => {
                     {isVideoCategory ? 'Video Productions' : `${activeCategory}`}
                   </h3>
                   <div 
-                    className="flex items-center gap-2 rounded-full px-3 py-1.5 border ds-border-primary w-fit"
+                    className="lg:flex hidden items-center gap-2 rounded-full px-3 py-1.5 border ds-border-primary w-fit"
                     style={{ background: 'var(--color-bg-card)' }}
                   >
                     <div 
