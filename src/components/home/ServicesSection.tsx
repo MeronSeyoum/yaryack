@@ -13,7 +13,7 @@ interface Service {
 const SERVICES: Service[] = [
   {
     name: "Portrait Session",
-    price: "$250",
+    price: "",
     features: [
       "1-2 hour session",
       "1 location",
@@ -25,7 +25,7 @@ const SERVICES: Service[] = [
   },
   {
     name: "Event Photography",
-    price: "$400",
+    price: "",
     features: [
       "3-4 hour coverage",
       "Multiple locations",
@@ -37,7 +37,7 @@ const SERVICES: Service[] = [
   },
   {
     name: "Wedding Package",
-    price: "$1200",
+    price: "",
     features: [
       "8+ hour coverage",
       "Two photographers",
@@ -121,13 +121,13 @@ export const ServicesSection: React.FC = () => {
               Services
             </p>
           </div>
-          <h2 className="ds-heading-3 ds-text-primary">
+          <h2 className="lg:ds-heading-3 ds-heading-2 ds-text-primary">
             What I Offer
           </h2>
         </div>
       </div>
 
-      <div className="mx-auto px-4 sm:px-6 lg:px-16 py-16">
+      <div className="mx-auto px-4 sm:px-6 lg:px-16 py-6">
         {/* Services Section */}
         <div className="mb-16">
           {/* Services Header */}
@@ -137,7 +137,7 @@ export const ServicesSection: React.FC = () => {
               <span className="font-semibold bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent"> Photography </span>
               Packages
             </h3>
-            <p className="ds-body-base ds-text-secondary max-w-2xl mx-auto">
+            <p className="lg:block hidden ds-body-base ds-text-secondary max-w-2xl mx-auto">
               Tailored photography experiences designed to capture your unique story
             </p>
           </div>
