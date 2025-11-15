@@ -11,7 +11,11 @@ interface FormData {
   agree: boolean;
 }
 
-export const ContactSection: React.FC = () => {
+interface ContactSectionProps {
+  isDarkMode?: boolean;
+}
+
+export const ContactSection: React.FC<ContactSectionProps> = ({ isDarkMode = true }) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -76,58 +80,110 @@ export const ContactSection: React.FC = () => {
   ];
 
   return (
-    <section id="contact" className="relative border-t ds-border-primary py-16 overflow-hidden" style={{
-      background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.95) 10%, rgba(0, 0, 0, 0.98) 100%)'
-    }}>
+    <section 
+      id="contact" 
+      className="relative border-t py-10 overflow-hidden" 
+      style={{
+        background: isDarkMode 
+          ? 'linear-gradient(to bottom, rgba(3, 44, 34, 0.95) 0%, rgba(2, 25, 20, 0.98) 100%)'
+          : 'linear-gradient(to bottom, rgba(249, 250, 251, 1) 0%, rgba(243, 244, 246, 1) 100%)',
+        borderColor: 'var(--color-border-primary)'
+      }}
+    >
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
           src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=1920&h=1080&fit=crop"
           alt="Photography background"
-          className="w-full h-full object-cover filter grayscale"
+          className="w-full h-full object-cover"
+          style={{ 
+            filter: isDarkMode ? 'grayscale(100%) brightness(0.3)' : 'grayscale(100%) brightness(0.6)' 
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/30 to-emerald-400/70"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)]"></div>
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: isDarkMode
+              ? 'linear-gradient(to bottom, rgba(3, 44, 34, 0.85) 0%, rgba(2, 25, 20, 0.95) 50%, rgba(6, 95, 70, 0.4) 100%)'
+              : 'linear-gradient(to bottom, rgba(249, 250, 251, 0.9) 0%, rgba(243, 244, 246, 0.95) 50%, rgba(10, 92, 46, 0.2) 100%)'
+          }}
+        />
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.5) 100%)'
+          }}
+        />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center mb-12">
           <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="w-2 h-10 rounded-full" style={{ background: 'var(--color-brand-primary)' }}></div>
-            <p className="ds-heading-4 uppercase tracking-wider ds-text-secondary">
+            <div 
+              className="w-2 h-10 rounded-full" 
+              style={{ background: 'var(--color-brand-primary)' }}
+            />
+            <p 
+              className="ds-heading-4 uppercase tracking-wider font-semibold"
+              style={{ color: 'var(--color-brand-primary)' }}
+            >
               Get In Touch
             </p>
           </div>
           <h2 className="ds-heading-2 mb-4 ds-text-primary">
             Let's Create
-            <span className="font-semibold bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent"> Together </span>
+            <span 
+              className="font-semibold"
+              style={{ 
+                background: 'linear-gradient(to right, var(--color-brand-primary-light), var(--color-brand-primary))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            > Together
+            </span>
           </h2>
-          <p className="ds-body-base ds-text-secondary max-w-2xl mx-auto">
+          <p className="lg:block hidden ds-body-base ds-text-secondary max-w-2xl mx-auto">
             Ready to capture your special moments? Contact me to discuss your photography needs.
           </p>
         </div>
 
         <div className="max-w-5xl mx-auto">
           {/* Contact Info Cards */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+          <div className="hidden lg:grid grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
             {contactInfo.map((item, index) => (
               <div
                 key={index}
-                className={`ds-card ds-card-p-md text-center group ${
+                className={`text-center group ds-transition-slow hover:scale-105 rounded-2xl p-6 border ${
                   item.title === "Location" ? "hidden lg:block" : ""
                 }`}
+                style={{
+                  background: isDarkMode 
+                    ? 'rgba(6, 78, 59, 0.25)' 
+                    : 'rgba(255, 255, 255, 0.8)',
+                  borderColor: isDarkMode
+                    ? 'rgba(6, 95, 70, 0.4)'
+                    : 'rgba(10, 92, 46, 0.2)',
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+                }}
               >
                 <div 
                   className="w-12 h-12 rounded-xl mx-auto mb-4 flex items-center justify-center group-hover:scale-105 ds-transition-slow shadow-md"
-                  style={{ background: 'linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))' }}
+                  style={{ 
+                    background: 'linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))' 
+                  }}
                 >
                   <item.icon className="w-5 h-5 text-white" />
                 </div>
                 <h3 className="ds-body-base font-semibold mb-2 ds-text-primary">
                   {item.title}
                 </h3>
-                <p className="ds-body-sm font-medium mb-1" style={{ color: 'var(--color-brand-primary-light)' }}>
+                <p 
+                  className="ds-body-sm font-medium mb-1" 
+                  style={{ color: 'var(--color-brand-primary)' }}
+                >
                   {item.content}
                 </p>
                 <p className="ds-body-sm ds-text-tertiary">
@@ -138,10 +194,22 @@ export const ContactSection: React.FC = () => {
           </div>
 
           {/* Contact Form */}
-          <div className="ds-card ds-card-elevated ds-card-p-lg">
+          <div 
+            className="rounded-2xl p-6 lg:p-8 border ds-transition-slow"
+            style={{
+              background: isDarkMode 
+                ? 'rgba(6, 78, 59, 0.3)' 
+                : 'rgba(255, 255, 255, 0.9)',
+              borderColor: isDarkMode
+                ? 'rgba(6, 95, 70, 0.5)'
+                : 'rgba(10, 92, 46, 0.3)',
+              backdropFilter: 'blur(12px)',
+              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)'
+            }}
+          >
             <div className="flex items-center gap-3 mb-6">
               <div 
-                className="w-10 h-10 rounded-full flex items-center justify-center"
+                className="w-10 h-10 rounded-full flex items-center justify-center shadow-md"
                 style={{ background: 'var(--color-brand-primary)' }}
               >
                 <Send className="w-5 h-5 text-white" />
@@ -233,7 +301,13 @@ export const ContactSection: React.FC = () => {
                 ></textarea>
               </div>
 
-              <div className="flex items-start gap-3 p-4 rounded-xl border ds-border-primary" style={{ background: 'var(--color-bg-input)' }}>
+              <div 
+                className="flex items-start gap-3 p-4 rounded-xl border" 
+                style={{ 
+                  background: 'var(--color-bg-input)',
+                  borderColor: 'var(--color-border-primary)'
+                }}
+              >
                 <input
                   type="checkbox"
                   name="agree"

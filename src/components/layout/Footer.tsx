@@ -85,7 +85,7 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
           </div>
 
           {/* Quick Links */}
-          <div>
+          <div className='lg:block hidden'>
             <h3 className="ds-heading-4 ds-text-primary mb-4">
               Quick Links
             </h3>
@@ -104,7 +104,7 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
           </div>
 
           {/* Services */}
-          <div>
+          <div className='lg:block hidden'>
             <h3 className="ds-heading-4 ds-text-primary mb-4">
               Services
             </h3>

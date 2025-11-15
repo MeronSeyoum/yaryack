@@ -115,15 +115,18 @@ export const ServicesSection: React.FC = () => {
       {/* Section Header */}
       <div className="ds-section-header">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-8 rounded-full" style={{ background: 'var(--color-brand-primary)' }}></div>
-            <p className="ds-body-sm ds-text-secondary uppercase tracking-wider font-medium">
+          {/* <div className="flex items-center gap-3"> */}
+            {/* <div className="w-2 h-8 rounded-full" style={{ background: 'var(--color-brand-primary)' }}></div> */}
+            <p className="lg:ds-heading-4 sm:ds-heading-5  ds-text-secondary uppercase tracking-wider font-medium">
               Services
             </p>
-          </div>
-          <h2 className="lg:ds-heading-3 ds-heading-2 ds-text-primary">
+          {/* </div> */}
+          <div className="flex items-center gap-3">
+            <div className="w-2 h-8 rounded-full" style={{ background: 'var(--color-brand-primary)' }}></div>
+          <h2 className="ds-body-sm ds-text-primary">
             What I Offer
           </h2>
+          </div>
         </div>
       </div>
 
@@ -131,13 +134,13 @@ export const ServicesSection: React.FC = () => {
         {/* Services Section */}
         <div className="mb-16">
           {/* Services Header */}
-          <div className="text-center mb-12">
-            <h3 className="ds-heading-3 mb-4 ds-text-primary">
+          <div className="text-center mb-10">
+            <h3 className="lg:ds-heading-3 ds-heading-4 mb-4 ds-text-primary">
               Professional
               <span className="font-semibold bg-gradient-to-r from-emerald-400 to-green-300 bg-clip-text text-transparent"> Photography </span>
               Packages
             </h3>
-            <p className="lg:block hidden ds-body-base ds-text-secondary max-w-2xl mx-auto">
+            <p className="lg:block hidden ds-body-sm ds-text-secondary max-w-2xl mx-auto">
               Tailored photography experiences designed to capture your unique story
             </p>
           </div>
@@ -155,7 +158,7 @@ export const ServicesSection: React.FC = () => {
                 >
                   {/* Popular Badge */}
                   {isPopular && (
-                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10">
+                    <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-50">
                       <div className="bg-gradient-to-r from-emerald-500 to-green-600 text-white text-xs font-semibold px-4 py-1.5 rounded-full shadow-lg">
                         Most Popular
                       </div>
@@ -223,7 +226,7 @@ export const ServicesSection: React.FC = () => {
 
           {/* Mobile Carousel */}
           <div className="lg:hidden">
-            <div className="relative overflow-hidden">
+            <div className="relative overflow--hidden">
               {/* Carousel Container */}
               <div 
                 className="flex transition-transform duration-500 ease-out"
@@ -311,7 +314,7 @@ export const ServicesSection: React.FC = () => {
               {/* Navigation Arrows */}
               <button
                 onClick={prevSlide}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white"
+                className="absolute left-0 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white"
                 aria-label="Previous service"
               >
                 <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -321,7 +324,7 @@ export const ServicesSection: React.FC = () => {
 
               <button
                 onClick={nextSlide}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 backdrop-blur-sm shadow-lg flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white"
                 aria-label="Next service"
               >
                 <svg className="w-5 h-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">

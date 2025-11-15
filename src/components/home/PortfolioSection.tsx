@@ -126,11 +126,11 @@ export const PortfolioSection: React.FC = () => {
                 className="w-1.5 h-6 lg:w-2 lg:h-8 rounded-full"
                 style={{ background: 'var(--color-brand-primary)' }}
               />
-              <p className="ds-body-xs lg:ds-body-sm ds-text-secondary uppercase tracking-wider font-medium">
+              <p className="ds-body-sm lg:ds-body-sm ds-text-secondary uppercase tracking-wider font-medium">
                 Featured Work
               </p>
             </div>
-            <h2 className="ds-body-lg lg:ds-heading-3 xl:ds-heading-2 ds-text-primary font-bold">
+            <h2 className="ds-body-lg lg:ds-heading-3 xl:ds-heading-2  ds-text-primary font-bold">
               Portfolio
             </h2>
           </div>
@@ -265,7 +265,7 @@ export const PortfolioSection: React.FC = () => {
               <div className="mb-6 lg:mb-8">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 lg:gap-4 mb-6 lg:mb-8">
                   <h3 className="text-lg sm:text-xl lg:ds-heading-3 ds-text-primary font-bold">
-                    {isVideoCategory ? 'Video Productions' : `${activeCategory} photography `}
+                    {isVideoCategory ? 'Video Productions' : `${activeCategory} Photography `}
                   </h3>
                   <div 
                     className="lg:flex hidden items-center gap-2 rounded-full px-3 py-1.5 border ds-border-primary w-fit"
