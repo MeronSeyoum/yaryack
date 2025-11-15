@@ -226,7 +226,7 @@ export const ServicesSection: React.FC = () => {
 
           {/* Mobile Carousel */}
           <div className="lg:hidden">
-            <div className="relative overflow--hidden">
+            <div className="relative overflow-hidden">
               {/* Carousel Container */}
               <div 
                 className="flex transition-transform duration-500 ease-out"
