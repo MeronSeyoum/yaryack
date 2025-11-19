@@ -9,14 +9,17 @@ import heroThumb1 from "../../assets/images/hero-thumb-1.jpg";
 import heroThumb2 from "../../assets/images/hero-thumb-2.jpg";
 import heroThumb3 from "../../assets/images/hero-thumb-3.jpg";
 import heroThumb4 from "../../assets/images/hero-thumb-4.jpg";
-import heroMobile1 from "../../assets/images/event-4.jpg";
-import heroMobile2 from "../../assets/images/hero-thumb-5.jpg";  
-import heroMobile3 from "../../assets/images/hero-thumb-6.jpeg";
+import heroMobile1 from "../../assets/images/21.48.03_c06b995a.jpg";
+import heroMobile2 from "../../assets/images/21.51.45_5eaa075f.jpg";  
+import heroMobile3 from "../../assets/images/21.51.45_3a86605b.jpg";
+import heroMobile4 from "../../assets/images/21.51.45_80edf31d.jpg";
+import heroMobile5 from "../../assets/images/21.48.03_19aa522d.jpg";
+import heroMobile6 from "../../assets/images/21.51.45_87751dc7.jpg";
 
-import heroMobileThumb1 from "../../assets/images/hero-thumb-mobile-5.jpg";
-import heroMobileThumb2 from "../../assets/images/hero-thumb-mobile-6.jpg";
-import heroMobileThumb3 from "../../assets/images/hero-thumb-mobile-3.jpg";
-import heroMobileThumb4 from "../../assets/images/hero-thumb-mobile-4.jpg";
+import heroMobileThumb1 from "../../assets/images/21.48.02_7ba4943d.jpg";
+import heroMobileThumb2 from "../../assets/images/hero-thumb-5.jpg";
+import heroMobileThumb3 from "../../assets/images/hero-thumb-4.jpg";
+import heroMobileThumb4 from "../../assets/images/21.48.03_72814712.jpg";
 import { VerticalImageRoll } from "./VerticalImageRoll";
 
 interface HeroSectionProps {
@@ -42,7 +45,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   
   const heroImages = [heroThumb1, heroThumb2, heroThumb3, heroThumb4];
   const heroMobileImages = [heroMobileThumb1, heroMobileThumb2, heroMobileThumb3, heroMobileThumb4];
-  const mobileSlides = [heroMobile1, heroMobile2, heroMobile3];
+  const mobileSlides = [heroMobile1, heroMobile2, heroMobile3, heroMobile4, heroMobile5, heroMobile6];
 
   useEffect(() => {
     const checkMobile = () => {
@@ -137,15 +140,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               style={{
                 background: isDarkMode 
                   ? "linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.3) 100%)"
-                  : "linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.1) 100%)",
+                  : "linear-gradient(to right, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.2) 20%, rgba(255,255,255,0) 100%)",
               }}
             />
             <div
               className="lg:hidden absolute inset-0"
               style={{
                 background: isDarkMode 
-                  ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,0.3) 60%, transparent 100%)"
-                  : "linear-gradient(to top, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 35%, rgba(255,255,255,0) 60%, transparent 100%)",
+                  ? "linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 20%, rgba(0,0,0,0) 30%, transparent 100%)"
+                  : "linear-gradient(to top, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.2) 15%, rgba(255,255,255,0) 20%, transparent 100%)",
               }}
             />
           </div>
