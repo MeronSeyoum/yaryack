@@ -154,7 +154,7 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
 
         {/* Newsletter Section */}
         <div 
-          className="mb-12 p-6 lg:p-8 rounded-2xl border ds-border-primary"
+          className="hidden mb-12 p-6 lg:p-8 rounded-2xl border ds-border-primary"
           style={{ background: 'var(--color-bg-card)' }}
         >
           <div className="max-w-2xl mx-auto text-center space-y-4">

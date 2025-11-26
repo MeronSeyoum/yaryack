@@ -1,9 +1,9 @@
 // src/components/home/PortfolioSection.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import { Calendar, X, ZoomIn, ZoomOut, RotateCcw, Camera, Video, Play } from 'lucide-react';
+import { Calendar, X, ZoomIn, ZoomOut, RotateCcw, Camera } from 'lucide-react';
 import { PORTFOLIO_CATEGORIES, PORTFOLIO_IMAGES } from '../../constants/portfolio';
 
-type PortfolioCategory =  "Wedding" |  "Engagement" | "Maternity" | "Portrait"| "Event" ;
+type PortfolioCategory = "Wedding" | "Engagement" | "Maternity" | "Portrait" | "Event";
 
 export const PortfolioSection: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<PortfolioCategory | 'Video'>('Wedding');
@@ -23,7 +23,6 @@ export const PortfolioSection: React.FC = () => {
   });
   
   const imageRef = useRef<HTMLImageElement>(null);
-  const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   // Filter out Maternity category
   const filteredCategories = PORTFOLIO_CATEGORIES.filter(cat => cat !== 'Maternity');
@@ -118,7 +117,7 @@ export const PortfolioSection: React.FC = () => {
   return (
     <>
       <section id="portfolio" className="min-h-screen ds-bg-section-primary">
-        {/* Section Header - Compact Mobile */}
+        {/* Section Header - Compact */}
         <div className="ds-section-header">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 lg:gap-3">
@@ -126,38 +125,38 @@ export const PortfolioSection: React.FC = () => {
                 className="w-1.5 h-6 lg:w-2 lg:h-8 rounded-full"
                 style={{ background: 'var(--color-brand-primary)' }}
               />
-              <p className="ds-body-sm lg:ds-body-sm ds-text-secondary uppercase tracking-wider font-medium">
+              <p className="ds-body-sm lg:ds-body-base ds-text-secondary uppercase tracking-wider font-semibold">
                 Featured Work
               </p>
             </div>
-            <h2 className="ds-body-lg lg:ds-heading-3 xl:ds-heading-2  ds-text-primary font-bold">
+            <h2 className="ds-body-lg lg:ds-heading-3 xl:ds-heading-2 ds-text-primary font-bold">
               Portfolio
             </h2>
           </div>
         </div>
 
-        <div className="mx-auto px-3 sm:px-4 lg:px-16 py-8 lg:py-12">
-          {/* Mobile Horizontal Menu - Compact */}
-          <div className="lg:hidden mb-4">
+        <div className="mx-auto px-3 sm:px-4 lg:px-16 py-8 lg:pb-12">
+          {/* Mobile Horizontal Menu - Fixed Colors */}
+          <div className="lg:hidden mb-6">
             <div className="flex overflow-x-auto gap-2 pb-3 scrollbar-hide -mx-3 px-3">
               {filteredCategories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setActiveCategory(category)}
-                  className={`flex-shrink-0 px-3 py-1.5 rounded-full text-sm font-medium ds-transition-slow border ${
+                  className={`flex-shrink-0 px-4 py-2 rounded-full text-sm font-semibold transition-all duration-200 border ${
                     activeCategory === category
                       ? 'border-0 shadow-lg'
-                      : 'ds-border-primary ds-text-secondary hover:bg-emerald-700/40'
+                      : 'ds-border-primary hover:border-emerald-500/50'
                   }`}
                   style={{
                     background: activeCategory === category 
                       ? 'var(--color-brand-primary)' 
                       : 'var(--color-bg-card)',
                     color: activeCategory === category 
-                      ? 'var(--color-text-primary-light)' 
-                      : 'var(--color-text-secondary)',
+                      ? '#ffffff' 
+                      : 'var(--color-text-primary)',
                     boxShadow: activeCategory === category 
-                      ? 'var(--shadow-brand)' 
+                      ? '0 4px 16px rgba(6, 95, 70, 0.4)' 
                       : undefined
                   }}
                 >
@@ -170,7 +169,7 @@ export const PortfolioSection: React.FC = () => {
           {/* Main Content Grid */}
           <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-8">
             
-            {/* Left Sidebar - Categories (Desktop) */}
+            {/* Left Sidebar - Categories (Desktop) - Fixed Colors */}
             <div className="hidden lg:flex flex-col gap-6">
               {/* Categories Card */}
               <div className="ds-card ds-card-p-lg">
@@ -179,7 +178,7 @@ export const PortfolioSection: React.FC = () => {
                     className="w-10 h-10 rounded-full flex items-center justify-center"
                     style={{ background: 'var(--color-brand-primary)' }}
                   >
-                    <div className="w-5 h-5 bg-white rounded-full" />
+                    <Camera className="w-5 h-5 text-white" />
                   </div>
                   <h3 className="ds-heading-4 ds-text-primary">
                     Categories
@@ -191,37 +190,40 @@ export const PortfolioSection: React.FC = () => {
                     <button
                       key={category}
                       onClick={() => setActiveCategory(category)}
-                      className={`w-full text-left p-3 rounded-xl ds-transition-slow flex items-center gap-3 group border ${
+                      className={`w-full text-left px-4 py-3 rounded-xl transition-all duration-200 flex items-center gap-3 group border ${
                         activeCategory === category
-                          ? 'ds-border-accent'
-                          : 'ds-border-light hover:bg-white/5'
+                          ? 'border-emerald-500/50 shadow-lg'
+                          : 'ds-border-primary hover:border-emerald-500/30'
                       }`}
                       style={{
                         background: activeCategory === category 
-                          ? 'rgba(2, 156, 72, 0.2)' 
-                          : 'var(--color-brand-primary-light)',
+                          ? 'var(--color-brand-primary)' 
+                          : 'var(--color-bg-card)',
                         color: activeCategory === category 
-                          ? 'var(--color-brand-secondary)' 
-                          : 'var(--color-text-primary-light)'
+                          ? '#ffffff' 
+                          : 'var(--color-text-primary)',
+                        boxShadow: activeCategory === category 
+                          ? '0 4px 16px rgba(6, 95, 70, 0.3)' 
+                          : undefined
                       }}
                     >
                       <div 
-                        className="w-2 h-2 rounded-full ds-transition-slow"
+                        className="w-2 h-2 rounded-full transition-all duration-200"
                         style={{
                           background: activeCategory === category 
-                            ? 'var(--color-brand-primary)' 
-                            : 'var(--color-text-muted)'
+                            ? '#ffffff' 
+                            : 'var(--color-brand-primary)'
                         }}
                       />
-                      <span className="ds-body-sm font-medium flex items-center gap-2">
+                      <span className="ds-body-base font-semibold flex-1">
                         {category}
                       </span>
                       <div 
-                        className="ml-auto ds-body-sm"
+                        className="ds-body-sm font-medium"
                         style={{
                           color: activeCategory === category 
-                            ? 'var(--color-brand-secondary)' 
-                            : 'var(--color-text-tertiary)'
+                            ? 'rgba(255, 255, 255, 0.8)' 
+                            : 'var(--color-text-secondary)'
                         }}
                       >
                         {PORTFOLIO_IMAGES[category]?.length || 0}
@@ -245,7 +247,7 @@ export const PortfolioSection: React.FC = () => {
                       Ready to Begin?
                     </h4>
                     <p className="ds-body-sm ds-text-secondary">
-                      Let's create something beautiful together. Book your session today.
+                      Let's create something beautiful together.
                     </p>
                   </div>
                   <button
@@ -259,32 +261,11 @@ export const PortfolioSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Right Content - Portfolio Grid */}
+            {/* Right Content - Portfolio Grid - No Extra Text */}
             <div className="flex-1">
-              {/* Portfolio Header - Compact Mobile */}
-              <div className="mb-6 lg:mb-8">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 lg:gap-4 mb-6 lg:mb-8">
-                  <h3 className="text-lg sm:text-xl lg:ds-heading-3 ds-text-primary font-bold">
-                    {isVideoCategory ? 'Video Productions' : `${activeCategory} Photography `}
-                  </h3>
-                  <div 
-                    className="lg:flex hidden items-center gap-2 rounded-full px-3 py-1.5 border ds-border-primary w-fit"
-                    style={{ background: 'var(--color-bg-card)' }}
-                  >
-                    <div 
-                      className="w-1.5 h-1.5 rounded-full animate-pulse"
-                      style={{ background: 'var(--color-brand-primary)' }}
-                    />
-                    <span className="text-xs lg:ds-body-sm ds-text-secondary font-medium">
-                      {displayImages.length} {displayImages.length === 1 ? 'Photo' : 'Photos'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Masonry Image Grid */}
+              {/* Masonry Image Grid - No Curves */}
               {!isVideoCategory && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-3 lg:gap-4 auto-rows-[200px] sm:auto-rows-[200px]">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2 lg:gap-3 auto-rows-[180px] sm:auto-rows-[200px] lg:auto-rows-[200px]">
                   {displayImages.map((img, idx) => {
                     const mobileLayout = masonryLayouts.mobile[idx % masonryLayouts.mobile.length];
                     const desktopLayout = masonryLayouts.desktop[idx % masonryLayouts.desktop.length];
@@ -294,29 +275,26 @@ export const PortfolioSection: React.FC = () => {
                       <div
                         key={idx}
                         onClick={() => openImageModal(idx)}
-                        className={`relative ${layout} rounded-xl hover:scale-[1.02] ds-transition-slower cursor-pointer overflow-hidden group`}
-                        style={{ boxShadow: 'var(--shadow-xl)' }}
+                        className={`relative ${layout} overflow-hidden group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:z-10`}
+                        style={{ 
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                        }}
                       >
                         <img
                           src={img}
                           alt={`${activeCategory} photography ${idx + 1}`}
-                          className="w-full h-full lg:object-cover object-cover rounded-xl ds-transition-slower group-hover:scale-105"
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         
-                        {/* Info Panel - Hover */}
-                        <div className="absolute bottom-0 left-0 right-0 p-3 lg:p-4 transform translate-y-full group-hover:translate-y-0 ds-transition-slower bg-gradient-to-t from-black/60 via-black/30 to-transparent">
-                          <div className="flex items-center justify-between">
-                            <p className="text-xs lg:ds-body-sm ds-text-primary font-medium">
-                              {activeCategory} #{idx + 1}
-                            </p>
-                            <div 
-                              className="w-7 h-7 lg:w-8 lg:h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 ds-transition-slow delay-200"
-                              style={{ background: 'var(--color-brand-primary)' }}
-                            >
-                              <svg className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
+                        {/* Hover Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-4">
+                          <div 
+                            className="w-10 h-10 rounded-full flex items-center justify-center transform translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-300"
+                            style={{ background: 'var(--color-brand-primary)' }}
+                          >
+                            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                            </svg>
                           </div>
                         </div>
                       </div>
@@ -351,43 +329,48 @@ export const PortfolioSection: React.FC = () => {
       {modalState.isOpen && (
         <div 
           className="fixed inset-0 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          style={{ background: 'var(--color-bg-modal)' }}
+          style={{ background: 'rgba(0, 0, 0, 0.95)' }}
+          onClick={closeImageModal}
         >
+          {/* Close Button */}
           <button
             onClick={closeImageModal}
-            className="absolute top-4 right-4 z-50 w-12 h-12 rounded-full flex items-center justify-center ds-text-secondary hover:ds-text-primary ds-transition-base border ds-border-light"
+            className="absolute top-4 right-4 z-50 w-12 h-12 rounded-full flex items-center justify-center text-white/80 hover:text-white transition-colors duration-200 border border-white/20 hover:border-white/40"
             style={{ background: 'rgba(0, 0, 0, 0.8)' }}
           >
             <X className="w-6 h-6" />
           </button>
 
+          {/* Navigation Buttons */}
           <button
-            onClick={prevImage}
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full flex items-center justify-center ds-text-secondary hover:ds-text-primary ds-transition-base border ds-border-light"
+            onClick={(e) => { e.stopPropagation(); prevImage(); }}
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full flex items-center justify-center text-white/80 hover:text-white transition-all duration-200 border border-white/20 hover:border-white/40 hover:scale-110"
             style={{ background: 'rgba(0, 0, 0, 0.8)' }}
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
           </button>
 
           <button
-            onClick={nextImage}
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full flex items-center justify-center ds-text-secondary hover:ds-text-primary ds-transition-base border ds-border-light"
+            onClick={(e) => { e.stopPropagation(); nextImage(); }}
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full flex items-center justify-center text-white/80 hover:text-white transition-all duration-200 border border-white/20 hover:border-white/40 hover:scale-110"
             style={{ background: 'rgba(0, 0, 0, 0.8)' }}
           >
-            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
             </svg>
           </button>
 
+          {/* Zoom Controls */}
           <div 
-            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 backdrop-blur-sm rounded-full px-4 py-2 border ds-border-light"
+            className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 backdrop-blur-md rounded-full px-4 py-2 border border-white/20"
             style={{ background: 'rgba(0, 0, 0, 0.8)' }}
+            onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={zoomOut}
-              className="w-8 h-8 flex items-center justify-center ds-text-secondary hover:ds-text-primary ds-transition-base disabled:opacity-30"
+              className="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
               disabled={modalState.scale <= 0.5}
             >
               <ZoomOut className="w-4 h-4" />
@@ -395,40 +378,48 @@ export const PortfolioSection: React.FC = () => {
             
             <button
               onClick={resetZoom}
-              className="w-8 h-8 flex items-center justify-center ds-text-secondary hover:ds-text-primary ds-transition-base ds-body-sm font-medium"
+              className="w-12 h-8 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-200 text-sm font-medium"
             >
               {Math.round(modalState.scale * 100)}%
             </button>
             
             <button
               onClick={zoomIn}
-              className="w-8 h-8 flex items-center justify-center ds-text-secondary hover:ds-text-primary ds-transition-base disabled:opacity-30"
+              className="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-200 disabled:opacity-30 disabled:cursor-not-allowed"
               disabled={modalState.scale >= 3}
             >
               <ZoomIn className="w-4 h-4" />
             </button>
             
+            <div className="w-px h-6 bg-white/20 mx-1" />
+            
             <button
               onClick={resetZoom}
-              className="w-8 h-8 flex items-center justify-center ds-text-secondary hover:ds-text-primary ds-transition-base"
+              className="w-8 h-8 flex items-center justify-center text-white/80 hover:text-white transition-colors duration-200"
+              title="Reset zoom"
             >
               <RotateCcw className="w-4 h-4" />
             </button>
           </div>
 
+          {/* Image Counter */}
           <div 
-            className="absolute top-4 left-1/2 -translate-x-1/2 z-50 backdrop-blur-sm ds-text-primary px-4 py-2 rounded-full border ds-border-light ds-body-sm"
+            className="absolute top-4 left-1/2 -translate-x-1/2 z-50 backdrop-blur-md text-white px-4 py-2 rounded-full border border-white/20 text-sm font-medium"
             style={{ background: 'rgba(0, 0, 0, 0.8)' }}
           >
             {modalState.imageIndex + 1} / {displayImages.length}
           </div>
 
-          <div className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center overflow-hidden">
+          {/* Image Container */}
+          <div 
+            className="relative w-full h-full max-w-7xl max-h-[90vh] flex items-center justify-center"
+            onClick={(e) => e.stopPropagation()}
+          >
             <img
               ref={imageRef}
               src={displayImages[modalState.imageIndex]}
               alt={`${activeCategory} photography ${modalState.imageIndex + 1}`}
-              className={`max-w-full max-h-full object-contain ds-transition-base ${
+              className={`max-w-full max-h-full object-contain transition-transform duration-200 ${
                 modalState.isDragging ? 'cursor-grabbing' : modalState.scale > 1 ? 'cursor-grab' : 'cursor-default'
               }`}
               style={{
