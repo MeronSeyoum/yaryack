@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Mail, Phone, MapPin, Send, Calendar as CalendarIcon, User, MessageCircle, ChevronDown } from 'lucide-react';
 import { useTheme } from '../../contexts/ThemeContext';
@@ -27,15 +26,10 @@ const OCCASION_OPTIONS = [
   "Other"
 ];
 
-// Vite environment variables - IMPORTANT: Use import.meta.env
-const EMAILJS_SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-// Fallback values in case env variables are not set
-const SERVICE_ID = EMAILJS_SERVICE_ID || 'service_5v11ynl';
-const TEMPLATE_ID = EMAILJS_TEMPLATE_ID || 'template_7mb1byt';
-const PUBLIC_KEY = EMAILJS_PUBLIC_KEY || '8HSbZX-_Fb9w8dP0N';
+// Hardcoded EmailJS credentials (replace with your actual credentials)
+const EMAILJS_SERVICE_ID = 'service_5v11ynl';
+const EMAILJS_TEMPLATE_ID = 'template_7mb1byt';
+const EMAILJS_PUBLIC_KEY = '8HSbZX-_Fb9w8dP0N';
 
 export const ContactSection: React.FC = () => {
   const { isDarkMode } = useTheme();
@@ -122,13 +116,13 @@ export const ContactSection: React.FC = () => {
     setIsSubmitting(true);
 
     try {
-      // Send email using EmailJS with environment variables
+      // Send email using EmailJS with hardcoded credentials
       if (form.current) {
         await emailjs.sendForm(
-          SERVICE_ID,
-          TEMPLATE_ID,
+          EMAILJS_SERVICE_ID,
+          EMAILJS_TEMPLATE_ID,
           form.current,
-          PUBLIC_KEY
+          EMAILJS_PUBLIC_KEY
         );
       }
       
@@ -239,7 +233,7 @@ export const ContactSection: React.FC = () => {
 
           {/* Contact Cards */}
           <div className="max-w-5xl mx-auto">
-            <div className="lg:grid hidden grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+            <div className="hidden lg:grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
               {contactInfo.map((item, index) => (
                 <a
                   key={index}
@@ -447,46 +441,74 @@ export const ContactSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Occasion Selection */}
+                  {/* Improved Occasion Selection with Transparent Background */}
                   <div>
                     <label className="block ds-body-sm mb-2 font-medium ds-text-secondary">
                       Type of Occasion
                     </label>
                     <div className="relative">
                       <div 
-                        className="ds-input ds-input-md cursor-pointer flex items-center justify-between"
+                        className="ds-input ds-input-md cursor-pointer flex items-center justify-between border ds-border-primary transition-colors duration-200 hover:border-brand-primary/50"
+                        style={{
+                          background: 'transparent',
+                          backdropFilter: 'none',
+                        }}
                         onClick={() => setShowOccasionDropdown(!showOccasionDropdown)}
                       >
                         <span className={formData.occasion ? "ds-text-primary" : "ds-text-secondary"}>
                           {formData.occasion || "Select occasion type"}
                         </span>
-                        <ChevronDown className={`w-4 h-4 ds-text-secondary transition-transform ${showOccasionDropdown ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-4 h-4 ds-text-secondary transition-transform duration-200 ${showOccasionDropdown ? 'rotate-180' : ''}`} />
                       </div>
                       
                       {showOccasionDropdown && (
                         <div 
                           className="absolute z-10 mt-1 w-full rounded-lg border shadow-lg max-h-60 overflow-y-auto"
                           style={{
-                            background: isDarkMode ? 'var(--color-bg-card)' : 'var(--color-bg-primary)',
-                            borderColor: 'var(--color-border-primary)'
+                            background: isDarkMode 
+                              ? 'rgba(10, 10, 10, 0.95)' 
+                              : 'rgba(255, 255, 255, 0.98)',
+                            borderColor: 'var(--color-brand-primary)',
+                            backdropFilter: 'blur(10px)',
+                            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.2)'
                           }}
                         >
                           {OCCASION_OPTIONS.map((option) => (
                             <div
                               key={option}
-                              className="px-4 py-3 cursor-pointer hover:bg-opacity-10 transition-colors ds-transition-base"
+                              className="px-4 py-3 cursor-pointer transition-all duration-200 ds-transition-base hover:pl-6"
                               style={{
                                 background: formData.occasion === option 
-                                  ? 'rgba(var(--color-brand-primary-rgb), 0.1)' 
+                                  ? (isDarkMode 
+                                    ? 'rgba(var(--color-brand-primary-rgb), 0.2)' 
+                                    : 'rgba(var(--color-brand-primary-rgb), 0.1)') 
                                   : 'transparent',
                                 color: formData.occasion === option 
                                   ? 'var(--color-brand-primary)' 
                                   : 'var(--color-text-primary)',
-                                borderBottom: '1px solid var(--color-border-primary)'
+                                borderBottom: '1px solid',
+                                borderBottomColor: isDarkMode 
+                                  ? 'rgba(255, 255, 255, 0.1)' 
+                                  : 'rgba(0, 0, 0, 0.05)'
                               }}
                               onClick={() => handleOccasionSelect(option)}
                             >
-                              {option}
+                              <div className="flex items-center gap-3">
+                                <div 
+                                  className="w-2 h-2 rounded-full"
+                                  style={{
+                                    background: formData.occasion === option 
+                                      ? 'var(--color-brand-primary)' 
+                                      : 'transparent',
+                                    border: formData.occasion === option 
+                                      ? 'none' 
+                                      : '1px solid var(--color-border-primary)'
+                                  }}
+                                />
+                                <span className="ds-body-sm font-medium">
+                                  {option}
+                                </span>
+                              </div>
                             </div>
                           ))}
                         </div>
@@ -531,7 +553,7 @@ export const ContactSection: React.FC = () => {
                       name="agree"
                       checked={formData.agree}
                       onChange={handleFormChange}
-                      className="w-4 h-4 mt-0.5 flex-shrink-0 rounded"
+                      className="w-4 h-4 mt-0.5 flex-shrink-0 rounded ds-transition-base hover:scale-110"
                       style={{ 
                         accentColor: 'var(--color-brand-primary)',
                         background: 'var(--color-bg-input-focus)',
@@ -546,7 +568,7 @@ export const ContactSection: React.FC = () => {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full ds-btn ds-btn-primary ds-btn-lg"
+                    className="w-full ds-btn ds-btn-primary ds-btn-lg ds-transition-base hover:scale-[1.02]"
                   >
                     {isSubmitting ? (
                       <>
