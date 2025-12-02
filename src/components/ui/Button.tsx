@@ -12,6 +12,7 @@ interface ButtonProps {
   className?: string;
   disabled?: boolean;
   type?: 'button' | 'submit';
+  fullWidth?: boolean;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -24,31 +25,31 @@ export const Button: React.FC<ButtonProps> = ({
   className = '',
   disabled = false,
   type = 'button',
+  fullWidth = false,
 }) => {
-  // Base classes using design system
   const baseClasses = 'ds-btn';
   
-  // Variant classes
   const variantClasses = {
     primary: 'ds-btn-primary',
     outline: 'ds-btn-outline',
     ghost: 'bg-transparent hover:bg-white/5 text-white',
   };
 
-  // Size classes
   const sizeClasses = {
     sm: 'ds-btn-sm',
     md: 'ds-btn-md',
     lg: 'ds-btn-lg',
   };
 
-  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+  const widthClass = fullWidth ? 'w-full' : '';
+  const iconSizeClass = size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-6 h-6' : 'w-5 h-5';
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${widthClass} ${className}`;
 
   if (href) {
     return (
       <a href={href} className={classes}>
-        {Icon && <Icon className={size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-6 h-6' : 'w-5 h-5'} />}
-        {children}
+        {Icon && <Icon className={iconSizeClass} />}
+        <span>{children}</span>
       </a>
     );
   }
@@ -60,8 +61,8 @@ export const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={classes}
     >
-      {Icon && <Icon className={size === 'sm' ? 'w-4 h-4' : size === 'lg' ? 'w-6 h-6' : 'w-5 h-5'} />}
-      {children}
+      {Icon && <Icon className={iconSizeClass} />}
+      <span>{children}</span>
     </button>
   );
 };

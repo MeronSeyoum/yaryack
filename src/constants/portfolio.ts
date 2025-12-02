@@ -82,7 +82,7 @@ export const PORTFOLIO_CATEGORIES: PortfolioCategory[] = [
 export const PORTFOLIO_TABS = ["All Work", "Featured", "Recent"];
 
 export const PORTFOLIO_IMAGES: Record<PortfolioCategory, string[]> = {
-  Event: [event1, event8, event3, event5, event6, event7],
+  Event: [event1, event8, event3, event5, event6, maternity4],
   Engagement: [engagement1, engagement2, engagement3, engagement4, engagement5, engagement6],
   Wedding: [wedding1, wedding2, wedding3, wedding4, wedding5, wedding6],
   Maternity: [maternity1, maternity2, maternity3, maternity4, maternity5, maternity6, maternity7, maternity8],

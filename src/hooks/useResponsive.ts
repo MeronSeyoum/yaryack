@@ -1,31 +1,36 @@
 // src/hooks/useResponsive.ts
 import { useState, useEffect } from 'react';
-import { DESIGN_SYSTEM } from '../config/designSystem';
-import type { ResponsiveState } from '../types';
+
+const BREAKPOINTS = {
+  mobile: 768,
+  tablet: 1024,
+  desktop: 1280,
+} as const;
+
+interface ResponsiveState {
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  width: number;
+}
 
 export const useResponsive = (): ResponsiveState => {
-  const [width, setWidth] = useState<number>(() => {
-    if (typeof window !== 'undefined') {
-      return window.innerWidth;
-    }
-    return 1024; // Default to desktop width
+  const [windowWidth, setWindowWidth] = useState<number>(() => {
+    if (typeof window === 'undefined') return 1024;
+    return window.innerWidth;
   });
 
   useEffect(() => {
-    const handleResize = () => {
-      setWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
+    const handleResize = () => setWindowWidth(window.innerWidth);
     
-    // Cleanup
+    window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return {
-    isMobile: width < DESIGN_SYSTEM.breakpoints.mobile,
-    isTablet: width >= DESIGN_SYSTEM.breakpoints.mobile && width < DESIGN_SYSTEM.breakpoints.desktop,
-    isDesktop: width >= DESIGN_SYSTEM.breakpoints.desktop,
-    width,
+    isMobile: windowWidth < BREAKPOINTS.mobile,
+    isTablet: windowWidth >= BREAKPOINTS.mobile && windowWidth < BREAKPOINTS.tablet,
+    isDesktop: windowWidth >= BREAKPOINTS.tablet,
+    width: windowWidth,
   };
 };

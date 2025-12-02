@@ -1,6 +1,7 @@
 // src/components/home/PortfolioSection.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Calendar, X, ZoomIn, ZoomOut, RotateCcw, Camera } from 'lucide-react';
+import { SectionHeader } from '../ui/SectionHeader';
 import { PORTFOLIO_CATEGORIES, PORTFOLIO_IMAGES } from '../../constants/portfolio';
 
 type PortfolioCategory = "Wedding" | "Engagement" | "Maternity" | "Portrait" | "Event";
@@ -117,23 +118,11 @@ export const PortfolioSection: React.FC = () => {
   return (
     <>
       <section id="portfolio" className="min-h-screen ds-bg-section-primary">
-        {/* Section Header - Compact */}
-        <div className="ds-section-header">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 lg:gap-3">
-              <div 
-                className="w-1.5 h-6 lg:w-2 lg:h-8 rounded-full"
-                style={{ background: 'var(--color-brand-primary)' }}
-              />
-              <p className="ds-body-sm lg:ds-body-base ds-text-secondary uppercase tracking-wider font-semibold">
-                Featured Work
-              </p>
-            </div>
-            <h2 className="ds-body-lg lg:ds-heading-3 xl:ds-heading-2 ds-text-primary font-bold">
-              Portfolio
-            </h2>
-          </div>
-        </div>
+        <SectionHeader 
+          title="Portfolio" 
+          subtitle="Featured Work" 
+          swap={true}
+        />
 
         <div className="mx-auto px-3 sm:px-4 lg:px-16 py-8 lg:pb-12">
           {/* Mobile Horizontal Menu - Fixed Colors */}
@@ -167,12 +156,12 @@ export const PortfolioSection: React.FC = () => {
           </div>
 
           {/* Main Content Grid */}
-          <div className="flex flex-col lg:grid lg:grid-cols-[280px_1fr] gap-8">
+          <div className="flex flex-col lg:grid lg:grid-cols-[300px_1fr] gap-8">
             
             {/* Left Sidebar - Categories (Desktop) - Fixed Colors */}
             <div className="hidden lg:flex flex-col gap-6">
               {/* Categories Card */}
-              <div className="ds-card ds-card-p-lg">
+              <div className="ds-card ds-card-p-md">
                 <div className="flex items-center gap-3 mb-6">
                   <div 
                     className="w-10 h-10 rounded-full flex items-center justify-center"
@@ -215,7 +204,7 @@ export const PortfolioSection: React.FC = () => {
                             : 'var(--color-brand-primary)'
                         }}
                       />
-                      <span className="ds-body-base font-semibold flex-1">
+                      <span className="ds-body-sm font-semibold flex-1">
                         {category}
                       </span>
                       <div 
@@ -264,44 +253,80 @@ export const PortfolioSection: React.FC = () => {
             {/* Right Content - Portfolio Grid - No Extra Text */}
             <div className="flex-1">
               {/* Masonry Image Grid - No Curves */}
-              {!isVideoCategory && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2 lg:gap-3 auto-rows-[180px] sm:auto-rows-[200px] lg:auto-rows-[200px]">
-                  {displayImages.map((img, idx) => {
-                    const mobileLayout = masonryLayouts.mobile[idx % masonryLayouts.mobile.length];
-                    const desktopLayout = masonryLayouts.desktop[idx % masonryLayouts.desktop.length];
-                    const layout = isMobile ? mobileLayout : desktopLayout;
+            {!isVideoCategory && (
+  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-2 lg:gap-3 auto-rows-[180px] sm:auto-rows-[200px] lg:auto-rows-[190px]">
+    {displayImages.map((img, idx) => {
+      const mobileLayout = masonryLayouts.mobile[idx % masonryLayouts.mobile.length];
+      const desktopLayout = masonryLayouts.desktop[idx % masonryLayouts.desktop.length];
+      const layout = isMobile ? mobileLayout : desktopLayout;
 
-                    return (
-                      <div
-                        key={idx}
-                        onClick={() => openImageModal(idx)}
-                        className={`relative ${layout} overflow-hidden group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:z-10`}
-                        style={{ 
-                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
-                        }}
-                      >
-                        <img
-                          src={img}
-                          alt={`${activeCategory} photography ${idx + 1}`}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                        
-                        {/* Hover Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-4">
-                          <div 
-                            className="w-10 h-10 rounded-full flex items-center justify-center transform translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-300"
-                            style={{ background: 'var(--color-brand-primary)' }}
-                          >
-                            <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
-                            </svg>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
+      return (
+        <div
+          key={idx}
+          onClick={() => openImageModal(idx)}
+          className={`relative ${layout} overflow-hidden group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:z-10`}
+          style={{ 
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            // Add background to show empty space when image doesn't fill container
+            backgroundColor: 'var(--color-bg-card)',
+          }}
+        >
+          {/* Image container with center alignment */}
+          <div className="relative w-full h-full flex items-center justify-center">
+            <img
+              src={img}
+              alt={`${activeCategory} photography ${idx + 1}`}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              // Multiple protection layers against downloading
+              onContextMenu={(e) => e.preventDefault()}
+              onDragStart={(e) => e.preventDefault()}
+              draggable="false"
+              // Add a subtle overlay that makes downloading less useful
+              style={{
+                WebkitUserSelect: 'none',
+                MozUserSelect: 'none',
+                msUserSelect: 'none',
+                userSelect: 'none',
+                pointerEvents: 'none',
+              }}
+            />
+            
+            {/* Transparent overlay to block direct image access */}
+            <div 
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to bottom, transparent 85%, rgba(0, 0, 0, 0.3) 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+          </div>
+          
+          {/* Hover Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-end p-4">
+            <div 
+              className="w-10 h-10 rounded-full flex items-center justify-center transform translate-x-2 translate-y-2 group-hover:translate-x-0 group-hover:translate-y-0 transition-transform duration-300"
+              style={{ background: 'var(--color-brand-primary)' }}
+            >
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+              </svg>
+            </div>
+          </div>
+          
+          {/* Watermark overlay (optional but effective) */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-20 transition-opacity duration-300 pointer-events-none">
+            <div 
+              className="text-white/30 text-4xl font-bold tracking-wider transform rotate-[-15deg]"
+              style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
+            >
+              YARYACK
+            </div>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+)}
 
               {/* Empty State */}
               {displayImages.length === 0 && !isVideoCategory && (

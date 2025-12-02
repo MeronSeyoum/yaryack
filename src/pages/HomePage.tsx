@@ -10,32 +10,29 @@ import { Footer } from "../components/layout/Footer";
 
 const HomePage: React.FC = () => {
   const [activeSection, setActiveSection] = useState("home");
-  const [isDarkMode, setIsDarkMode] = useState(true);
 
-  // Load theme preference from localStorage on mount
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark');
-    }
-  }, []);
+    const handleScroll = () => {
+      const sections = ['home', 'about', 'portfolio', 'services', 'contact'];
+      const scrollPosition = window.scrollY + 100;
 
-  // Save theme preference to localStorage and update CSS
-  useEffect(() => {
-    localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
     
-    // Update CSS variables
-    const root = document.documentElement;
-    if (isDarkMode) {
-      root.removeAttribute('data-theme');
-    } else {
-      root.setAttribute('data-theme', 'light');
-    }
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -66,15 +63,11 @@ const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen">
       <Navigation 
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
         activeSection={activeSection}
         onNavClick={handleNavClick}
       />
       
       <HeroSection 
-        isDarkMode={isDarkMode}
-        toggleTheme={toggleTheme}
         activeSection={activeSection}
         onNavClick={handleNavClick}
       />

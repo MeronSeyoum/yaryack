@@ -214,7 +214,7 @@ body {
 }
 
 .ds-btn-primary {
-  background: linear-gradient(to right, var(--color-brand-primary-light), var(--color-brand-primary));
+  background: linear-gradient(to right, var(--pricolor-brand-mary-light), var(--color-brand-primary));
   color: #FFFFFF;
   box-shadow: var(--shadow-lg);
 }
@@ -399,6 +399,10 @@ body {
   line-height: var(--line-height-normal);
 }
 
+.ds-body-xl {
+  font-size: var(--font-size-2xl);
+  line-height: var(--line-height-normal);
+}
 .ds-body-lg {
   font-size: var(--font-size-lg);
   line-height: var(--line-height-relaxed);
@@ -411,6 +415,10 @@ body {
 
 .ds-body-sm {
   font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+}
+.ds-body-xs {
+  font-size: var(--font-size-xs);
   line-height: var(--line-height-normal);
 }
 

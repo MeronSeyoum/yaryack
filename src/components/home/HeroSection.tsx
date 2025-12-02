@@ -1,8 +1,10 @@
 // src/components/home/HeroSection.tsx
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { Calendar, Eye, ArrowRight } from "lucide-react";
+import { useTheme } from "../../contexts/ThemeContext";
+import { useResponsive } from "../../hooks/useResponsive";
+import { VerticalImageRoll } from "./VerticalImageRoll";
 
-// Import images
 import heroMain from "../../assets/images/hero-main.jpg";
 import heroMobileBottom from "../../assets/images/bg-hero-mobile.jpg";
 import heroThumb1 from "../../assets/images/hero-thumb-1.jpg";
@@ -15,45 +17,35 @@ import heroMobile3 from "../../assets/images/21.51.45_3a86605b.jpg";
 import heroMobile4 from "../../assets/images/21.51.45_80edf31d.jpg";
 import heroMobile5 from "../../assets/images/21.48.03_19aa522d.jpg";
 import heroMobile6 from "../../assets/images/21.51.45_87751dc7.jpg";
+import heroMobile7 from "../../assets/images/IMG-20251108-WA0043.jpg";
 
 import heroMobileThumb1 from "../../assets/images/21.48.02_7ba4943d.jpg";
 import heroMobileThumb2 from "../../assets/images/hero-thumb-5.jpg";
 import heroMobileThumb3 from "../../assets/images/hero-thumb-4.jpg";
 import heroMobileThumb4 from "../../assets/images/21.48.03_72814712.jpg";
-import { VerticalImageRoll } from "./VerticalImageRoll";
 
 interface HeroSectionProps {
-  isDarkMode?: boolean;
-  toggleTheme?: () => void;
   activeSection?: string;
   onNavClick?: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
 }
 
-// Constants
-const MOBILE_BREAKPOINT = 1024;
 const SLIDE_INTERVAL = 4000;
 const AUTO_PLAY_RESUME_DELAY = 8000;
 
 const HERO_IMAGES = [heroThumb1, heroThumb2, heroThumb3, heroThumb4];
 const MOBILE_THUMB_IMAGES = [heroMobileThumb1, heroMobileThumb2, heroMobileThumb3, heroMobileThumb4];
-const MOBILE_SLIDES = [heroMobile1, heroMobile2, heroMobile3, heroMobile4, heroMobile5, heroMobile6];
+const MOBILE_SLIDES = [heroMobile1,heroMobile7, heroMobile2, heroMobile3, heroMobile4, heroMobile5, heroMobile6];
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  isDarkMode: externalIsDarkMode,
-  toggleTheme: externalToggleTheme,
   activeSection = 'home',
   onNavClick
 }) => {
+  const { isDarkMode } = useTheme();
+  const { isMobile } = useResponsive();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
-  const [internalIsDarkMode, setInternalIsDarkMode] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  
-  const isDarkMode = externalIsDarkMode ?? internalIsDarkMode;
-  const toggleTheme = externalToggleTheme ?? (() => setInternalIsDarkMode(!internalIsDarkMode));
 
-  // Memoized styles
   const overlayStyles = useMemo(() => ({
     desktop: isDarkMode 
       ? "linear-gradient(to right, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 15%, rgba(0,0,0,0.01) 65%, transparent 100%)"
@@ -63,16 +55,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       : "linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 8%, rgba(255,255,255,0.60) 20%, rgba(255,255,255,0.30) 35%, rgba(255,255,255,0.10) 50%, transparent 100%)",
   }), [isDarkMode]);
 
-  // Handle responsive breakpoints
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    
-    checkMobile();
-    window.addEventListener("resize", checkMobile);
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
-
-  // Autoplay slideshow for mobile
   useEffect(() => {
     if (!isAutoPlaying || !isMobile) return;
 
@@ -84,7 +66,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     return () => clearInterval(timer);
   }, [isAutoPlaying, isMobile]);
 
-  // Handle transition end
   useEffect(() => {
     if (isTransitioning) {
       const timer = setTimeout(() => setIsTransitioning(false), 300);
@@ -119,14 +100,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       aria-label="Hero section"
     >
       <div className="relative">
-        {/* Main Hero Section */}
         <div 
           className="relative overflow-hidden" 
           style={{ height: isMobile ? '100dvh' : '100vh' }}
         >
-          {/* Background Images */}
           <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-            {/* Desktop Background */}
             <img
               src={heroMain}
               alt="Professional photography showcase"
@@ -134,7 +112,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               loading="eager"
             />
             
-            {/* Mobile Slideshow */}
             <div className="lg:hidden w-full h-full relative">
               <div 
                 className="flex w-full h-full transition-transform duration-700 ease-out" 
@@ -152,7 +129,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 ))}
               </div>
               
-              {/* Slide Indicators */}
               <div 
                 className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-10"
                 role="group"
@@ -182,7 +158,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               </div>
             </div>
 
-            {/* Overlay Gradients */}
             <div
               className="hidden lg:block absolute inset-0 pointer-events-none"
               style={{ background: overlayStyles.desktop }}
@@ -193,10 +168,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             />
           </div>
 
-          {/* Main Content */}
-          <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-8 h-full">
+          <div className="relative z-10 mx-auto px-4 sm:px-6 lg:px-16 h-full">
             <div className="flex flex-col lg:grid lg:grid-cols-[1fr_340px] lg:mt-20 h-full gap-0">
-              {/* Content Area */}
               <div 
                 className="flex flex-col justify-end lg:justify-center lg:pr-12"
                 style={{
@@ -206,7 +179,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 }}
               >
                 <div className="space-y-4 lg:space-y-12">
-                  {/* Location Badge - Desktop */}
                   <div
                     className="hidden lg:flex items-center gap-3 backdrop-blur-xl rounded-full max-w-md border transition-all duration-300 hover:border-emerald-400/70 hover:shadow-2xl"
                     style={{
@@ -244,14 +216,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     </p>
                   </div>
 
-                  {/* Main Heading */}
                   <div className="space-y-6 text-left">
                     <div 
                       className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
                       style={{ borderColor: 'var(--color-brand-primary)' }}
                     >
                       <h1 
-                        className="text-5xl lg:text-7xl font-bold leading-tight"
+                        className="text-3xl lg:text-7xl font-bold leading-tight"
                         style={{ color: isDarkMode ? '#ffffff' : 'var(--color-brand-primary)' }}
                       >
                         Yaryack
@@ -270,9 +241,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     </p>
                   </div>
 
-                  {/* CTA Section */}
                   <div className="space-y-8 mt-8 lg:mt-16 mr-4">
-                    {/* Action Buttons */}
                     <div className="flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
                       <button
                         onClick={() => scrollToSection("contact")}
@@ -304,7 +273,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       </button>
                     </div>
 
-                    {/* Trust Indicator - Desktop */}
                     <div
                       className="hidden lg:flex gap-5 items-center backdrop-blur-xl rounded-2xl border max-w-2xl transition-all duration-300 hover:border-emerald-400/70 hover:shadow-2xl"
                       style={{
@@ -359,7 +327,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 </div>
               </div>
 
-              {/* Desktop Vertical Film Roll */}
               <VerticalImageRoll 
                 images={HERO_IMAGES}
                 isDarkMode={isDarkMode}
@@ -369,7 +336,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </div>
 
-        {/* Mobile Portfolio Preview */}
         {isMobile && (
           <div className="lg:hidden relative min-h-[60vh]">
             <div className="absolute inset-0 -z-10 overflow-hidden">

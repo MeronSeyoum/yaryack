@@ -23,7 +23,7 @@ export const Card: React.FC<CardProps> = ({
   const variantClasses = {
     default: '',
     elevated: 'ds-card-elevated',
-    glass: 'bg-white/5 border-white/20 hover:border-white/30',
+    glass: 'backdrop-blur-md bg-white/5 border-white/20',
   };
 
   // Padding classes
@@ -34,7 +34,7 @@ export const Card: React.FC<CardProps> = ({
   };
 
   // Disable hover effect if specified
-  const hoverClass = hover ? '' : 'hover:bg-[var(--color-bg-card)] hover:border-[var(--color-border-primary)] hover:shadow-none';
+  const hoverClass = hover ? '' : 'hover:bg-[var(--color-bg-card)] hover:border-[var(--color-border-primary)] hover:shadow-none hover:transform-none';
   
   return (
     <div className={`${baseClasses} ${variantClasses[variant]} ${paddingClasses[padding]} ${hoverClass} ${className}`}>

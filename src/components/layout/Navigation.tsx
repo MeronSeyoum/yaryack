@@ -1,10 +1,9 @@
 // src/components/layout/Navigation.tsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { Menu, X, Sun, Moon, Camera } from 'lucide-react';
+import { useTheme } from '../../contexts/ThemeContext';
 
 interface NavigationProps {
-  isDarkMode?: boolean;
-  toggleTheme?: () => void;
   activeSection?: string;
   onNavClick?: (e: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
 }
@@ -26,11 +25,10 @@ const NAV_ITEMS: NavItem[] = [
 const SCROLL_THRESHOLD = 20;
 
 export const Navigation: React.FC<NavigationProps> = ({
-  isDarkMode = true,
-  toggleTheme,
   activeSection = 'home',
   onNavClick,
 }) => {
+  const { isDarkMode, toggleTheme } = useTheme();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -126,7 +124,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-4 sm:px-6 lg:px-16">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <a
@@ -152,8 +150,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 <span 
                   className="text-lg lg:text-xl font-bold block leading-tight"
                   style={{ 
-                    color: isDarkMode ? 'var(--color-brand-secondary)' : 'rgba(0, 0, 0, 0.6)', 
-                    // 'var(--color-brand-secondary)',
+                    color: isDarkMode ? 'var(--color-brand-secondary)' : 'rgba(0, 0, 0, 0.6)',
                     textShadow: isDarkMode 
                       ? '0 0 20px rgba(6, 95, 70, 0.4)' 
                       : '0 0 10px rgba(10, 92, 46, 0.2)',
@@ -214,27 +211,25 @@ export const Navigation: React.FC<NavigationProps> = ({
 
             {/* Desktop Actions */}
             <div className="hidden lg:flex items-center gap-3">
-              {toggleTheme && (
-                <button
-                  onClick={toggleTheme}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
-                  style={{ 
-                    background: isDarkMode 
-                      ? 'rgba(255, 255, 255, 0.1)' 
-                      : 'rgba(0, 0, 0, 0.05)',
-                    border: isDarkMode 
-                      ? '1px solid rgba(255, 255, 255, 0.2)' 
-                      : '1px solid rgba(0, 0, 0, 0.1)',
-                  }}
-                  aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-                >
-                  {isDarkMode ? (
-                    <Sun className="w-5 h-5 text-yellow-300" aria-hidden="true" />
-                  ) : (
-                    <Moon className="w-5 h-5 text-indigo-600" aria-hidden="true" />
-                  )}
-                </button>
-              )}
+              <button
+                onClick={toggleTheme}
+                className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-200 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-offset-2"
+                style={{ 
+                  background: isDarkMode 
+                    ? 'rgba(255, 255, 255, 0.1)' 
+                    : 'rgba(0, 0, 0, 0.05)',
+                  border: isDarkMode 
+                    ? '1px solid rgba(255, 255, 255, 0.2)' 
+                    : '1px solid rgba(0, 0, 0, 0.1)',
+                }}
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? (
+                  <Sun className="w-5 h-5 text-yellow-300" aria-hidden="true" />
+                ) : (
+                  <Moon className="w-5 h-5 text-indigo-600" aria-hidden="true" />
+                )}
+              </button>
               <button
                 onClick={scrollToContact}
                 className="px-5 py-2.5 rounded-xl font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
@@ -251,27 +246,25 @@ export const Navigation: React.FC<NavigationProps> = ({
 
             {/* Mobile Actions */}
             <div className="flex lg:hidden items-center gap-2">
-              {toggleTheme && (
-                <button
-                  onClick={toggleTheme}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2"
-                  style={{ 
-                    background: isDarkMode 
-                      ? 'rgba(255, 255, 255, 0.1)' 
-                      : 'rgba(0, 0, 0, 0.05)',
-                    border: isDarkMode 
-                      ? '1px solid rgba(255, 255, 255, 0.2)' 
-                      : '1px solid rgba(0, 0, 0, 0.1)',
-                  }}
-                  aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-                >
-                  {isDarkMode ? (
-                    <Sun className="w-5 h-5 text-yellow-300" aria-hidden="true" />
-                  ) : (
-                    <Moon className="w-5 h-5 text-indigo-600" aria-hidden="true" />
-                  )}
-                </button>
-              )}
+              <button
+                onClick={toggleTheme}
+                className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2"
+                style={{ 
+                  background: isDarkMode 
+                    ? 'rgba(255, 255, 255, 0.1)' 
+                    : 'rgba(0, 0, 0, 0.05)',
+                  border: isDarkMode 
+                    ? '1px solid rgba(255, 255, 255, 0.2)' 
+                    : '1px solid rgba(0, 0, 0, 0.1)',
+                }}
+                aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+              >
+                {isDarkMode ? (
+                  <Sun className="w-5 h-5 text-yellow-300" aria-hidden="true" />
+                ) : (
+                  <Moon className="w-5 h-5 text-indigo-600" aria-hidden="true" />
+                )}
+              </button>
               
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

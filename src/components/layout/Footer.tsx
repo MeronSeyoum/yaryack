@@ -1,6 +1,6 @@
 // src/components/layout/Footer.tsx
 import React from 'react';
-import { Instagram, Facebook, Twitter, Mail, Phone, MapPin, Heart } from 'lucide-react';
+import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, Heart } from 'lucide-react';
 
 interface FooterProps {
   isDarkMode?: boolean;
@@ -31,14 +31,14 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
 
   const contactInfo = [
     { icon: Mail, text: 'hello@yaryackphotography.ca', href: 'mailto:hello@yaryackphotography.ca' },
-    { icon: Phone, text: '+1 (587) 123-4567', href: 'tel:+15871234567' },
+    { icon: Phone, text: '+1 (403) 561-9596', href: 'tel:+14035619596' },
     { icon: MapPin, text: 'Calgary, Alberta', href: '#' },
   ];
 
   const socialLinks = [
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Instagram, href: 'https://www.instagram.com/yaryack_photos', label: 'Instagram' },
+    { icon: Facebook, href: 'https://www.facebook.com/profile.php?id=100064125130777', label: 'Facebook' },
+    { icon: Youtube, href: 'https://www.youtube.com/@yaryackvideoproduction1626', label: 'Youtube' },
   ];
 
   return (
