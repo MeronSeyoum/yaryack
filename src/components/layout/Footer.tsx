@@ -1,12 +1,10 @@
 // src/components/layout/Footer.tsx
 import React from 'react';
-import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, Heart } from 'lucide-react';
+import { Instagram, Facebook, Youtube, Mail, Phone, MapPin, Heart, Camera } from 'lucide-react';
+import { useTheme } from '../../contexts/ThemeContext';
 
-interface FooterProps {
-  isDarkMode?: boolean;
-}
-
-export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
+export const Footer: React.FC = () => {
+  const { isDarkMode } = useTheme();
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
@@ -43,29 +41,52 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
 
   return (
     <footer 
-      className="border-t ds-border-primary"
-      style={{ background: 'var(--color-bg-secondary)' }}
+      className="border-t"
+      style={{ 
+        background: 'var(--color-bg-secondary)',
+        borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+      }}
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-16 py-12 lg:py-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 mb-12">
           {/* Brand Column */}
           <div className="space-y-6">
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <div 
-                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm"
                 style={{
-                  background: `linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))`
+                  background: 'linear-gradient(135deg, var(--color-brand-primary-light), var(--color-brand-primary))',
+                  boxShadow: '0 2px 8px rgba(6, 95, 70, 0.25)',
                 }}
               >
-                <span className="text-white font-bold text-xl">Y</span>
+                <Camera className="w-5 h-5 text-white" aria-hidden="true" />
               </div>
-              <div>
-                <span className="ds-heading-4 ds-text-primary">Yaryack</span>
-                <p className="ds-body-sm ds-text-tertiary -mt-1">Photography</p>
+              <div className="leading-tight">
+                <span 
+                  className="text-lg font-bold block tracking-wide"
+                  style={{ 
+                    color: isDarkMode ? '#ffffff' : '#111827',
+                    fontFamily: '"Brush Script MT", cursive',
+                  }}
+                >
+                  Yaryack
+                </span>
+                <span 
+                  className="text-[10px] font-medium block text-right -mt-1"
+                  style={{ 
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                    fontFamily: '"Brush Script MT", cursive',
+                  }}
+                >
+                  Photography
+                </span>
               </div>
             </div>
-            <p className="ds-body-sm ds-text-secondary leading-relaxed">
+            <p 
+              className="text-sm leading-relaxed"
+              style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)' }}
+            >
               Capturing authentic moments and creating timeless memories across Calgary and beyond.
             </p>
             {/* Social Links */}
@@ -74,11 +95,21 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
                 <a
                   key={social.label}
                   href={social.href}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center ds-transition-slow border ds-border-light hover:border-emerald-400"
-                  style={{ background: 'var(--color-bg-card)' }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2"
+                  style={{ 
+                    background: isDarkMode 
+                      ? 'rgba(6, 95, 70, 0.15)' 
+                      : 'rgba(6, 95, 70, 0.08)',
+                    border: '1px solid var(--color-brand-primary)',
+                  }}
                   aria-label={social.label}
                 >
-                  <social.icon className="w-5 h-5 ds-text-secondary" />
+                  <social.icon 
+                    className="w-5 h-5" 
+                    style={{ color: 'var(--color-brand-primary)' }}
+                  />
                 </a>
               ))}
             </div>
@@ -86,7 +117,10 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
 
           {/* Quick Links */}
           <div className='lg:block hidden'>
-            <h3 className="ds-heading-4 ds-text-primary mb-4">
+            <h3 
+              className="text-base font-semibold mb-4"
+              style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
+            >
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -94,7 +128,16 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="ds-body-sm ds-text-secondary hover:ds-text-primary ds-transition-base inline-block"
+                    className="text-sm inline-block transition-colors duration-200"
+                    style={{ 
+                      color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--color-brand-primary)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
+                    }}
                   >
                     {link.name}
                   </a>
@@ -105,7 +148,10 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
 
           {/* Services */}
           <div className='lg:block hidden'>
-            <h3 className="ds-heading-4 ds-text-primary mb-4">
+            <h3 
+              className="text-base font-semibold mb-4"
+              style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
+            >
               Services
             </h3>
             <ul className="space-y-3">
@@ -113,7 +159,16 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="ds-body-sm ds-text-secondary hover:ds-text-primary ds-transition-base inline-block"
+                    className="text-sm inline-block transition-colors duration-200"
+                    style={{ 
+                      color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = 'var(--color-brand-primary)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
+                    }}
                   >
                     {link.name}
                   </a>
@@ -124,7 +179,10 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
 
           {/* Contact Info */}
           <div>
-            <h3 className="ds-heading-4 ds-text-primary mb-4">
+            <h3 
+              className="text-base font-semibold mb-4"
+              style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
+            >
               Get in Touch
             </h3>
             <ul className="space-y-4">
@@ -132,17 +190,28 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
                 <li key={index}>
                   <a
                     href={info.href}
-                    className="flex items-start gap-3 group ds-transition-base"
+                    className="flex items-start gap-3 group transition-all duration-200"
                   >
                     <div 
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 ds-transition-slow"
+                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
                       style={{
-                        background: 'var(--color-bg-card)',
+                        background: isDarkMode 
+                          ? 'rgba(6, 95, 70, 0.15)' 
+                          : 'rgba(6, 95, 70, 0.08)',
+                        border: '1px solid var(--color-brand-primary)',
                       }}
                     >
-                      <info.icon className="w-4 h-4 ds-text-secondary" />
+                      <info.icon 
+                        className="w-4 h-4" 
+                        style={{ color: 'var(--color-brand-primary)' }}
+                      />
                     </div>
-                    <span className="ds-body-sm ds-text-secondary group-hover:ds-text-primary">
+                    <span 
+                      className="text-sm transition-colors duration-200"
+                      style={{ 
+                        color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                      }}
+                    >
                       {info.text}
                     </span>
                   </a>
@@ -152,41 +221,18 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
           </div>
         </div>
 
-        {/* Newsletter Section */}
-        <div 
-          className="hidden mb-12 p-6 lg:p-8 rounded-2xl border ds-border-primary"
-          style={{ background: 'var(--color-bg-card)' }}
-        >
-          <div className="max-w-2xl mx-auto text-center space-y-4">
-            <h3 className="ds-heading-4 ds-text-primary">
-              Stay Updated
-            </h3>
-            <p className="ds-body-base ds-text-secondary">
-              Subscribe to our newsletter for photography tips, special offers, and behind-the-scenes content.
-            </p>
-            <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 ds-input ds-input-md"
-                required
-              />
-              <button
-                type="submit"
-                className="ds-btn ds-btn-primary ds-btn-md whitespace-nowrap"
-              >
-                Subscribe
-              </button>
-            </form>
-          </div>
-        </div>
-
         {/* Bottom Bar */}
         <div 
-          className="pt-8 border-t ds-border-primary"
+          className="pt-8 border-t"
+          style={{
+            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
+          }}
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="ds-body-sm ds-text-tertiary text-center md:text-left">
+            <p 
+              className="text-sm text-center md:text-left"
+              style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
+            >
               © {currentYear} Yaryack Photography. All rights reserved.
             </p>
             
@@ -196,7 +242,16 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="ds-body-sm ds-text-tertiary hover:ds-text-primary ds-transition-base"
+                  className="text-sm transition-colors duration-200"
+                  style={{ 
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = 'var(--color-brand-primary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)';
+                  }}
                 >
                   {link.name}
                 </a>
@@ -205,7 +260,12 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
 
             {/* Made with Love */}
             <div className="flex items-center gap-2">
-              <span className="ds-body-sm ds-text-tertiary">Made with</span>
+              <span 
+                className="text-sm"
+                style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
+              >
+                Made with
+              </span>
               <Heart 
                 className="w-4 h-4 animate-pulse" 
                 style={{ 
@@ -213,7 +273,29 @@ export const Footer: React.FC<FooterProps> = ({ isDarkMode = true }) => {
                   color: 'var(--color-brand-primary)'
                 }} 
               />
-              <span className="ds-body-sm ds-text-tertiary">in Calgary</span>
+              <span 
+                className="text-sm"
+                style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
+              >
+                in Calgary by
+              </span>
+              <a
+                href="https://github.com/meryato"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-semibold transition-colors duration-200"
+                style={{ 
+                  color: 'var(--color-brand-primary)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = isDarkMode ? '#ffffff' : '#111827';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--color-brand-primary)';
+                }}
+              >
+                Meryato
+              </a>
             </div>
           </div>
         </div>

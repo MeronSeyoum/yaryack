@@ -42,10 +42,10 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             {subtitle && (
               <div className="flex items-center gap-3">
                 <div 
-                  className="w-2 h-8 rounded-full" 
+                  className="w-1 h-5 lg:w-2 lg:h-8 rounded-full" 
                   style={{ background: 'var(--color-brand-primary)' }}
                 ></div>
-                <p className="ds-body-sm lg:ds-body-base ds-text-secondary uppercase tracking-wider font-semibold">
+                <p className="ds-body-xs lg:ds-body-base ds-text-secondary uppercase tracking-wider font-semibold">
                   {subtitle}
                 </p>
               </div>
