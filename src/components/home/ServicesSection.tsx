@@ -148,7 +148,7 @@ export const ServicesSection: React.FC = () => {
     const config = TIER_CONFIG[tier];
     return (
       <div className="flex items-center justify-center mb-4">
-        <div className={`px-4 py-1.5 rounded-full ${config.badgeColor} text-white text-sm font-semibold uppercase tracking-wider shadow-md`}>
+        <div className={`px-4 py-2 rounded-full ${config.badgeColor} text-white ds-body-sm font-semibold uppercase tracking-wider shadow-md`}>
           {config.label} Tier
         </div>
       </div>
@@ -174,7 +174,7 @@ export const ServicesSection: React.FC = () => {
       />
 
       <div className="mx-auto px-4 sm:px-6 lg:px-16 py-6 lg:py-12">
-        <div className="mb-12 lg:mb-20">
+        <div className="mb-6 lg:mb-12">
           <div className="text-center mb-8 lg:mb-12">
             <h3 className="text-xl sm:ds-heading-4 lg:text-4xl lg:leading-tight font-bold mb-3 lg:mb-4 ds-text-primary">
               Professional
@@ -190,7 +190,7 @@ export const ServicesSection: React.FC = () => {
           </div>
 
           {!isMobile ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
               {SERVICES.map((service, idx) => {
                 const config = TIER_CONFIG[service.tier];
                 const IconComponent = config.icon;
@@ -198,8 +198,8 @@ export const ServicesSection: React.FC = () => {
                 return (
                   <div
                     key={idx}
-                    className={`ds-card ds-card-p-lg group relative overflow-hidden h-full flex flex-col ${
-                      service.popular ? 'ring-2 ring-amber-400 ring-offset-2' : ''
+                    className={`ds-card ds-card-p-lg group relative overflow-hidde h-full flex flex-col ${
+                      service.popular ? 'ring-2 ring-amber-400 ring-offset-0.5' : ''
                     }`}
                   >
                     {service.popular && (
@@ -213,31 +213,31 @@ export const ServicesSection: React.FC = () => {
 
                     {renderTierBadge(service.tier)}
 
-                    <div className="flex justify-center mb-8">
+                    <div className="flex justify-center mb-4">
                       <div 
-                        className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 ds-transition-slow bg-gradient-to-br ${config.bgGradient}`}
+                        className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 ds-transition-slow bg-gradient-to-br ${config.bgGradient}`}
                       >
-                        <IconComponent className="w-6 h-6 lg:w-8 lg:h-8 text-white" />
+                        <IconComponent className="w-4 h-4 lg:w-6 lg:h-6 text-white" />
                       </div>
                     </div>
 
                     <h3 className="text-2xl lg:text-3xl font-bold text-center mb-2 ds-text-primary">
                       {service.name}
                     </h3>
-                    <p className="text-base text-center mb-6  ds-text-secondary">
+                    <p className="ds-body-base text-center mb-6  ds-text-secondary">
                       {service.description}
                     </p>
 
-                    <div className="text-center mb-8">
+                    {/* <div className="text-center mb-8"> */}
                       {/* <div className={`text-4xl lg:text-5xl font-bold mb-2 bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
                         {service.price}
                       </div>
                       <p className="text-sm text-gray-500">
                         Contact for custom quote
                       </p> */}
-                    </div>
+                    {/* </div> */}
 
-                    <div className="space-y-3 mb-8 flex-grow">
+                    <div className="space-y-3 mb-4 flex-grow">
                       {service.features.map((feature, fIdx) => (
                         <div key={fIdx} className="flex items-start gap-3">
                           <div 
@@ -246,8 +246,7 @@ export const ServicesSection: React.FC = () => {
                           >
                             <CheckCircle className="w-4 h-4" style={{ color: config.darkColor }} />
                           </div>
-                                                    <span className="ds-body-xs lg:ds-body-sm ds-text-secondary leading-tight flex-1">
-
+                          <span className="ds-body-base ds-text-secondary leading-tight flex-1 pt-1.5">
                             {feature}
                           </span>
                         </div>
@@ -263,114 +262,116 @@ export const ServicesSection: React.FC = () => {
                       }`}
                     >
                       <Calendar className="w-5 h-5" />
-                      <span>Get Custom Quote</span>
+                      <span>Get Quote</span>
                       {service.popular && (
                         <Sparkles className="w-5 h-5 animate-pulse" />
                       )}
                     </button>
 
-                    <div 
+                    {/* <div 
                       className="absolute bottom-0 left-0 right-0 h-1.5"
                       style={{ 
                         background: `linear-gradient(to right, ${config.darkColor}33, ${config.darkColor}, ${config.darkColor}33)` 
                       }}
-                    ></div>
+                    ></div> */}
                   </div>
                 );
               })}
             </div>
           ) : (
-            <div className="relative" ref={carouselRef}>
-              <div 
-                className="flex transition-transform duration-300 ease-out"
-                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-              >
-                {SERVICES.map((service, idx) => {
-                  const config = TIER_CONFIG[service.tier];
-                  const IconComponent = config.icon;
-                  
-                  return (
-                    <div
-                      key={idx}
-                      className="w-full flex-shrink-0 px-3"
-                    >
-                      <div className={`ds-card ds-card-p-sm group relative mx-auto max-w-sm h-full flex flex-col ${
-                        service.popular ? 'ring-1 ring-amber-400' : ''
-                      }`}>
-                        {service.popular && (
-                          <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
-                            <div className="bg-gradient-to-r from-amber-500 to-yellow-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
-                              <Sparkles className="w-3 h-3 fill-current" />
-                              <span>Popular</span>
-                            </div>
-                          </div>
-                        )}
-
-                        <div className="flex justify-center mb-4">
-                          <div 
-                            className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 ds-transition-slow bg-gradient-to-br ${config.bgGradient}`}
-                          >
-                            <IconComponent className="w-6 h-6 text-white" />
-                          </div>
-                        </div>
-
-                        <h3 className="ds-heading-5 text-center mb-1 ds-text-primary px-2">
-                          {service.name}
-                        </h3>
-                        <p className="ds-body-xs text-center mb-3 ds-text-secondary px-2">
-                          {service.description}
-                        </p>
-
-                        <div className="text-center mb-4">
-                          {/* <div className={`text-2xl font-bold mb-1 bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
-                            {service.price}
-                          </div>
-                          <p className="ds-body-xs ds-text-secondary">
-                            Contact for quote
-                          </p> */}
-                        </div>
-
-                        <div className="space-y-2 mb-4 flex-grow max-h-40 overflow-y-auto pr-1">
-                          {service.features.map((feature, fIdx) => (
-                            <div key={fIdx} className="flex items-start gap-2">
-                              <div 
-                                className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
-                                style={{ background: config.lightColor }}
-                              >
-                                <CheckCircle className="w-3 h-3" style={{ color: config.darkColor }} />
+            <div className="relative overflow-hidden" ref={carouselRef}>
+              <div className="overflow-hidden">
+                <div 
+                  className="flex transition-transform duration-300 ease-out"
+                  style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+                >
+                  {SERVICES.map((service, idx) => {
+                    const config = TIER_CONFIG[service.tier];
+                    const IconComponent = config.icon;
+                    
+                    return (
+                      <div
+                        key={idx}
+                        className="w-full flex-shrink-0 px-4"
+                      >
+                        <div className={`ds-card ds-card-p-sm group relative mx-auto max-w-sm ${
+                          service.popular ? 'ring-1 ring-amber-400' : ''
+                        }`}>
+                          {service.popular && (
+                            <div className="absolute -top-2 left-1/2 transform -translate-x-1/2 z-10">
+                              <div className="bg-gradient-to-r from-amber-500 to-yellow-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                                <Sparkles className="w-3 h-3 fill-current" />
+                                <span>Popular</span>
                               </div>
-                              <span className="ds-body-xs ds-text-secondary leading-tight flex-1">
-                                {feature} 
-                              </span>
                             </div>
-                          ))}
+                          )}
+
+                          <div className="flex justify-center mb-4">
+                            <div 
+                              className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 ds-transition-slow bg-gradient-to-br ${config.bgGradient}`}
+                            >
+                              <IconComponent className="w-6 h-6 text-white" />
+                            </div>
+                          </div>
+
+                          <h3 className="ds-heading-5 text-center mb-1 ds-text-primary px-2">
+                            {service.name}
+                          </h3>
+                          <p className="ds-body-xs text-center mb-3 ds-text-secondary px-2">
+                            {service.description}
+                          </p>
+
+                          <div className="text-center mb-4">
+                            {/* <div className={`text-2xl font-bold mb-1 bg-gradient-to-r ${config.gradient} bg-clip-text text-transparent`}>
+                              {service.price}
+                            </div>
+                            <p className="ds-body-xs ds-text-secondary">
+                              Contact for quote
+                            </p> */}
+                          </div>
+
+                          <div className="space-y-2 mb-4">
+                            {service.features.map((feature, fIdx) => (
+                              <div key={fIdx} className="flex items-start gap-2">
+                                <div 
+                                  className="w-4 h-4 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
+                                  style={{ background: config.lightColor }}
+                                >
+                                  <CheckCircle className="w-3 h-3" style={{ color: config.darkColor }} />
+                                </div>
+                                <span className="ds-body-xs ds-text-secondary leading-tight flex-1">
+                                  {feature} 
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+
+                          <button
+                            onClick={scrollToContact}
+                            className={`w-full ds-btn ds-btn-sm group/btn mt-4 ${
+                              service.popular 
+                                ? 'ds-btn-primary' 
+                                : 'ds-btn-outline'
+                            }`}
+                            style={service.popular ? { 
+                              background: `linear-gradient(to right, ${config.darkColor}, ${config.darkColor}cc)` 
+                            } : {}}
+                          >
+                            <Calendar className="w-3 h-3" />
+                            <span className="text-sm">Get Quote</span>
+                          </button>
+
+                          <div 
+                            className="absolute bottom-0 left-0 right-0 h-0.5"
+                            style={{ 
+                              background: `linear-gradient(to right, ${config.darkColor}33, ${config.darkColor}, ${config.darkColor}33)` 
+                            }}
+                          ></div>
                         </div>
-
-                        <button
-                          onClick={scrollToContact}
-                          className={`w-full ds-btn ds-btn-sm group/btn mt-auto ${
-                            service.popular 
-                              ? 'ds-btn-primary' 
-                              : 'ds-btn-outline'
-                          }`}
-                          style={service.popular ? { 
-                            background: `linear-gradient(to right, ${config.darkColor}, ${config.darkColor}cc)` 
-                          } : {}}
-                        >
-                          <Calendar className="w-3 h-3" />
-                          <span className="text-sm">Get Quote</span>
-                        </button>
-
-                        <div 
-                          className="absolute bottom-0 left-0 right-0 h-0.5"
-                          style={{ 
-                            background: `linear-gradient(to right, ${config.darkColor}33, ${config.darkColor}, ${config.darkColor}33)` 
-                          }}
-                        ></div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
 
               <button
@@ -394,10 +395,10 @@ export const ServicesSection: React.FC = () => {
                   <button
                     key={idx}
                     onClick={() => goToSlide(idx)}
-                    className={`w-2 h-2 rounded-full ds-transition-slow ${
+                    className={`h-2 rounded-full ds-transition-slow ${
                       currentSlide === idx 
-                        ? `w-6 ${TIER_CONFIG[SERVICES[idx].tier].badgeColor.split(' ')[2]}` 
-                        : 'bg-gray-300 opacity-60'
+                        ? `w-6 ${TIER_CONFIG[SERVICES[idx].tier].badgeColor}` 
+                        : 'w-2 bg-gray-300 opacity-60'
                     }`}
                     aria-label={`Go to slide ${idx + 1}`}
                   />
@@ -474,7 +475,7 @@ export const ServicesSection: React.FC = () => {
             <div className="text-center mt-12">
               <button
                 onClick={scrollToContact}
-                className="ds-btn ds-btn-primary ds-btn-lg ds-transition-slow hover:scale-105 shadow-lg py-4 px-8 text-lg"
+                className="ds-btn ds-btn-primary ds-body-primary ds-btn-lg ds-transition-slow hover:scale-105 shadow-lg py-4 px-8 text-lg"
               >
                 <Calendar className="w-5 h-5" />
                 <span className="font-semibold text-lg">Contact for Custom Quote</span>
@@ -486,21 +487,8 @@ export const ServicesSection: React.FC = () => {
           </div>
         )}
 
-        {/* Mobile CTA Button */}
-        {isMobile && (
-          <div className="text-center mt-8 pt-6 border-t ds-border-primary">
-            <button
-              onClick={scrollToContact}
-              className="ds-btn ds-btn-primary ds-btn-md ds-transition-slow hover:scale-105 shadow-lg mx-auto"
-            >
-              <Calendar className="w-4 h-4" />
-              <span className="font-semibold">Contact for Quote</span>
-            </button>
-            <p className="ds-body-xs ds-text-secondary mt-2">
-              Get personalized pricing
-            </p>
-          </div>
-        )}
+       
+        
       </div>
     </section>
   );

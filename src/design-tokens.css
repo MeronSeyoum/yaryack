@@ -214,7 +214,7 @@ body {
 }
 
 .ds-btn-primary {
-  background: linear-gradient(to right, var(--pricolor-brand-mary-light), var(--color-brand-primary));
+  background: linear-gradient(to right, var(--color-brand-primary-light), var(--color-brand-primary));
   color: #FFFFFF;
   box-shadow: var(--shadow-lg);
 }

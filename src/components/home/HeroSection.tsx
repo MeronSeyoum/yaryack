@@ -43,14 +43,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
-  // Memoized overlay gradients for performance
+  // Memoized overlay gradients - IMPROVE
   const overlayStyles = useMemo(() => ({
     desktop: isDarkMode 
-      ? "linear-gradient(to right, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,0.1) 60%, transparent 100%)"
-      : "linear-gradient(to right, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.4) 20%, rgba(255,255,255,0.05) 50%, transparent 100%)",
+      ? "linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.55) 20%, rgba(0,0,0,0.2) 35%, transparent 100%)"
+      : "linear-gradient(to right, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.5) 25%, rgba(255,255,255,0.2) 35%, transparent 100%)",
     mobile: isDarkMode 
-      ? "linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.6) 15%, rgba(0,0,0,0.3) 30%, transparent 100%)"
-      : "linear-gradient(to top, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.6) 15%, rgba(255,255,255,0.3) 25%, transparent 100%)",
+      ? "linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.7) 20%, rgba(0,0,0,0.4) 40%, transparent 100%)"
+      : "linear-gradient(to top, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.7) 20%, rgba(255,255,255,0.3) 40%, transparent 100%)",
   }), [isDarkMode]);
 
   // Auto-play slideshow effect
@@ -96,7 +96,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
     <section 
       className="relative" 
       style={{ 
-        background: isDarkMode ? '#0a0a0a' : '#f8f9fa',
+        background: 'var(--color-bg-page)',
         minHeight: '100vh'
       }}
       aria-label="Hero section"
@@ -120,7 +120,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
             {/* Mobile Slideshow */}
             <div className="lg:hidden w-full h-full relative">
               <div 
-                className="flex w-full h-full transition-transform duration-700 ease-out" 
+                className="flex w-full h-full ds-transition-slow" 
                 style={{ transform: `translateX(-${currentSlide * 100}%)` }}
               >
                 {MOBILE_SLIDES.map((slide, index) => (
@@ -137,10 +137,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
               
               {/* Slideshow Indicators */}
               <div 
-                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10 px-4 py-2 rounded-full"
+                className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-10 px-4 py-2 rounded-full backdrop-blur-md"
                 style={{
-                  background: isDarkMode ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.4)',
-                  backdropFilter: 'blur(8px)',
+                  background: 'var(--color-bg-card)',
+                  border: '1px solid var(--color-border-light)',
                 }}
                 role="group"
                 aria-label="Slideshow navigation"
@@ -148,15 +148,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                 {MOBILE_SLIDES.map((_, index) => (
                   <button
                     key={index}
-                    className={`h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 ${
+                    className={`h-2 rounded-full ds-transition-base focus:outline-none focus:ring-2 focus:ring-offset-2 ${
                       currentSlide === index 
                         ? 'w-8' 
                         : 'w-2 opacity-50 hover:opacity-75'
                     }`}
                     style={{
                       background: currentSlide === index 
-                        ? '#ffffff' 
-                        : isDarkMode ? '#ffffff' : '#000000',
+                        ? 'var(--color-brand-primary)' 
+                        : 'var(--color-text-tertiary)',
+                      focusRingColor: 'var(--color-brand-primary)',
                     }}
                     onClick={() => goToSlide(index)}
                     aria-label={`Go to slide ${index + 1}`}
@@ -189,18 +190,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                   minHeight: isMobile ? '100%' : 'auto',
                 }}
               >
-                <div className="space-y-6 lg:space-y-8">
+                <div className="space-y-6 lg:space-y-12">
                   {/* Location Badge - Desktop Only */}
                   <div
-                    className="hidden lg:inline-flex items-center gap-2 backdrop-blur-md rounded-full px-5 py-3 border max-w-fit shadow-sm"
-                    style={{
-                      background: isDarkMode 
-                        ? 'rgba(0, 0, 0, 0.6)' 
-                        : 'rgba(255, 255, 255, 0.7)',
-                      borderColor: isDarkMode 
-                        ? 'rgba(255, 255, 255, 0.1)' 
-                        : 'rgba(0, 0, 0, 0.08)',
-                    }}
+                    className="hidden lg:inline-flex items-center gap-2 ds-card ds-card-p-sm max-w-fit"
                     role="status"
                     aria-label="Location and service type"
                   >
@@ -209,12 +202,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                       style={{ color: 'var(--color-brand-primary)' }}
                       aria-hidden="true"
                     />
-                    <p 
-                      className="font-medium text-sm" 
-                      style={{ 
-                        color: isDarkMode ? '#e5e7eb' : '#374151',
-                      }}
-                    >
+                    <p className="ds-body-sm ds-text-secondary font-semibold">
                       Professional Photography • Calgary, AB
                     </p>
                   </div>
@@ -225,61 +213,38 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                       className="border-l-4 pl-6 sm:pl-8 lg:pl-10"
                       style={{ borderColor: 'var(--color-brand-primary)' }}
                     >
-                      <h1 
-                        className="text-3xl sm:text-3xl lg:text-5xl font-bold leading-tight"
-                        style={{ 
-                          color: isDarkMode ? '#ffffff' : '#111827',
-                          textShadow: isDarkMode ? '0 2px 8px rgba(0,0,0,0.5)' : 'none',
-                        }}
+                      <h1 className={`ds-heading-2   ds-text-primary leading-tight`}
+                      style={{ 
+                        fontFamily: `${isMobile ? ' "Brush Script MT", cursive' : ''}`,
+                      }}
                       >
                         Yaryack
                         <br />
-                        <span 
-                          className="font-semibold"
-                          style={{ color: 'var(--color-brand-primary)' }}
-                        >
                           Photography
-                        </span>
                       </h1>
                     </div>
                     
                     {/* Subtitle - Desktop Only */}
-                    <p 
-                      className="hidden lg:block text-lg lg:text-xl max-w-2xl lg:pl-10 leading-relaxed"
-                      style={{ 
-                        color: isDarkMode ? '#d1d5db' : '#111827',
-                      }}
-                    >
+                    <p className="hidden lg:block ds-body-lg ds-text-secondary max-w-2xl lg:pl-0">
                       Capturing authentic moments and creating timeless memories that tell your unique story
                     </p>
                   </div>
 
                   {/* Call-to-Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4 lg:pl-10">
+                  <div className="flex flex-col sm:flex-row gap-4 lg:pl-0">
                     <button
                       onClick={() => scrollToSection("contact")}
-                      className="flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 group"
-                      style={{
-                        background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))',
-                        color: '#ffffff',
-                        boxShadow: '0 4px 12px rgba(6, 95, 70, 0.3)',
-                      }}
+                      className="ds-btn ds-btn-primary ds-btn-lg group"
                       aria-label="Book a photography session"
                     >
                       <Calendar className="w-5 h-5" aria-hidden="true" />
                       <span>Book a Session</span>
-                      <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+                      <ArrowRight className="w-4 h-4 ds-transition-base group-hover:translate-x-1" aria-hidden="true" />
                     </button>
                     
                     <button
                       onClick={() => scrollToSection("portfolio")}
-                      className="hidden lg:flex items-center justify-center gap-2 px-8 py-4 rounded-lg font-semibold border-2 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2"
-                      style={{
-                        borderColor: 'var(--color-brand-primary)',
-                        color: isDarkMode ? '#ffffff' : 'var(--color-brand-primary)',
-                        background: isDarkMode ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.5)',
-                        backdropFilter: 'blur(8px)',
-                      }}
+                      className="hidden lg:flex ds-btn ds-btn-outline ds-btn-lg"
                       aria-label="View photography portfolio"
                     >
                       <Eye className="w-5 h-5" aria-hidden="true" />
@@ -289,15 +254,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
 
                   {/* Trust Badge - Desktop Only */}
                   <div
-                    className="hidden lg:flex gap-4 items-center backdrop-blur-md rounded-xl border p-6 max-w-2xl lg:ml-10 shadow-sm"
-                    style={{
-                      background: isDarkMode 
-                        ? 'rgba(0, 0, 0, 0.5)' 
-                        : 'rgba(255, 255, 255, 0.65)',
-                      borderColor: isDarkMode 
-                        ? 'rgba(255, 255, 255, 0.1)' 
-                        : 'rgba(0, 0, 0, 0.08)',
-                    }}
+                    className="hidden lg:flex gap-4 items-center ds-card ds-card-p-md max-w-2xl lg:ml-0"
                   >
                     <div 
                       className="flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center"
@@ -308,12 +265,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                     >
                       <div className="w-3 h-3 bg-white rounded-full" />
                     </div>
-                    <p 
-                      className="text-sm leading-relaxed"
-                      style={{ 
-                        color: isDarkMode ? '#e5e7eb' : '#374151',
-                      }}
-                    >
+                    <p className="ds-body-sm ds-text-secondary">
                       Trusted by clients across Calgary for professional portrait, event, and commercial photography
                     </p>
                   </div>
@@ -332,23 +284,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
 
         {/* Mobile Portfolio Preview Section */}
         {isMobile && (
-          <div className="relative min-h-[60vh] py-12">
+          <div className="relative min-h-[60vh] py-12 ds-bg-section-primary">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 -z-10 overflow-hidden">
               <img
                 src={heroMobileBottom}
                 alt=""
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover opacity-20"
                 loading="lazy"
-                aria-hidden="true"
-              />
-              <div 
-                className="absolute inset-0"
-                style={{
-                  background: isDarkMode
-                    ? 'rgba(0,0,0,0.8)'
-                    : 'rgba(255,255,255,0.85)'
-                }}
                 aria-hidden="true"
               />
             </div>
@@ -358,15 +301,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
               {/* Section Header */}
               <div className="text-center space-y-3">
                 <div 
-                  className="inline-flex items-center gap-2 backdrop-blur-md rounded-full px-4 py-2 border"
-                  style={{
-                    background: isDarkMode 
-                      ? 'rgba(0, 0, 0, 0.5)' 
-                      : 'rgba(255, 255, 255, 0.65)',
-                    borderColor: isDarkMode 
-                      ? 'rgba(255, 255, 255, 0.2)' 
-                      : 'rgba(0, 0, 0, 0.08)',
-                  }}
+                  className="inline-flex items-center gap-2 ds-card ds-card-p-sm"
                   role="status"
                 >
                   <Eye 
@@ -374,25 +309,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                     style={{ color: 'var(--color-brand-primary)' }}
                     aria-hidden="true"
                   />
-                  <span 
-                    className="text-sm font-semibold"
-                    style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
-                  >
+                  <span className="ds-body-sm ds-text-primary font-semibold">
                     Portfolio Preview
                   </span>
                 </div>
                 
-                <h2 
-                  className="text-2xl font-bold"
-                  style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
-                >
+                <h2 className="ds-heading-3 ds-text-primary">
                   Featured Work
                 </h2>
                 
-                <p 
-                  className="text-base"
-                  style={{ color: isDarkMode ? '#d1d5db' : '#4b5563' }}
-                >
+                <p className="ds-body-base ds-text-secondary">
                   Recent captures from our portfolio
                 </p>
               </div>
@@ -403,25 +329,25 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                   <button
                     key={index}
                     onClick={() => scrollToSection("portfolio")}
-                    className="relative aspect-[3/4] rounded-lg overflow-hidden border transition-all duration-300 hover:scale-[1.02] group focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    className="relative aspect-[3/4] rounded-lg overflow-hidden ds-card group focus:outline-none focus:ring-2 focus:ring-offset-2"
                     style={{ 
-                      borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                      focusRingColor: 'var(--color-brand-primary)',
                     }}
                     aria-label={`View portfolio sample ${index + 1}`}
                   >
                     <img
                       src={image}
                       alt={`Portfolio sample ${index + 1}`}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      className="w-full h-full object-cover ds-transition-slow group-hover:scale-110"
                       loading="lazy"
                     />
                     <div 
-                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 ds-transition-base flex items-center justify-center"
                       style={{
-                        background: 'rgba(0,0,0,0.6)'
+                        background: 'var(--color-overlay-heavy)'
                       }}
                     >
-                      <span className="text-sm font-medium text-white">
+                      <span className="ds-body-sm font-semibold text-white">
                         View Details
                       </span>
                     </div>
@@ -433,18 +359,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
               <div className="text-center">
                 <button
                   onClick={() => scrollToSection("portfolio")}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-semibold border-2 transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-offset-2 group"
-                  style={{
-                    borderColor: 'var(--color-brand-primary)',
-                    color: isDarkMode ? '#ffffff' : 'var(--color-brand-primary)',
-                    background: isDarkMode ? 'rgba(0,0,0,0.3)' : 'rgba(255,255,255,0.5)',
-                    backdropFilter: 'blur(8px)',
-                  }}
+                  className="ds-btn ds-btn-outline ds-btn-md group"
                   aria-label="View full photography portfolio"
                 >
                   <Eye className="w-5 h-5" aria-hidden="true" />
                   <span>View Full Portfolio</span>
-                  <ArrowRight className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
+                  <ArrowRight className="w-4 h-4 ds-transition-base group-hover:translate-x-1" aria-hidden="true" />
                 </button>
               </div>
             </div>

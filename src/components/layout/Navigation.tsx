@@ -98,27 +98,19 @@ export const Navigation: React.FC<NavigationProps> = ({
     }
   }, []);
 
-  const navBackground = isScrolled 
-    ? isDarkMode 
-      ? 'rgba(10, 10, 10, 0.95)' 
-      : 'rgba(255, 255, 255, 0.95)'
-    : 'transparent';
-
-  const borderColor = isScrolled 
-    ? isDarkMode
-      ? 'rgba(255, 255, 255, 0.1)' 
-      : 'rgba(0, 0, 0, 0.1)'
-    : 'transparent';
-
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? 'shadow-md' : ''
+        className={`fixed top-0 left-0 right-0 z-50 ds-transition-slow ${
+          isScrolled ? 'shadow-lg' : ''
         }`}
         style={{
-          background: navBackground,
-          borderBottom: `1px solid ${borderColor}`,
+          background: isScrolled 
+            ? 'var(--color-bg-card)' 
+            : 'transparent',
+          borderBottom: isScrolled 
+            ? '1px solid var(--color-border-light)' 
+            : '1px solid transparent',
           backdropFilter: isScrolled ? 'blur(12px)' : 'none',
         }}
         role="navigation"
@@ -130,10 +122,11 @@ export const Navigation: React.FC<NavigationProps> = ({
             <a
               href="#home"
               onClick={(e) => handleNavClick(e, '#home')}
-              className="flex items-center gap-2 lg:gap-3 group px-3 py-2 rounded-lg flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all duration-200 hover:scale-[1.02]"
+              className="flex  ds-btn-primary items-center gap-2 lg:gap-3 group px-3 py-2 rounded-lg flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-2 ds-transition-base hover:scale-[1.02]"
               style={{ 
-                background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))',
-                boxShadow: '0 2px 8px rgba(6, 95, 70, 0.25)',
+                // background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))',
+                // boxShadow: 'var(--shadow-md)',
+                // focusRingColor: 'var(--color-brand-primary)',
               }}
               aria-label="Yaryack Photography - Go to home"
             >
@@ -167,18 +160,17 @@ export const Navigation: React.FC<NavigationProps> = ({
                     key={item.name}
                     href={item.href}
                     onClick={(e) => handleNavClick(e, item.href)}
-                    className="relative px-4 py-2 rounded-lg font-semibold transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    className={`relative px-4 py-2 rounded-lg font-semibold ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                      isActive ? '' : 'ds-text-primary hover:bg-opacity-10'
+                    }`}
                     style={{
-                      color: isActive 
-                        ? '#ffffff'
-                        : 'var(--color-text-primary)',
+                      color: isActive ? '#ffffff' : undefined,
                       background: isActive 
                         ? 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))'
                         : 'transparent',
-                      boxShadow: isActive 
-                        ? '0 2px 8px rgba(6, 95, 70, 0.3)' 
-                        : 'none',
-                    }}
+                      boxShadow: isActive ? 'var(--shadow-md)' : 'none',
+                      '--focus-ring-color': 'var(--color-brand-primary)',
+                    } as React.CSSProperties}
                     aria-label={item.label}
                     aria-current={isActive ? 'page' : undefined}
                   >
@@ -192,29 +184,21 @@ export const Navigation: React.FC<NavigationProps> = ({
             <div className="hidden lg:flex items-center gap-3">
               <button
                 onClick={toggleTheme}
-                className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                className="w-10 h-10 rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ds-card"
                 style={{ 
-                  background: isDarkMode 
-                    ? 'rgba(6, 95, 70, 0.15)' 
-                    : 'rgba(6, 95, 70, 0.08)',
-                  border: '1px solid var(--color-brand-primary)',
-                  borderOpacity: isDarkMode ? 0.3 : 0.2,
-                }}
+                  '--focus-ring-color': 'var(--color-brand-primary)',
+                } as React.CSSProperties}
                 aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 {isDarkMode ? (
-                  <Sun className="w-5 h-5" style={{ color: 'var(--color-brand-primary)' }} aria-hidden="true" />
+                  <Sun className="w-5 h-5" style={{ color: 'var(--color-brand-secondary)' }} aria-hidden="true" />
                 ) : (
                   <Moon className="w-5 h-5" style={{ color: 'var(--color-brand-primary)' }} aria-hidden="true" />
                 )}
               </button>
               <button
                 onClick={scrollToContact}
-                className="px-5 py-2.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2"
-                style={{
-                  background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))',
-                  color: '#ffffff',
-                }}
+                className="ds-btn ds-btn-primary ds-btn-md"
                 aria-label="Book photography session"
               >
                 Book Now
@@ -225,43 +209,33 @@ export const Navigation: React.FC<NavigationProps> = ({
             <div className="flex lg:hidden items-center gap-2">
               <button
                 onClick={toggleTheme}
-                className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2"
+                className="w-10 h-10 rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 ds-card"
                 style={{ 
-                  background: isDarkMode 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(0, 0, 0, 0.05)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(255, 255, 255, 0.15)' 
-                    : '1px solid rgba(0, 0, 0, 0.1)',
+                  focusRingColor: 'var(--color-brand-primary)',
                 }}
                 aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 {isDarkMode ? (
-                  <Sun className="w-5 h-5 text-yellow-300" aria-hidden="true" />
+                  <Sun className="w-5 h-5" style={{ color: 'var(--color-brand-secondary)' }} aria-hidden="true" />
                 ) : (
-                  <Moon className="w-5 h-5 text-indigo-600" aria-hidden="true" />
+                  <Moon className="w-5 h-5" style={{ color: 'var(--color-brand-primary)' }} aria-hidden="true" />
                 )}
               </button>
               
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="w-10 h-10 rounded-lg flex items-center justify-center transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2"
+                className="w-10 h-10 rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 ds-card"
                 style={{ 
-                  background: isDarkMode 
-                    ? 'rgba(255, 255, 255, 0.1)' 
-                    : 'rgba(0, 0, 0, 0.05)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(255, 255, 255, 0.15)' 
-                    : '1px solid rgba(0, 0, 0, 0.1)',
-                }}
+                  '--focus-ring-color': 'var(--color-brand-primary)',
+                } as React.CSSProperties}
                 aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
                 aria-expanded={isMobileMenuOpen}
                 aria-controls="mobile-menu"
               >
                 {isMobileMenuOpen ? (
-                  <X className="w-5 h-5" style={{ color: 'var(--color-text-primary)' }} aria-hidden="true" />
+                  <X className="w-5 h-5 ds-text-primary" aria-hidden="true" />
                 ) : (
-                  <Menu className="w-5 h-5" style={{ color: 'var(--color-text-primary)' }} aria-hidden="true" />
+                  <Menu className="w-5 h-5 ds-text-primary" aria-hidden="true" />
                 )}
               </button>
             </div>
@@ -273,7 +247,8 @@ export const Navigation: React.FC<NavigationProps> = ({
       {isMobileMenuOpen && (
         <>
           <div
-            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            className="fixed inset-0 z-40 lg:hidden"
+            style={{ background: 'var(--color-overlay-heavy)' }}
             onClick={() => setIsMobileMenuOpen(false)}
             aria-hidden="true"
           />
@@ -281,9 +256,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             id="mobile-menu"
             className="fixed top-16 left-0 right-0 bottom-0 z-40 lg:hidden overflow-y-auto"
             style={{ 
-              background: isDarkMode 
-                ? 'rgba(10, 10, 10, 0.98)' 
-                : 'rgba(255, 255, 255, 0.98)',
+              background: 'var(--color-bg-modal)',
               backdropFilter: 'blur(16px)',
             }}
             role="dialog"
@@ -298,15 +271,16 @@ export const Navigation: React.FC<NavigationProps> = ({
                     key={item.name}
                     href={item.href}
                     onClick={(e) => handleMobileNavClick(e, item.href)}
-                    className="block px-4 py-3 rounded-lg font-semibold transition-all duration-200 focus:outline-none focus:ring-2"
+                    className={`block px-4 py-3 rounded-lg font-semibold ds-transition-base focus:outline-none focus:ring-2 ${
+                      isActive ? '' : 'ds-text-primary'
+                    }`}
                     style={{
-                      color: isActive 
-                        ? '#ffffff' 
-                        : 'var(--color-text-primary)',
+                      color: isActive ? '#ffffff' : undefined,
                       background: isActive 
                         ? 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))'
                         : 'transparent',
-                    }}
+                      '--focus-ring-color': 'var(--color-brand-primary)',
+                    } as React.CSSProperties}
                     aria-label={item.label}
                     aria-current={isActive ? 'page' : undefined}
                   >
@@ -320,11 +294,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                     setIsMobileMenuOpen(false);
                     scrollToContact();
                   }}
-                  className="w-full px-5 py-3 rounded-lg font-semibold shadow-md transition-all duration-200 hover:scale-[1.02] focus:outline-none focus:ring-2"
-                  style={{
-                    background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))',
-                    color: '#ffffff',
-                  }}
+                  className="w-full ds-btn ds-btn-primary ds-btn-md"
                   aria-label="Book photography session"
                 >
                   Book Now

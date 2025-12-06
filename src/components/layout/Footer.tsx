@@ -41,11 +41,7 @@ export const Footer: React.FC = () => {
 
   return (
     <footer 
-      className="border-t"
-      style={{ 
-        background: 'var(--color-bg-secondary)',
-        borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-      }}
+      className="border-t ds-border-primary ds-bg-section-secondary"
     >
       <div className="mx-auto px-4 sm:px-6 lg:px-16 py-12 lg:py-16">
         {/* Main Footer Content */}
@@ -54,28 +50,26 @@ export const Footer: React.FC = () => {
           <div className="space-y-6">
             <div className="flex items-center gap-2">
               <div 
-                className="w-10 h-10 rounded-lg flex items-center justify-center shadow-sm"
+                className="w-10 h-10 rounded-lg flex items-center justify-center"
                 style={{
                   background: 'linear-gradient(135deg, var(--color-brand-primary-light), var(--color-brand-primary))',
-                  boxShadow: '0 2px 8px rgba(6, 95, 70, 0.25)',
+                  boxShadow: 'var(--shadow-md)',
                 }}
               >
                 <Camera className="w-5 h-5 text-white" aria-hidden="true" />
               </div>
               <div className="leading-tight">
                 <span 
-                  className="text-lg font-bold block tracking-wide"
+                  className="text-lg font-bold block tracking-wide ds-text-primary"
                   style={{ 
-                    color: isDarkMode ? '#ffffff' : '#111827',
                     fontFamily: '"Brush Script MT", cursive',
                   }}
                 >
                   Yaryack
                 </span>
                 <span 
-                  className="text-[10px] font-medium block text-right -mt-1"
+                  className="text-[10px] font-medium block text-right -mt-1 ds-text-secondary"
                   style={{ 
-                    color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
                     fontFamily: '"Brush Script MT", cursive',
                   }}
                 >
@@ -83,10 +77,7 @@ export const Footer: React.FC = () => {
                 </span>
               </div>
             </div>
-            <p 
-              className="text-sm leading-relaxed"
-              style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)' }}
-            >
+            <p className="ds-body-sm ds-text-secondary leading-relaxed">
               Capturing authentic moments and creating timeless memories across Calgary and beyond.
             </p>
             {/* Social Links */}
@@ -97,18 +88,16 @@ export const Footer: React.FC = () => {
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2"
+                  className="w-10 h-10 rounded-lg flex items-center justify-center ds-transition-base hover:scale-110 focus:outline-none focus:ring-2 group"
                   style={{ 
-                    background: isDarkMode 
-                      ? 'rgba(6, 95, 70, 0.15)' 
-                      : 'rgba(6, 95, 70, 0.08)',
-                    border: '1px solid var(--color-brand-primary)',
+                    background: 'var(--color-bg-card)',
+                    border: '1px solid var(--color-border-light)',
+                    focusRingColor: 'var(--color-brand-primary)',
                   }}
                   aria-label={social.label}
                 >
                   <social.icon 
-                    className="w-5 h-5" 
-                    style={{ color: 'var(--color-brand-primary)' }}
+                    className="w-5 h-5 ds-text-primary group-hover:ds-text-accent ds-transition-base"
                   />
                 </a>
               ))}
@@ -117,10 +106,7 @@ export const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div className='lg:block hidden'>
-            <h3 
-              className="text-base font-semibold mb-4"
-              style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
-            >
+            <h3 className="ds-body-base font-semibold mb-4 ds-text-primary">
               Quick Links
             </h3>
             <ul className="space-y-3">
@@ -128,16 +114,7 @@ export const Footer: React.FC = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm inline-block transition-colors duration-200"
-                    style={{ 
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = 'var(--color-brand-primary)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
-                    }}
+                    className="ds-body-sm inline-block ds-transition-base ds-text-secondary hover:ds-text-accent"
                   >
                     {link.name}
                   </a>
@@ -148,10 +125,7 @@ export const Footer: React.FC = () => {
 
           {/* Services */}
           <div className='lg:block hidden'>
-            <h3 
-              className="text-base font-semibold mb-4"
-              style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
-            >
+            <h3 className="ds-body-base font-semibold mb-4 ds-text-primary">
               Services
             </h3>
             <ul className="space-y-3">
@@ -159,16 +133,7 @@ export const Footer: React.FC = () => {
                 <li key={link.name}>
                   <a
                     href={link.href}
-                    className="text-sm inline-block transition-colors duration-200"
-                    style={{ 
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.color = 'var(--color-brand-primary)';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)';
-                    }}
+                    className="ds-body-sm inline-block ds-transition-base ds-text-secondary hover:ds-text-accent"
                   >
                     {link.name}
                   </a>
@@ -179,10 +144,7 @@ export const Footer: React.FC = () => {
 
           {/* Contact Info */}
           <div>
-            <h3 
-              className="text-base font-semibold mb-4"
-              style={{ color: isDarkMode ? '#ffffff' : '#111827' }}
-            >
+            <h3 className="ds-body-base font-semibold mb-4 ds-text-primary">
               Get in Touch
             </h3>
             <ul className="space-y-4">
@@ -190,28 +152,19 @@ export const Footer: React.FC = () => {
                 <li key={index}>
                   <a
                     href={info.href}
-                    className="flex items-start gap-3 group transition-all duration-200"
+                    className="flex items-start gap-3 group ds-transition-base"
                   >
                     <div 
-                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform duration-200"
-                      style={{
-                        background: isDarkMode 
-                          ? 'rgba(6, 95, 70, 0.15)' 
-                          : 'rgba(6, 95, 70, 0.08)',
-                        border: '1px solid var(--color-brand-primary)',
-                      }}
+                      className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-105 ds-transition-base ds-card"
                     >
                       <info.icon 
-                        className="w-4 h-4" 
-                        style={{ color: 'var(--color-brand-primary)' }}
+                        // className="w-4 h-4" 
+                    className="w-4 h-4 ds-text-primary group-hover:ds-text-accent ds-transition-base"
+
+                        // style={{ color: 'var(--color-brand-primary)' }}
                       />
                     </div>
-                    <span 
-                      className="text-sm transition-colors duration-200"
-                      style={{ 
-                        color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
-                      }}
-                    >
+                    <span className="ds-body-sm ds-text-secondary group-hover:ds-text-accent ds-transition-base">
                       {info.text}
                     </span>
                   </a>
@@ -223,16 +176,10 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Bar */}
         <div 
-          className="pt-8 border-t"
-          style={{
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)',
-          }}
+          className="pt-8 border-t ds-border-primary"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <p 
-              className="text-sm text-center md:text-left"
-              style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
-            >
+            <p className="ds-body-sm text-center md:text-left ds-text-muted">
               © {currentYear} Yaryack Photography. All rights reserved.
             </p>
             
@@ -242,16 +189,7 @@ export const Footer: React.FC = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-sm transition-colors duration-200"
-                  style={{ 
-                    color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.color = 'var(--color-brand-primary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)';
-                  }}
+                  className="ds-body-sm ds-transition-base ds-text-muted hover:ds-text-accent"
                 >
                   {link.name}
                 </a>
@@ -260,10 +198,7 @@ export const Footer: React.FC = () => {
 
             {/* Made with Love */}
             <div className="flex items-center gap-2">
-              <span 
-                className="text-sm"
-                style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
-              >
+              <span className="ds-body-sm ds-text-muted">
                 Made with
               </span>
               <Heart 
@@ -273,26 +208,14 @@ export const Footer: React.FC = () => {
                   color: 'var(--color-brand-primary)'
                 }} 
               />
-              <span 
-                className="text-sm"
-                style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
-              >
+              <span className="ds-body-sm ds-text-muted">
                 in Calgary by
               </span>
               <a
-                href="https://github.com/meryato"
+                href="https://github.com/MeronSeyoum"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-semibold transition-colors duration-200"
-                style={{ 
-                  color: 'var(--color-brand-primary)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = isDarkMode ? '#ffffff' : '#111827';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--color-brand-primary)';
-                }}
+                className="ds-body-primary font-semibold ds-transition-base ds-text-accent hover:ds-text-primary"
               >
                 Meryato
               </a>

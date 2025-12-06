@@ -14,15 +14,15 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   subtitle,
   icon: Icon,
   rightContent,
-  swap = false, // default to title left, subtitle right
+  swap = false,
 }) => {
   return (
-    <div className="ds-section-header ">
-      <div className="flex items-center justify-between ">
-        <div className="flex items-center gap-8 w-full ">
+    <div className="ds-section-header">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3 sm:gap-6 lg:gap-8 w-full">
           {Icon && (
             <div 
-              className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center shadow-md"
+              className="w-10 h-10 lg:w-12 lg:h-12 rounded-xl flex items-center justify-center shadow-md flex-shrink-0"
               style={{ 
                 background: 'linear-gradient(to bottom right, var(--color-brand-primary-light), var(--color-brand-primary))' 
               }}
@@ -31,21 +31,21 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
             </div>
           )}
           
-          {/* Main content area - flex container that will reverse when swapped */}
-          <div className={`flex items-center justify-between flex-1 gap-8 ${swap ? 'flex-row-reverse' : ''}`}>
+          {/* Main content area - responsive flex container */}
+          <div className={`flex items-center justify-between flex-1 ${swap ? 'flex-row-reverse' : ''}`}>
             {/* Title element */}
-            <h2 className="ds-body-xl lg:ds-heading-3 xl:ds-heading-2 ds-text-primary font-bold">
+            <h2 className="ds-heading-4 lg:ds-heading-3 xl:ds-heading-2 ds-text-primary font-bold">
               {title}
             </h2>
             
             {/* Subtitle element with colored bar */}
             {subtitle && (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
                 <div 
-                  className="w-1 h-5 lg:w-2 lg:h-8 rounded-full" 
+                  className="w-1 h-4 sm:h-5 lg:w-2 lg:h-8 rounded-full" 
                   style={{ background: 'var(--color-brand-primary)' }}
                 ></div>
-                <p className="ds-body-xs lg:ds-body-base ds-text-secondary uppercase tracking-wider font-semibold">
+                <p className="ds-body-xs lg:ds-body-sm ds-text-secondary uppercase tracking-wider font-semibold">
                   {subtitle}
                 </p>
               </div>
@@ -54,7 +54,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         </div>
         
         {rightContent && (
-          <div className="ml-auto">
+          <div className="ml-4 flex-shrink-0">
             {rightContent}
           </div>
         )}
