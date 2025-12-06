@@ -86,6 +86,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     }
   }, [onNavClick]);
 
+  
   const handleMobileNavClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     setIsMobileMenuOpen(false);
     handleNavClick(e, href);
@@ -101,7 +102,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-50 ds-transition-slow ${
+        className={`fixed  top-0 left-0 right-0 z-50  ds-transition-slow ${
           isScrolled ? 'shadow-lg' : ''
         }`}
         style={{
@@ -116,13 +117,13 @@ export const Navigation: React.FC<NavigationProps> = ({
         role="navigation"
         aria-label="Main navigation"
       >
-        <div className="mx-auto px-4 sm:px-6 lg:px-16">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="mx-auto px-4 sm:px-6 lg:px-16 ">
+          <div className="flex items-center justify-between h-12 lg:h-20">
             {/* Logo */}
             <a
               href="#home"
               onClick={(e) => handleNavClick(e, '#home')}
-              className="flex  ds-btn-primary items-center gap-2 lg:gap-3 group px-3 py-2 rounded-lg flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-2 ds-transition-base hover:scale-[1.02]"
+              className="flex  ds-btn-primary items-center gap-2 lg:gap-3 group px-3 py-0.5 rounded-lg flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-offset-2 ds-transition-base hover:scale-[1.02]"
               style={{ 
                 // background: 'linear-gradient(135deg, var(--color-brand-primary), var(--color-brand-primary-dark))',
                 // boxShadow: 'var(--shadow-md)',
@@ -130,10 +131,10 @@ export const Navigation: React.FC<NavigationProps> = ({
               }}
               aria-label="Yaryack Photography - Go to home"
             >
-              <Camera className="w-6 h-6 lg:w-7 lg:h-7 text-white flex-shrink-0" aria-hidden="true" />
+              <Camera className="w-5 h-5 lg:w-7 lg:h-7 text-white flex-shrink-0" aria-hidden="true" />
               <div className="leading-tight">
                 <span 
-                  className="text-xl lg:text-2xl font-bold block text-white tracking-wide"
+                  className="text-lg lg:text-2xl font-bold block text-white tracking-wide"
                   style={{ 
                     fontFamily: '"Brush Script MT", cursive',
                   }}
@@ -141,7 +142,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                   Yaryack
                 </span>
                 <span 
-                  className="text-[10px] lg:text-xs font-medium block text-right text-white/90 -mt-1"
+                  className="text-[10px] lg:text-xs font-medium block text-right text-white/90 -mt-2"
                   style={{ 
                     fontFamily: '"Brush Script MT", cursive',
                   }}
@@ -152,7 +153,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1" aria-label="Primary">
+            <nav className="hidden lg:flex items-center gap-1 " aria-label="Primary">
               {NAV_ITEMS.map((item) => {
                 const isActive = activeSection === item.href.replace('#', '');
                 return (
@@ -181,7 +182,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             </nav>
 
             {/* Desktop Actions */}
-            <div className="hidden lg:flex items-center gap-3">
+            <div className="hidden lg:flex  items-center gap-3">
               <button
                 onClick={toggleTheme}
                 className="w-10 h-10 rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 ds-card"
@@ -206,25 +207,25 @@ export const Navigation: React.FC<NavigationProps> = ({
             </div>
 
             {/* Mobile Actions */}
-            <div className="flex lg:hidden items-center gap-2">
+            <div className="flex lg:hidden items-center  gap-2">
               <button
                 onClick={toggleTheme}
-                className="w-10 h-10 rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 ds-card"
+                className="w-9 h-9  rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 ds-card"
                 style={{ 
                   focusRingColor: 'var(--color-brand-primary)',
                 }}
                 aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
               >
                 {isDarkMode ? (
-                  <Sun className="w-5 h-5" style={{ color: 'var(--color-brand-secondary)' }} aria-hidden="true" />
+                  <Sun className="w-4 h-4" style={{ color: 'var(--color-brand-secondary)' }} aria-hidden="true" />
                 ) : (
-                  <Moon className="w-5 h-5" style={{ color: 'var(--color-brand-primary)' }} aria-hidden="true" />
+                  <Moon className="w-4 h-4" style={{ color: 'var(--color-brand-primary)' }} aria-hidden="true" />
                 )}
               </button>
               
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="w-10 h-10 rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 ds-card"
+                className="w-9 h-9 rounded-lg flex items-center justify-center ds-transition-base hover:scale-105 focus:outline-none focus:ring-2 ds-card"
                 style={{ 
                   '--focus-ring-color': 'var(--color-brand-primary)',
                 } as React.CSSProperties}
@@ -233,9 +234,9 @@ export const Navigation: React.FC<NavigationProps> = ({
                 aria-controls="mobile-menu"
               >
                 {isMobileMenuOpen ? (
-                  <X className="w-5 h-5 ds-text-primary" aria-hidden="true" />
+                  <X className="w-4 h-4 ds-text-primary" aria-hidden="true" />
                 ) : (
-                  <Menu className="w-5 h-5 ds-text-primary" aria-hidden="true" />
+                  <Menu className="w-4 h-4 ds-text-primary" aria-hidden="true" />
                 )}
               </button>
             </div>
@@ -256,7 +257,7 @@ export const Navigation: React.FC<NavigationProps> = ({
             id="mobile-menu"
             className="fixed top-16 left-0 right-0 bottom-0 z-40 lg:hidden overflow-y-auto"
             style={{ 
-              background: 'var(--color-bg-modal)',
+              background: 'var(--color-bg-primary)',
               backdropFilter: 'blur(16px)',
             }}
             role="dialog"

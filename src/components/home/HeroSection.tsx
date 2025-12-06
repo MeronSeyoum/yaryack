@@ -234,7 +234,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                   <div className="flex flex-col sm:flex-row gap-4 lg:pl-0">
                     <button
                       onClick={() => scrollToSection("contact")}
-                      className="ds-btn ds-btn-primary ds-btn-lg group"
+                      className="ds-btn ds-btn-primary ds-btn-md group"
                       aria-label="Book a photography session"
                     >
                       <Calendar className="w-5 h-5" aria-hidden="true" />
