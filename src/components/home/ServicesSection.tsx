@@ -295,7 +295,7 @@ export const ServicesSection: React.FC = () => {
               {/* Navigation Arrows */}
               <button
                 onClick={prevSlide}
-                className="absolute left-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white z-10"
+                className="absolute  top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white z-10"
                 aria-label="Previous service"
               >
                 <ChevronLeft className="w-4 h-4 text-gray-700" />
@@ -303,7 +303,7 @@ export const ServicesSection: React.FC = () => {
 
               <button
                 onClick={nextSlide}
-                className="absolute right-2 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white z-10"
+                className="absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm shadow-md flex items-center justify-center ds-transition-slow hover:scale-110 hover:bg-white z-10"
                 aria-label="Next service"
               >
                 <ChevronRight className="w-4 h-4 text-gray-700" />

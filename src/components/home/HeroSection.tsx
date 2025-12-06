@@ -284,7 +284,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
 
         {/* Mobile Portfolio Preview Section */}
         {isMobile && (
-          <div className="relative min-h-[60vh] py-12 ds-bg-section-primary">
+          <div className="relative min-h-[60vh] py-6 ds-bg-section-primary">
             {/* Background Image with Overlay */}
             <div className="absolute inset-0 -z-10 overflow-hidden">
               <img
@@ -297,10 +297,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
             </div>
 
             {/* Portfolio Content */}
-            <div className="relative px-4 space-y-8">
+            <div className="relative px-4 space-y-6">
               {/* Section Header */}
-              <div className="text-center space-y-3">
-                <div 
+              <div className="text-center space-y-2">
+                {/* <div 
                   className="inline-flex items-center gap-2 ds-card ds-card-p-sm"
                   role="status"
                 >
@@ -312,13 +312,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ activeSection = 'home'
                   <span className="ds-body-sm ds-text-primary font-semibold">
                     Portfolio Preview
                   </span>
-                </div>
+                </div> */}
                 
-                <h2 className="ds-heading-3 ds-text-primary">
+                <h2 className="ds-heading-4 ds-text-primary">
                   Featured Work
                 </h2>
                 
-                <p className="ds-body-base ds-text-secondary">
+                <p className="ds-body-sm ds-text-secondary">
                   Recent captures from our portfolio
                 </p>
               </div>
